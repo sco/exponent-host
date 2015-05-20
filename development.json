@@ -1,0 +1,10 @@
+{
+  "apps" : [{
+    "name"        : "exp.host",
+    "script"      : "build/",
+    "watch"       : "build/**",
+    "env": {
+        "NODE_ENV": "development"
+    }
+  }]
+}

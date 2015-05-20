@@ -1,0 +1,48 @@
+{
+  "name": "@exponent/host",
+  "version": "1.1.0",
+  "description": "The Exponent server that hosts rich articles written with JavaScript and React Native",
+  "private": "true",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "exponent",
+    "exp.host"
+  ],
+  "author": "650 Industries",
+  "homepage": "http://exp.host",
+  "dependencies": {
+    "@ccheever/crayon": "^5.0.0",
+    "@exponent/md5hex": "^1.0.0",
+    "await-lock": "^1.1.0",
+    "babel-runtime": "^5.4.3",
+    "ent": "^2.2.0",
+    "instapromise": "^1.0.0",
+    "koa": "^0.20.0",
+    "koa-body": "^1.2.1",
+    "koa-gzip": "^0.1.0",
+    "koa-logger": "^1.2.2",
+    "koa-router": "^4.3.2",
+    "koa-static": "^1.4.9",
+    "lodash-node": "^3.9.1",
+    "request": "^2.55.0",
+    "rethinkdbdash": "^2.0.10",
+    "sendgrid": "^1.8.0",
+    "twilio": "^2.2.0"
+  },
+  "devDependencies": {
+    "@exponent/gulp-babel": "^7.0.0",
+    "babel-eslint": "^3.1.5",
+    "eslint": "^0.21.2",
+    "eslint-plugin-react": "^2.3.0",
+    "gulp": "^3.8.11",
+    "gulp-changed": "^1.2.1",
+    "gulp-plumber": "^1.0.1",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-util": "^3.0.4",
+    "gulp-watch": "^4.2.4",
+    "pm2": "^0.12.15"
+  }
+}
