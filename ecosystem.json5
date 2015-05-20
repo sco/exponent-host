@@ -35,6 +35,7 @@
     production : {
       user : "exponent",
       host : "exp.host",
+      key  : "node_modules/exponent-secret/exp-host.pem",
       ref  : "origin/master",
       repo : "git@github.com:exponentjs/exponent-host.git",
       path : "/home/exponent/production/exponent-host",
