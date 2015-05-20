@@ -1,0 +1,23 @@
+<script>
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+var url = getParameterByName('url') || 'exp://exp.host/exponent';
+/*
+var device = getParameterByName('device') || 'iphone6';
+var orientation = getParameterByName('orientation') || 'portrait';
+var scale = getParameterByName('scale') || 100;
+var autoplay = getParameterByName('autoplay') || 'true';
+var deviceColor = getParameterByName('deviceColor') || 'black';
+*/
+
+var params = {
+    ExponentHomeURL: url,
+};
+document.write('<iframe src="https://appetize.io/embed/bvpmev3qzfy90v4bchzrxqjt2w?device=iphone6&scale=75&autoplay=true&orientation=portrait&deviceColor=black&params=' + encodeURIComponent(JSON.stringify(params)) + '" width="378px" height="800px" frameborder="0" scrolling="no"></iframe>');
+document.write("Starting at URL: " + url);
+</script>

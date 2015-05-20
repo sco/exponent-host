@@ -1,4 +1,6 @@
 var child_process = require('child_process');
+var fs = require('fs');
+var path = require('path');
 
 var koa = require('koa');
 var body = require('koa-body');
@@ -106,8 +108,6 @@ siteRouter.get('/app/exponent', require('./browser'));
 
 siteRouter.get('/exponent', function*(next) {
   require('instapromise');
-  const fs = require('fs');
-  const path = require('path');
   let source = yield fs.promise.readFile(path.join(__dirname, '../home.bundle.js'), 'utf8');
   this.type = 'application/javascript';
   this.body = source;
@@ -124,6 +124,11 @@ siteRouter.get('/--/to-exp/:url', function*(next) {
 
   // TODO: Since Safari will pop up an alert asking the user to confirm the redirect,
   // we may want to show some web content that hints at what will happen (or maybe not?)
+});
+
+siteRouter.get('/--/appetize', function*(next) {
+  this.type = 'text/html';
+  this.body = yield fs.promise.readFile(path.join(__dirname, '..', 'appetize.html'), 'utf8');
 });
 
 siteRouter.get('/--/feedback', require('./feedbackSubmit'));
