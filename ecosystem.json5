@@ -9,20 +9,17 @@
    * https://github.com/Unitech/PM2/blob/master/ADVANCED_README.md#json-app-declaration
    *
    */
-  apps : [
-
-    // web/API server
+  apps: [
     {
-      name      : "exp.host",
-      script    : "build/",
-      watch     : false,
+      name: 'exp.host',
+      script: 'build/index.js',
+      watch: false,
       env: {
       },
-      env_production : {
-        NODE_ENV: "production"
+      env_production: {
+        NODE_ENV: 'production'
       }
     },
-
   ],
 
 
@@ -31,15 +28,15 @@
    * For more help go to :
    * https://github.com/Unitech/PM2/blob/master/ADVANCED_README.md#deployment-pm2--090
    */
-  deploy : {
-    production : {
-      user : "exponent",
-      host : "exp.host",
-      key  : "node_modules/@exponent/secret/exp-host.pem",
-      ref  : "origin/master",
-      repo : "https://github.com/exponentjs/exponent-host.git",
-      path : "/home/exponent/production",
-      "post-deploy" : "true && (npm install && gulp babel;) && pm2 startOrRestart ecosystem.json5 --env production"
-    }
-  }
+  deploy: {
+    production: {
+      user: 'exponent',
+      host: 'exp.host',
+      key: 'node_modules/@exponent/secret/exp-host.pem',
+      ref: 'origin/master',
+      repo: 'https://github.com/exponentjs/exponent-host.git',
+      path: '/home/exponent/production',
+      'post-deploy': 'npm install && npm install git+ssh@github.com:650Industries/exponent-secret.git && gulp babel && pm2 startOrRestart ecosystem.json5 --env production',
+    },
+  },
 }

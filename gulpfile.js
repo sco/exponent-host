@@ -1,3 +1,5 @@
+require('instapromise');
+
 var gulp = require('gulp');
 var babel = require('@exponent/gulp-babel');
 var changed = require('gulp-changed');
@@ -8,7 +10,6 @@ var watch = require('gulp-watch');
 
 var crayon = require('@ccheever/crayon');
 var fs = require('fs');
-var instapromise = require('instapromise');
 var path = require('path');
 var pm2 = require('pm2');
 var request = require('request');
