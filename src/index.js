@@ -1,3 +1,5 @@
+var child_process = require('child_process');
+
 var koa = require('koa');
 var body = require('koa-body');
 var gzip = require('koa-gzip');
@@ -26,6 +28,12 @@ app.use(gzip());
 // This is desgined to preserve flexibility for anything else we want to do with the space of URLs
 
 var siteRouter = router();
+
+siteRouter.get('/--/git-hash', function*(next) {
+  this.type = 'text/plain';
+  this.body = yield child_process.promise.exec('git rev-parse HEAD');
+});
+
 siteRouter.get('/', function*(next) {
   var manifestUrl = 'https://www.dropbox.com/s/wjr7trh1zg12s6b/manifest.plist?dl=1';
   this.type = 'text/html';
