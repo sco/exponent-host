@@ -3,6 +3,7 @@ var _ = require('lodash-node');
 var ApiError = require('./ApiError');
 var log = require('../log');
 var r = require('../database/r');
+var slack = require('../slack');
 
 module.exports = {
   doc: "Records that an e-mail address is in use in the system",
@@ -29,6 +30,13 @@ module.exports = {
           timesSeen: row('timesSeen').add(1).default(1),
         }));
       });
+
+    // Send an invite to the Slack Instance to them
+    slack.sendSlackInstanceInviteAsync(email).then((result) => {
+      log("Invited", email, "to the Slack Instance");
+    }, (err) => {
+      log.error("Failed to invite", email, "to Slack:", err);
+    });
 
     return true;
   }
