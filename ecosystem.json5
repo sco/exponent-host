@@ -36,7 +36,7 @@
       ref: 'origin/master',
       repo: 'https://github.com/exponentjs/exponent-host.git',
       path: '/home/exponent/production',
-      'post-deploy': 'npm install && npm install git+ssh@github.com:650Industries/exponent-secret.git && gulp babel && pm2 startOrRestart ecosystem.json5 --env production',
+      'post-deploy': 'npm install && npm install git+ssh@github.com:exponentjs/exponent-secret.git && gulp babel && pm2 startOrRestart ecosystem.json5 --env production',
     },
   },
 }
