@@ -92,7 +92,7 @@ siteRouter.get('/', function* (next) {
       <h3><a href="itms-services://?action=download-manifest&amp;url=${ encodeURIComponent(manifestUrl) }"><span class="download" style="margin-top: 10px;">Download</span></a></h3>
 
       <div id="react"></div>
-      <script src="bundle.js"></script>
+      <script src="http://localhost:7272/bundle.js"></script>
     </body>
   </html>
   `;

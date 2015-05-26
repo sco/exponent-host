@@ -1,28 +1,37 @@
+'use strict';
+
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = [
   {
     name: 'browser',
-    entry: './src/web/index.js',
+    entry: [
+      'webpack-dev-server/client?http://localhost:7272',
+      'webpack/hot/only-dev-server',
+      './src/web/index.js',
+    ],
     output: {
-      path: path.join(__dirname, 'build/web'),
+      path: path.join(__dirname, 'build/web/'),
       filename: 'bundle.js',
-      publicPath: '',
+      publicPath: 'http://localhost:7272/',
     },
     module: {
       loaders: [
         {
           test: /\.js$/,
-          exclude: '/node_modules/',
-          loader: 'babel',
-          query: {
-            stage: 1,
-          },
+          include: path.join(__dirname, 'src'),
+          loaders: ['react-hot', 'babel'],
         },
-        { test: /\.css$/, loader: 'style!css' },
+        {
+          test: /\.css$/,
+          include: path.join(__dirname, 'src'),
+          loaders: ['style', 'css'],
+        },
       ],
     },
     plugins: [
+      new webpack.NoErrorsPlugin(),
       function(compiler) {
         this.plugin('done', function(stats) {
           //require('fs').writeFileSync(path.join(__dirname, 'stats.generated.json'), JSON.stringify(stats.toJson()));

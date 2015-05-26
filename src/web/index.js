@@ -1,16 +1,17 @@
-var React = require('react');
+import React from 'react';
+
+import Hello from './hello';
 
 class Home extends React.Component {
   render() {
     require('./style.css');
     return (
       <div>
-        hello
+        <Hello />
       </div>
     );
   }
 }
-
 
 React.render(<Home />, document.getElementById('react'));
 
