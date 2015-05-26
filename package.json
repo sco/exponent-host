@@ -18,6 +18,7 @@
     "@exponent/md5hex": "^1.0.0",
     "await-lock": "^1.1.0",
     "babel-runtime": "^5.4.3",
+    "bases": "^0.2.1",
     "ent": "^2.2.0",
     "instapromise": "^1.0.0",
     "koa": "^0.20.0",

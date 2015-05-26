@@ -10,7 +10,8 @@ var Api = {
   adduser: require('./adduser'),
   recordEmail: require('./recordEmail'),
   publish: require('./publish'),
-  whoami: require('./whoami') };
+  whoami: require('./whoami'),
+  shortenUrl: require('./shortenUrl') };
 
 var callMethod = function* callMethod(next) {
   var method = Api[this.params.method];
@@ -30,7 +31,9 @@ var callMethod = function* callMethod(next) {
       var env = {
         args: args,
         method: method,
-        methodName: this.params.method };
+        methodName: this.params.method,
+        ip: this.request.ip,
+        _request: this.request };
       try {
         var result = yield method.methodAsync(env, args);
         if (!_.isObject(result)) {

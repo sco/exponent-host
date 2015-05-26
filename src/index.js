@@ -36,6 +36,7 @@ siteRouter.get('/--/git-hash', function*(next) {
   this.body = yield child_process.promise.exec('git rev-parse HEAD');
 });
 
+
 siteRouter.get('/', function*(next) {
   var manifestUrl = 'https://www.dropbox.com/s/wjr7trh1zg12s6b/manifest.plist?dl=1';
   this.type = 'text/html';
@@ -138,6 +139,28 @@ siteRouter.post('/--/feedback/submit', require('./feedbackSubmit'));
 app.use(body({formidable:{uploadDir: __dirname}}));
 app.use(siteRouter.routes());
 app.use(siteRouter.allowedMethods());
+
+// Short URLs
+siteRouter.get('/:dotcode', function*(next) {
+  console.log("Handling short url", this.params.dotcode);
+  var shortUrl = require('./shortUrl');
+  var dotCode = this.params.dotcode;
+  if (dotCode[0] === '.') {
+    var code = this.params.code;
+    var url = yield shortUrl.urlForCodeAsync(code);
+    console.log("code=", code, "url=", url);
+    if (url) {
+      this.response.redirect(url);
+    } else {
+      this.throw(404, "No such short URL: " + code);
+    }
+    this.type = 'text/html',
+    this.body = "Short URL for code " + code;
+  } else {
+    yield next;
+  }
+});
+
 
 if (require.main === module) {
   var port = PORT;

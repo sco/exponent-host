@@ -9,6 +9,7 @@ var Api = {
   recordEmail: require('./recordEmail'),
   publish: require('./publish'),
   whoami: require('./whoami'),
+  shortenUrl: require('./shortenUrl'),
 };
 
 var callMethod = function*(next) {
@@ -30,6 +31,8 @@ var callMethod = function*(next) {
         args,
         method,
         methodName: this.params.method,
+        ip: this.request.ip,
+        _request: this.request,
         // TODO: Add in other environment stuff here
       };
       try {
