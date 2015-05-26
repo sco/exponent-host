@@ -1,3 +1,6 @@
+var instapromise = require('instapromise');
+var request = require('request');
+
 var r = require('./database/r');
 
 function codeToUrl(code, protocol='exp') {
@@ -13,7 +16,16 @@ async function urlForCodeAsync(code) {
   }
 }
 
+async function urlProxyBodyAsync(url) {
+  var httpUrl = url.replace(/^exp:/, 'http:');
+  var response = await request.promise.get(url);
+  console.log("response=", response);
+  var body = response.body;
+  return body;
+}
+
 module.exports = {
   codeToUrl,
   urlForCodeAsync,
+  urlProxyBodyAsync,
 };

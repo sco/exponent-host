@@ -11,6 +11,17 @@ var urlForCodeAsync = _asyncToGenerator(function* (code) {
   }
 });
 
+var urlProxyBodyAsync = _asyncToGenerator(function* (url) {
+  var httpUrl = url.replace(/^exp:/, 'http:');
+  var response = yield request.promise.get(url);
+  console.log('response=', response);
+  var body = response.body;
+  return body;
+});
+
+var instapromise = require('instapromise');
+var request = require('request');
+
 var r = require('./database/r');
 
 function codeToUrl(code) {
@@ -21,5 +32,6 @@ function codeToUrl(code) {
 
 module.exports = {
   codeToUrl: codeToUrl,
-  urlForCodeAsync: urlForCodeAsync };
+  urlForCodeAsync: urlForCodeAsync,
+  urlProxyBodyAsync: urlProxyBodyAsync };
 //# sourceMappingURL=sourcemaps/shortUrl.js.map
