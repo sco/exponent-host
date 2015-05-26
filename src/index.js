@@ -88,11 +88,19 @@ siteRouter.get('/', function*(next) {
       <p><center><div style="width: 400px; margin-bottom: 20px;">With Exponent, you can write React Native experiences with any computer and a text editor and a phone.
       No need for Xcode or a simulator. Download the app now to get started.</div><br /></center></p>
 
-      <h3><a href="itms-services://?action=download-manifest&amp;url=${encodeURIComponent(manifestUrl)}"><span class="download" style="margin-top: 10px;">Download</span></a>
+      <h3><a href="itms-services://?action=download-manifest&amp;url=${encodeURIComponent(manifestUrl)}"><span class="download" style="margin-top: 10px;">Download</span></a></h3>
 
+      <div id="react"></div>
+      <script src="bundle.js"></script>
     </body>
   </html>
   `;
+});
+
+// generalize these and put them under an assets/ dir for the CDN
+siteRouter.get('/bundle.js', function*(next) {
+  var cssPath = path.join(__dirname, 'web/bundle.js');
+  this.body = yield fs.promise.readFile(cssPath, 'utf8');
 });
 
 siteRouter.get('/-/support', function*(next) {

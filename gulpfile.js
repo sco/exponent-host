@@ -14,7 +14,11 @@ var path = require('path');
 var pm2 = require('pm2');
 var request = require('request');
 
-babel.task(gulp);
+babel.task(gulp, {
+  paths: {
+    src: ['src/**/*.js', '!src/web/**/*.js'],
+  },
+});
 
 var snapshotBundleAsync = function (bundleUrl, bundleFile) {
   gutil.log("Fetching bundle from", bundleUrl, "...");
