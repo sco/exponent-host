@@ -142,13 +142,13 @@ app.use(siteRouter.allowedMethods());
 
 // Short URLs
 siteRouter.get('/:dotcode', function*(next) {
-  console.log("Handling short url", this.params.dotcode);
+  console.log("Handling short URL:", this.params.dotcode);
   var shortUrl = require('./shortUrl');
   var dotCode = this.params.dotcode;
   if (dotCode[0] === '.') {
-    var code = this.params.code;
+    var code = dotCode.slice(1);
     var url = yield shortUrl.urlForCodeAsync(code);
-    console.log("code=", code, "url=", url);
+    console.log("Short URL for code", code, "points to URL", url);
     if (url) {
       this.response.redirect(url);
     } else {
