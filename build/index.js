@@ -154,7 +154,7 @@ siteRouter.get('/:dotcode', function* (next) {
       var body = yield shortUrl.urlProxyBodyAsync(url);
       this.type = 'application/javascript';
       this.body = body;
-      this.response.redirect(url);
+      //this.response.redirect(url);
     } else {
       this['throw'](404, 'No such short URL: ' + code);
     }

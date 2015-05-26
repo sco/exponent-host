@@ -14,7 +14,6 @@ var urlForCodeAsync = _asyncToGenerator(function* (code) {
 var urlProxyBodyAsync = _asyncToGenerator(function* (url) {
   var httpUrl = url.replace(/^exp:/, 'http:');
   var response = yield request.promise.get(httpUrl);
-  console.log('response=', response);
   var body = response.body;
   return body;
 });
