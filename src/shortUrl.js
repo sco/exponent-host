@@ -18,7 +18,7 @@ async function urlForCodeAsync(code) {
 
 async function urlProxyBodyAsync(url) {
   var httpUrl = url.replace(/^exp:/, 'http:');
-  var response = await request.promise.get(url);
+  var response = await request.promise.get(httpUrl);
   console.log("response=", response);
   var body = response.body;
   return body;
