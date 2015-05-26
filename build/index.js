@@ -151,6 +151,8 @@ siteRouter.get('/:dotcode', function* (next) {
     var url = yield shortUrl.urlForCodeAsync(code);
     console.log('Short URL for code', code, 'points to URL', url);
     if (url) {
+      // TODO: Switch this from a proxy to a redirect once the client
+      // can handle redirects
       var body = yield shortUrl.urlProxyBodyAsync(url);
       this.type = 'application/javascript';
       this.body = body;
