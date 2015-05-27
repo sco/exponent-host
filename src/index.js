@@ -1,16 +1,16 @@
-var child_process = require('child_process');
-var fs = require('fs');
-var path = require('path');
+import child_process from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
-var koa = require('koa');
-var body = require('koa-body');
-var gzip = require('koa-gzip');
-var logger = require('koa-logger');
-var router = require('koa-router');
+import koa from 'koa';
+import body from 'koa-body';
+import gzip from 'koa-gzip';
+import logger from 'koa-logger';
+import router from 'koa-router';
 
-var api = require('./api/api');
-var config = require('./config');
-var servePackage = require('./servePackage');
+import api from './api/api';
+import config from './config';
+import servePackage from './servePackage';
 
 import * as ServerSideRendering from './web/ServerSideRendering';
 
@@ -24,12 +24,11 @@ app.experimental = true;
 app.use(logger());
 app.use(gzip());
 
-// URL scheme
-// /-/something is for user facing URLs, ex. support, privacy
-// /--/something is for behind the scenes URLs, like API endpoints, etc.
-// /@username is a user's space
-//
-// This is desgined to preserve flexibility for anything else we want to do with the space of URLs
+var endpointRouter = router({ prefix: '/--' });
+endpointRouter.get('/git-hash', function*(next) {
+  this.type = 'text/plain';
+  this.body = yield child_process.promise.exec('git rev-parse HEAD');
+});
 
 var siteRouter = router();
 
@@ -50,7 +49,9 @@ siteRouter.get('/', function*(next) {
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
       <script src="http://localhost:7272/bundle.js" defer></script>
     </head>
-    <body><div id="root">${reactMarkup}</div></body>
+    <body>
+      <div id="root">${reactMarkup}</div>
+    </body>
   </html>
   `;
 

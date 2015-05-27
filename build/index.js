@@ -1,47 +1,78 @@
 'use strict';
 
+var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
+
 var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
+
+var _child_process = require('child_process');
+
+var _child_process2 = _interopRequireDefault(_child_process);
+
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _koa = require('koa');
+
+var _koa2 = _interopRequireDefault(_koa);
+
+var _koaBody = require('koa-body');
+
+var _koaBody2 = _interopRequireDefault(_koaBody);
+
+var _koaGzip = require('koa-gzip');
+
+var _koaGzip2 = _interopRequireDefault(_koaGzip);
+
+var _koaLogger = require('koa-logger');
+
+var _koaLogger2 = _interopRequireDefault(_koaLogger);
+
+var _koaRouter = require('koa-router');
+
+var _koaRouter2 = _interopRequireDefault(_koaRouter);
+
+var _apiApi = require('./api/api');
+
+var _apiApi2 = _interopRequireDefault(_apiApi);
+
+var _config = require('./config');
+
+var _config2 = _interopRequireDefault(_config);
+
+var _servePackage = require('./servePackage');
+
+var _servePackage2 = _interopRequireDefault(_servePackage);
 
 var _webServerSideRendering = require('./web/ServerSideRendering');
 
 var ServerSideRendering = _interopRequireWildcard(_webServerSideRendering);
 
-var child_process = require('child_process');
-var fs = require('fs');
-var path = require('path');
+var PORT = _config2['default'].server.port || 3000;
 
-var koa = require('koa');
-var body = require('koa-body');
-var gzip = require('koa-gzip');
-var logger = require('koa-logger');
-var router = require('koa-router');
-
-var api = require('./api/api');
-var config = require('./config');
-var servePackage = require('./servePackage');
-
-var PORT = config.server.port || 3000;
-
-var app = koa();
+var app = (0, _koa2['default'])();
 app.name = 'exp-host';
 app.proxy = true;
 app.experimental = true;
 
-app.use(logger());
-app.use(gzip());
+app.use((0, _koaLogger2['default'])());
+app.use((0, _koaGzip2['default'])());
 
-// URL scheme
-// /-/something is for user facing URLs, ex. support, privacy
-// /--/something is for behind the scenes URLs, like API endpoints, etc.
-// /@username is a user's space
-//
-// This is desgined to preserve flexibility for anything else we want to do with the space of URLs
+var endpointRouter = (0, _koaRouter2['default'])({ prefix: '/--' });
+endpointRouter.get('/git-hash', function* (next) {
+  this.type = 'text/plain';
+  this.body = yield _child_process2['default'].promise.exec('git rev-parse HEAD');
+});
 
-var siteRouter = router();
+var siteRouter = (0, _koaRouter2['default'])();
 
 siteRouter.get('/--/git-hash', function* (next) {
   this.type = 'text/plain';
-  this.body = yield child_process.promise.exec('git rev-parse HEAD');
+  this.body = yield _child_process2['default'].promise.exec('git rev-parse HEAD');
 });
 
 siteRouter.get('/', function* (next) {
@@ -55,7 +86,9 @@ siteRouter.get('/', function* (next) {
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
       <script src="http://localhost:7272/bundle.js" defer></script>
     </head>
-    <body><div id="root">${ reactMarkup }</div></body>
+    <body>
+      <div id="root">${ reactMarkup }</div>
+    </body>
   </html>
   `;
 
@@ -122,8 +155,8 @@ siteRouter.get('/', function* (next) {
 
 // generalize these and put them under an assets/ dir for the CDN
 siteRouter.get('/bundle.js', function* (next) {
-  var cssPath = path.join(__dirname, 'web/bundle.js');
-  this.body = yield fs.promise.readFile(cssPath, 'utf8');
+  var cssPath = _path2['default'].join(__dirname, 'web/bundle.js');
+  this.body = yield _fs2['default'].promise.readFile(cssPath, 'utf8');
 });
 
 siteRouter.get('/-/support', function* (next) {
@@ -134,20 +167,20 @@ siteRouter.get('/-/privacy', function* (next) {
   this.body = 'We will not sell or give away your email.';
 });
 
-siteRouter.get('/--/api/:method/:jsonArgs', api.callMethod);
+siteRouter.get('/--/api/:method/:jsonArgs', _apiApi2['default'].callMethod);
 
 siteRouter.get('/app/exponent', require('./browser'));
 
 siteRouter.get('/exponent', function* (next) {
   require('instapromise');
-  var source = yield fs.promise.readFile(path.join(__dirname, '../home.bundle.js'), 'utf8');
+  var source = yield _fs2['default'].promise.readFile(_path2['default'].join(__dirname, '../home.bundle.js'), 'utf8');
   this.type = 'application/javascript';
   this.body = source;
 });
 
-siteRouter.get('/@:username/:pkg', servePackage);
-siteRouter.get('/@:username', servePackage);
-siteRouter.get('/@:username/', servePackage);
+siteRouter.get('/@:username/:pkg', _servePackage2['default']);
+siteRouter.get('/@:username', _servePackage2['default']);
+siteRouter.get('/@:username/', _servePackage2['default']);
 
 siteRouter.get('/--/to-exp/:url', function* (next) {
   this.status = 301;
@@ -163,14 +196,14 @@ siteRouter.get('/rnplay/', require('./rnplay').form);
 
 siteRouter.get('/--/appetize', function* (next) {
   this.type = 'text/html';
-  this.body = yield fs.promise.readFile(path.join(__dirname, '..', 'appetize.html'), 'utf8');
+  this.body = yield _fs2['default'].promise.readFile(_path2['default'].join(__dirname, '..', 'appetize.html'), 'utf8');
 });
 
 siteRouter.get('/--/feedback', require('./feedbackSubmit'));
 
 siteRouter.post('/--/feedback/submit', require('./feedbackSubmit'));
 
-app.use(body({ formidable: { uploadDir: __dirname } }));
+app.use((0, _koaBody2['default'])({ formidable: { uploadDir: __dirname } }));
 app.use(siteRouter.routes());
 app.use(siteRouter.allowedMethods());
 
