@@ -37,6 +37,9 @@ module.exports = _extends({
   server: {
     port: 3000 },
 
+  webpack: {
+    port: 3001 },
+
   rethinkdb: {
     discovery: false,
     servers: [{ host: 'localhost', port: 28015 }],

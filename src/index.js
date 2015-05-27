@@ -12,6 +12,8 @@ var api = require('./api/api');
 var config = require('./config');
 var servePackage = require('./servePackage');
 
+import * as ServerSideRendering from './web/ServerSideRendering';
+
 var PORT = config.server.port || 3000;
 
 var app = koa();
@@ -38,6 +40,23 @@ siteRouter.get('/--/git-hash', function*(next) {
 
 
 siteRouter.get('/', function*(next) {
+  this.type = 'text/html';
+  let reactMarkup = yield ServerSideRendering.renderPageAsync('');
+  this.body = `
+  <html>
+    <head>
+      <meta name="viewport" content="width=500">
+      <title>Exponent</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+      <script src="http://localhost:7272/bundle.js" defer></script>
+    </head>
+    <body><div id="root">${reactMarkup}</div></body>
+  </html>
+  `;
+
+
+  return;
+
   var manifestUrl = 'https://www.dropbox.com/s/wjr7trh1zg12s6b/manifest.plist?dl=1';
   this.type = 'text/html';
   this.body = `
@@ -111,7 +130,7 @@ siteRouter.get('/-/privacy', function*(next) {
   this.body = "We will not sell or give away your email.";
 });
 
-siteRouter.all('/--/api/:method/:jsonArgs', api.callMethod);
+siteRouter.get('/--/api/:method/:jsonArgs', api.callMethod);
 
 siteRouter.get('/app/exponent', require('./browser'));
 
@@ -185,3 +204,23 @@ if (require.main === module) {
     console.log("Listening on http://" + host + ":" + port + " using NODE_ENV=" + process.env.NODE_ENV);
   });
 }
+
+/*
+build and serve static assets. want to support both development and production mode.
+
+babel: build api server
+webpack: build static assets with __DEV__ settable. maybe have output go to build/web/__DEV__?
+koa: run koa server with NODE_ENV settable
+config options:
+  process.env.NODE_ENV
+  __DEV__
+
+
+
+
+use react hot loader / webpack dev server to serve static assets. support development and production mode.
+
+babel: just use babel-node with koa's NODE_ENV settable
+webpack: run webpack dev server with __DEV__ settable
+
+*/

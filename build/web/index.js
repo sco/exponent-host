@@ -1,5 +1,6 @@
 'use strict';
 
+<<<<<<< HEAD
 var _inherits = require('babel-runtime/helpers/inherits')['default'];
 
 var _createClass = require('babel-runtime/helpers/create-class')['default'];
@@ -44,4 +45,26 @@ React.render(React.createElement(Home, null), document.getElementById('react'));
 
 exports['default'] = Home;
 module.exports = exports['default'];
+=======
+var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
+
+require('babel/polyfill');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
+
+var _routes = require('./routes');
+
+var _routes2 = _interopRequireDefault(_routes);
+
+// need to configure koa if we want to use real URL paths w/ history API
+_reactRouter2['default'].run(_routes2['default'], _reactRouter2['default'].HistoryLocation, function (Root) {
+  _react2['default'].render(_react2['default'].createElement(Root, null), document.getElementById('root'));
+});
+>>>>>>> [Web] Render the HTML on the server and ship it down
 //# sourceMappingURL=../sourcemaps/web/index.js.map

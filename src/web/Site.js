@@ -13,7 +13,7 @@ import {
 
 class Site extends React.Component {
   render() {
-    require('./site.css');
+    //require('./site.css');
     return (
       <div>
         <Navbar brand={<Link to="home">Exponent</Link>}>

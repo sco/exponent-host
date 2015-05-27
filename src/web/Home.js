@@ -2,15 +2,8 @@ import { autobind } from 'core-decorators';
 import React from 'react';
 import {
   Button,
-  Nav,
-  Navbar,
 } from 'react-bootstrap';
 import {
-  Link,
-  RouteHandler,
-} from 'react-router';
-import {
-  NavItemLink,
 } from 'react-router-bootstrap';
 
 class Home extends React.Component {

@@ -1,5 +1,11 @@
 'use strict';
 
+var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
+
+var _webServerSideRendering = require('./web/ServerSideRendering');
+
+var ServerSideRendering = _interopRequireWildcard(_webServerSideRendering);
+
 var child_process = require('child_process');
 var fs = require('fs');
 var path = require('path');
@@ -39,13 +45,29 @@ siteRouter.get('/--/git-hash', function* (next) {
 });
 
 siteRouter.get('/', function* (next) {
+  this.type = 'text/html';
+  var reactMarkup = yield ServerSideRendering.renderPageAsync('');
+  this.body = `
+  <html>
+    <head>
+      <meta name="viewport" content="width=500">
+      <title>Exponent</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+      <script src="http://localhost:7272/bundle.js" defer></script>
+    </head>
+    <body><div id="root">${ reactMarkup }</div></body>
+  </html>
+  `;
+
+  return;
+
   var manifestUrl = 'https://www.dropbox.com/s/wjr7trh1zg12s6b/manifest.plist?dl=1';
   this.type = 'text/html';
   this.body = `
   <html>
     <head>
       <meta name="viewport" content="width=500">
-      <title>Exponent</title>
+      <title>E X P O N E N T ^</title>
       <style>
       BODY {
         color: white;
@@ -81,7 +103,6 @@ siteRouter.get('/', function* (next) {
       }
       a { text-decoration: none; }
       </style>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     </head>
     <body>
       <h1>EXPONENT</h1>
@@ -113,7 +134,7 @@ siteRouter.get('/-/privacy', function* (next) {
   this.body = 'We will not sell or give away your email.';
 });
 
-siteRouter.all('/--/api/:method/:jsonArgs', api.callMethod);
+siteRouter.get('/--/api/:method/:jsonArgs', api.callMethod);
 
 siteRouter.get('/app/exponent', require('./browser'));
 
@@ -186,4 +207,24 @@ if (require.main === module) {
     console.log('Listening on http://' + host + ':' + port + ' using NODE_ENV=' + process.env.NODE_ENV);
   });
 }
+
+/*
+build and serve static assets. want to support both development and production mode.
+
+babel: build api server
+webpack: build static assets with __DEV__ settable. maybe have output go to build/web/__DEV__?
+koa: run koa server with NODE_ENV settable
+config options:
+  process.env.NODE_ENV
+  __DEV__
+
+
+
+
+use react hot loader / webpack dev server to serve static assets. support development and production mode.
+
+babel: just use babel-node with koa's NODE_ENV settable
+webpack: run webpack dev server with __DEV__ settable
+
+*/
 //# sourceMappingURL=sourcemaps/index.js.map
