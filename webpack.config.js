@@ -20,8 +20,11 @@ module.exports = [
       loaders: [
         {
           test: /\.js$/,
-          include: path.join(__dirname, 'src'),
-          loaders: ['react-hot', 'babel'],
+          include: [
+            path.join(__dirname, 'src'),
+            path.join(__dirname, 'node_modules/core-decorators'),
+          ],
+          loaders: ['react-hot', 'babel?stage=0'],
         },
         {
           test: /\.css$/,

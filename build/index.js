@@ -45,7 +45,7 @@ siteRouter.get('/', function* (next) {
   <html>
     <head>
       <meta name="viewport" content="width=500">
-      <title>E X P O N E N T ^</title>
+      <title>Exponent</title>
       <style>
       BODY {
         color: white;
@@ -81,6 +81,7 @@ siteRouter.get('/', function* (next) {
       }
       a { text-decoration: none; }
       </style>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     </head>
     <body>
       <h1>EXPONENT</h1>
