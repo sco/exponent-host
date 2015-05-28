@@ -5,6 +5,7 @@ var request = require('request');
 var ApiError = require('./ApiError');
 var config = require('../config');
 var r = require('../database/r');
+var slack = require('../slack');
 
 module.exports = {
   doc: "Publishes a a package to exp.host",
@@ -44,6 +45,21 @@ module.exports = {
       hash: hash,
     });
 
-    return {err: null, packageFullName, hash,};
+    var expUrl = 'exp://exp.host/' + packageFullName;
+
+    // Don't `await` this since we don't want it to block responding from the API
+    var appetizeUrl = 'http://exp.host/--/appetize?url=' + encodeURIComponent(expUrl);
+    slack.sendSlackWebhookMessageAsync({
+      icon_emoji: ':fire:',
+      username: 'exp.host',
+      channel: '#offthepress',
+      text: "@" + username + " just published the package " + packageFullName + "@" + packageVersion + "\n" + expUrl + "\n" + appetizeUrl,
+    }).then(() => {
+      console
+    }, (err) => {
+      console.error("Failed to send Slack message about new package");
+    });
+
+    return {err: null, packageFullName, hash, expUrl};
   },
 };

@@ -34,9 +34,22 @@ var sendSlackInstanceInviteAsync = _asyncToGenerator(function* (email) {
     channels: 'C04Q3JTSV,C04QDAQNR,C04UAR1JN,C04Q3JTT3,C04TU9UTW' });
 });
 
+var sendSlackWebhookMessageAsync = _asyncToGenerator(function* (opts) {
+  var s = new slackNode();
+  s.setWebhook(config.slack.webhookUrl);
+  var defaults = {
+    channel: '#random',
+    username: 'exp.host',
+    text: 'Test ' + Date.now(),
+    icon_emoji: ':robot:' };
+  opts = _.assign(defaults, opts);
+  return s.promise.webhook(opts);
+});
+
 var _ = require('lodash-node');
 var instapromise = require('instapromise');
 var request = require('request');
+var slackNode = require('slack-node');
 
 var config = require('./config');
 
@@ -47,7 +60,10 @@ function SlackApiError(code, message) {
   return err;
 }
 
+;
+
 module.exports = {
   sendSlackInstanceInviteAsync: sendSlackInstanceInviteAsync,
-  slackApiCallAsync: slackApiCallAsync };
+  slackApiCallAsync: slackApiCallAsync,
+  sendSlackWebhookMessageAsync: sendSlackWebhookMessageAsync };
 //# sourceMappingURL=sourcemaps/slack.js.map
