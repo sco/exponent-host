@@ -128,6 +128,7 @@ siteRouter.get('/--/to-exp/:url', function*(next) {
 });
 
 siteRouter.get('/rnplay/:shortCode', require('./rnplay').route);
+siteRouter.get('/rnplay/', require('./rnplay').form);
 
 siteRouter.get('/--/appetize', function*(next) {
   this.type = 'text/html';

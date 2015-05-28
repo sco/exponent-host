@@ -63,14 +63,58 @@ function rnplayUrlFromShortCode(shortCode) {
 }
 
 var route = function* route(next) {
-  var expUrl = yield expUrlFromShortCodeAsync(this.params.shortCode);
+  try {
+    var expUrl = yield expUrlFromShortCodeAsync(this.params.shortCode);
+  } catch (e) {
+    this.status = 302;
+    this.response.redirect('/rnplay/?err=' + encodeURIComponent(e.message));
+    yield next;
+    return;
+  }
+
+  console.log('Redirecting to', expUrl);
+  this.body = `
+<html>
+  <head>
+    <title>Get Exponent to View This Play</title>
+  </head>
+  <body>
+    You don't seem to have Exponent on your device, so you can't view this Play right now. Get Exponent at <a href="http://exp.host/">http://exp.host/</a> and come back here to view the Play!
+  </body>
+</html>
+`;
 
   // Since the module name could change, we should use a 302 here
   this.status = 302;
 
-  console.log('Redirecting to', expUrl);
-
   this.response.redirect(expUrl);
+};
+
+var form = function* form(next) {
+
+  var html = `
+<html>
+<head>
+  <title>View an RNPlay in Exponent</title>
+</head>
+<body>
+`;
+
+  var err = this.query.err;
+  if (err) {
+    html += '<div style="color: red; font-weight: bold;">' + err + '</div>';
+  }
+
+  html += `
+    <form method="GET" onsubmit="window.location='/rnplay/' + document.getElementById('rnplay').value; return false;">
+      <input type="text" value="" id="rnplay" name="shortCodeOrUrl" />
+      <input type="submit" value=" Go " />
+    </form>
+  </body>
+</html>
+  `;
+
+  this.body = html;
 };
 
 module.exports = {
@@ -78,7 +122,8 @@ module.exports = {
   expUrlFromShortCodeAsync: expUrlFromShortCodeAsync,
   rnplayUrlFromShortCode: rnplayUrlFromShortCode,
   expUrlFromData: expUrlFromData,
-  route: route };
+  route: route,
+  form: form };
 
 if (require.main === module) {
   var urlOrShortCode = process.argv[2];
