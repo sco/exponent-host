@@ -47,3 +47,4 @@ gulp.task('deploy', function () {
 });
 
 gulp.task('default', ['babel-watch']);
+gulp.task('build', ['babel']);

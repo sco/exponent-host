@@ -128,6 +128,8 @@ siteRouter.get('/--/to-exp/:url', function* (next) {
   // we may want to show some web content that hints at what will happen (or maybe not?)
 });
 
+siteRouter.get('/rnplay/:shortCode', require('./rnplay').route);
+
 siteRouter.get('/--/appetize', function* (next) {
   this.type = 'text/html';
   this.body = yield fs.promise.readFile(path.join(__dirname, '..', 'appetize.html'), 'utf8');
