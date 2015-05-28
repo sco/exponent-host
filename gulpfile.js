@@ -18,6 +18,9 @@ babel.task(gulp, {
   paths: {
     src: ['src/**/*.js'],
   },
+  babel: {
+    stage: 0,
+  },
 });
 
 var snapshotBundleAsync = function (bundleUrl, bundleFile) {

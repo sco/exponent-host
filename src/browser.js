@@ -17,7 +17,7 @@ const BROWSER_BUNDLE_FILES = {
 var bundleCache = {};
 var bundleDownloadLocks = {};
 
-export default function* serveBrowserBundleAsync() {
+export function* serveBrowserBundleAsync() {
   let version = this.query.version || '1';
   this.body = yield loadBundleAsync(version);
   this.type = 'application/javascript';
@@ -60,5 +60,4 @@ async function loadBundleAsync(version) {
   } finally {
     lock.release();
   }
-
 }

@@ -2,7 +2,18 @@
 
 var _extends = require('babel-runtime/helpers/extends')['default'];
 
-const path = require('path');
+var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
+
+var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
+
+_Object$defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
 const secret = requireSecret();
 
 function requireSecret() {
@@ -18,7 +29,7 @@ function requireSecret() {
     return secret;
   }
 
-  console.warn('Create %s with your configuration secrets to set up the Exponent host', path.relative(process.cwd(), path.join(__dirname, 'secret.js')));
+  console.warn('Create %s with your configuration secrets to set up the Exponent host', _path2['default'].relative(process.cwd(), _path2['default'].join(__dirname, 'secret.js')));
   return null;
 }
 
@@ -33,7 +44,7 @@ function attemptToRequire(moduleName) {
   }
 }
 
-module.exports = _extends({
+exports['default'] = _extends({
   server: {
     port: 3000 },
 
@@ -55,4 +66,5 @@ module.exports = _extends({
   sendgrid: {
     username: null,
     password: null } }, secret);
+module.exports = exports['default'];
 //# sourceMappingURL=sourcemaps/config.js.map

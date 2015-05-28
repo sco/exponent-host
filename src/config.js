@@ -1,6 +1,5 @@
-'use strict';
+import path from 'path';
 
-const path = require('path');
 const secret = requireSecret();
 
 function requireSecret() {
@@ -34,7 +33,7 @@ function attemptToRequire(moduleName) {
   }
 }
 
-module.exports = {
+export default {
   server: {
     port: 3000,
   },

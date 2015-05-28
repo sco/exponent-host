@@ -8,7 +8,7 @@ _Object$defineProperty(exports, '__esModule', {
   value: true
 });
 
-exports['default'] = serveBrowserBundleAsync;
+exports.serveBrowserBundleAsync = serveBrowserBundleAsync;
 
 var loadBundleAsync = _asyncToGenerator(function* (version) {
   if (bundleCache[version]) {
@@ -71,6 +71,4 @@ function* serveBrowserBundleAsync() {
   this.body = yield loadBundleAsync(version);
   this.type = 'application/javascript';
 }
-
-module.exports = exports['default'];
 //# sourceMappingURL=sourcemaps/browser.js.map

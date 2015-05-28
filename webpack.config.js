@@ -9,10 +9,10 @@ module.exports = [
     entry: [
       'webpack-dev-server/client?http://localhost:7272',
       'webpack/hot/only-dev-server',
-      './src/web/index.js',
+      './src/web/browser/index.js',
     ],
     output: {
-      path: path.join(__dirname, 'build/web/'),
+      path: path.join(__dirname, 'build/web/assets'),
       filename: 'bundle.js',
       publicPath: 'http://localhost:7272/',
     },
@@ -24,7 +24,7 @@ module.exports = [
             path.join(__dirname, 'src'),
             path.join(__dirname, 'node_modules/core-decorators'),
           ],
-          loaders: ['react-hot', 'babel?stage=0'],
+          loaders: ['react-hot', 'babel?stage=0&optional[]=runtime'],
         },
         {
           test: /\.css$/,

@@ -12,11 +12,9 @@ import api from './api/api';
 import config from './config';
 import servePackage from './servePackage';
 
-import * as ServerSideRendering from './web/ServerSideRendering';
+import * as ServerSideRendering from './web/server/ServerSideRendering';
 
-var PORT = config.server.port || 3000;
-
-var app = koa();
+let app = koa();
 app.name = 'exp-host';
 app.proxy = true;
 app.experimental = true;
@@ -24,129 +22,21 @@ app.experimental = true;
 app.use(logger());
 app.use(gzip());
 
-var endpointRouter = router({ prefix: '/--' });
+let endpointRouter = router({ prefix: '/--' });
+endpointRouter.use(body());
+
+endpointRouter.all('/api/:method/:jsonArgs', api.callMethod);
+endpointRouter.get('/appetize', function*(next) {
+  this.type = 'text/html';
+  this.body = yield fs.promise.readFile(path.join(__dirname, '../appetize.html'), 'utf8');
+});
+endpointRouter.get('/feedback', require('./feedbackSubmit'));
+endpointRouter.post('/feedback/submit', require('./feedbackSubmit'));
 endpointRouter.get('/git-hash', function*(next) {
   this.type = 'text/plain';
   this.body = yield child_process.promise.exec('git rev-parse HEAD');
 });
-
-var siteRouter = router();
-
-siteRouter.get('/--/git-hash', function*(next) {
-  this.type = 'text/plain';
-  this.body = yield child_process.promise.exec('git rev-parse HEAD');
-});
-
-
-siteRouter.get('/', function*(next) {
-  this.type = 'text/html';
-  let reactMarkup = yield ServerSideRendering.renderPageAsync('');
-  this.body = `
-  <html>
-    <head>
-      <meta name="viewport" content="width=500">
-      <title>Exponent</title>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-      <script src="http://localhost:7272/bundle.js" defer></script>
-    </head>
-    <body>
-      <div id="root">${reactMarkup}</div>
-    </body>
-  </html>
-  `;
-
-
-  return;
-
-  var manifestUrl = 'https://www.dropbox.com/s/wjr7trh1zg12s6b/manifest.plist?dl=1';
-  this.type = 'text/html';
-  this.body = `
-  <html>
-    <head>
-      <meta name="viewport" content="width=500">
-      <title>E X P O N E N T ^</title>
-      <style>
-      BODY {
-        color: white;
-        background: #023c69;
-        font-family: "HelveticaNeue-Light", Helvetica, Sans-serif;
-        text-align: center;
-        padding-left: 15px;
-        padding-right: 15px;
-      }
-      H1 {
-        letter-spacing: 0.5em;
-        font-weight: lighter;
-      }
-      a img { border: none; }
-      .download {
-        font-weight: bold;
-        background: white;
-        color: #333333;
-        font-size: 18;
-        padding-left: 24px;
-        padding-right: 24px;
-        border: 2px solid;
-        border-color: #89a3bd;
-        border-radius: 12px;
-        margin-top: 8px;
-        padding-top: 4px;
-        padding-bottom: 4px;
-      }
-      H3 {
-        font-weight: normal;
-      }
-      H4 {
-      }
-      a { text-decoration: none; }
-      </style>
-    </head>
-    <body>
-      <h1>EXPONENT</h1>
-      <h3>Exponent is an app for React Native developers.</h3>
-      <img src="http://cdc03.com/ExponentIcon@3x.png" />
-      <p><center><div style="width: 400px; margin-bottom: 20px;">With Exponent, you can write React Native experiences with any computer and a text editor and a phone.
-      No need for Xcode or a simulator. Download the app now to get started.</div><br /></center></p>
-
-      <h3><a href="itms-services://?action=download-manifest&amp;url=${encodeURIComponent(manifestUrl)}"><span class="download" style="margin-top: 10px;">Download</span></a></h3>
-
-      <div id="react"></div>
-      <script src="http://localhost:7272/bundle.js"></script>
-    </body>
-  </html>
-  `;
-});
-
-// generalize these and put them under an assets/ dir for the CDN
-siteRouter.get('/bundle.js', function*(next) {
-  var cssPath = path.join(__dirname, 'web/bundle.js');
-  this.body = yield fs.promise.readFile(cssPath, 'utf8');
-});
-
-siteRouter.get('/-/support', function*(next) {
-  this.body = "Contact Exponent at exponent.team@gmail.com";
-});
-
-siteRouter.get('/-/privacy', function*(next) {
-  this.body = "We will not sell or give away your email.";
-});
-
-siteRouter.get('/--/api/:method/:jsonArgs', api.callMethod);
-
-siteRouter.get('/app/exponent', require('./browser'));
-
-siteRouter.get('/exponent', function*(next) {
-  require('instapromise');
-  let source = yield fs.promise.readFile(path.join(__dirname, '../home.bundle.js'), 'utf8');
-  this.type = 'application/javascript';
-  this.body = source;
-});
-
-siteRouter.get('/@:username/:pkg', servePackage);
-siteRouter.get('/@:username', servePackage);
-siteRouter.get('/@:username/', servePackage);
-
-siteRouter.get('/--/to-exp/:url', function*(next) {
+endpointRouter.get('/to-exp/:url', function*(next) {
   this.status = 301;
   this.response.redirect(this.params.url);
   //this.body = "<script>window.location=" + JSON.stringify(this.params.url) + ";</script>";
@@ -155,56 +45,68 @@ siteRouter.get('/--/to-exp/:url', function*(next) {
   // we may want to show some web content that hints at what will happen (or maybe not?)
 });
 
-siteRouter.get('/rnplay/:shortCode', require('./rnplay').route);
-siteRouter.get('/rnplay/', require('./rnplay').form);
+app.use(endpointRouter.routes());
+app.use(endpointRouter.allowedMethods());
 
-siteRouter.get('/--/appetize', function*(next) {
-  this.type = 'text/html';
-  this.body = yield fs.promise.readFile(path.join(__dirname, '..', 'appetize.html'), 'utf8');
+// TODO: Write middleware for the bundle router so it always responds in a way
+// that RN handles well
+let bundleRouter = router();
+bundleRouter.get('/@:username/:package?', servePackage);
+bundleRouter.get('/app/exponent', require('./browser').serveBrowserBundleAsync);
+bundleRouter.get('/exponent', function*(next) {
+  require('instapromise');
+  let source = yield fs.promise.readFile(path.join(__dirname, '../home.bundle.js'), 'utf8');
+  this.type = 'application/javascript';
+  this.body = source;
 });
+bundleRouter.get('/rnplay/', require('./rnplay').form);
+bundleRouter.get('/rnplay/:shortCode', require('./rnplay').route);
+app.use(bundleRouter.routes());
+app.use(bundleRouter.allowedMethods());
 
-siteRouter.get('/--/feedback', require('./feedbackSubmit'));
-
-siteRouter.post('/--/feedback/submit', require('./feedbackSubmit'));
-
-app.use(body({formidable:{uploadDir: __dirname}}));
+let siteRouter = router();
+siteRouter.get('/\\.:shortcode', function*(next) {
+  let shortUrl = require('./shortUrl');
+  let { shortcode } = this.params;
+  let url = yield shortUrl.urlForCodeAsync(shortcode);
+  console.log('Short URL for code', shortcode, 'points to URL', url);
+  if (url) {
+    // TODO: Switch this from a proxy to a redirect once the client
+    // can handle redirects
+    var body = yield shortUrl.urlProxyBodyAsync(url);
+    this.type = 'application/javascript';
+    this.body = body;
+    //this.response.redirect(url);
+  } else {
+    this.throw(404, 'No such short URL: .' + shortcode);
+  }
+  this.type = 'text/html';
+  this.body = 'Short URL for code ' + shortcode;
+});
+siteRouter.get('/(.*)', function*(next) {
+  let reactMarkup = yield ServerSideRendering.renderPageAsync(this.url);
+  this.body = reactMarkup;
+  this.type = 'text/html';
+});
+// generalize these and put them under an assets/ dir for the CDN
+siteRouter.get('/assets/bundle.js', function*(next) {
+  let cssPath = path.join(__dirname, 'web/bundle.js');
+  this.body = yield fs.promise.readFile(cssPath, 'utf8');
+});
 app.use(siteRouter.routes());
 app.use(siteRouter.allowedMethods());
 
-// Short URLs
-siteRouter.get('/:dotcode', function*(next) {
-  console.log("Handling short URL:", this.params.dotcode);
-  var shortUrl = require('./shortUrl');
-  var dotCode = this.params.dotcode;
-  if (dotCode[0] === '.') {
-    var code = dotCode.slice(1);
-    var url = yield shortUrl.urlForCodeAsync(code);
-    console.log("Short URL for code", code, "points to URL", url);
-    if (url) {
-      // TODO: Switch this from a proxy to a redirect once the client
-      // can handle redirects
-      var body = yield shortUrl.urlProxyBodyAsync(url);
-      this.type = 'application/javascript';
-      this.body = body;
-      //this.response.redirect(url);
-    } else {
-      this.throw(404, "No such short URL: " + code);
-    }
-  } else {
-    yield next;
-  }
-});
-
-
 if (require.main === module) {
-  var port = PORT;
-  var server = app.listen(port, function () {
-    var addr = server.address();
-    var port = addr.port;
-    var host = addr.address;
-    console.log("Listening on http://" + host + ":" + port + " using NODE_ENV=" + process.env.NODE_ENV);
+  let { port } = config.server;
+  let server = app.listen(port, () => {
+    let addr = server.address();
+    let port = addr.port;
+    let host = addr.address;
+    console.log('Listening on http://' + host + ':' + port + ' using NODE_ENV=' + process.env.NODE_ENV);
   });
 }
+
+export { app };
 
 /*
 build and serve static assets. want to support both development and production mode.

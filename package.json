@@ -18,12 +18,12 @@
   "dependencies": {
     "@ccheever/crayon": "^5.0.0",
     "@exponent/md5hex": "^1.0.0",
+    "@ide/core-decorators": "^0.0.13",
     "await-lock": "^1.1.0",
     "babel": "^5.4.7",
     "babel-runtime": "^5.4.7",
     "bases": "^0.2.1",
     "cheerio": "^0.19.0",
-    "core-decorators": "ide/core-decorators.js#build",
     "ent": "^2.2.0",
     "instapromise": "^1.0.0",
     "koa": "^0.21.0",

@@ -1,21 +1,22 @@
 var r = require('./database/r');
 
 module.exports = function *(next) {
+  let { username, package: packageName } = this.params;
+  var packageFullName = '@' + username + '/' + (packageName || '');
 
-  var pkg = this.params.pkg;
-  var packageFullName = '@' + this.params.username + '/' + (pkg || '');
+  var result = yield r.db('exp_host').table('publishedPackages')
+    .filter({fullName: packageFullName})
+    .orderBy(r.desc('publishedTime'))
+    .limit(1);
 
-  var result = yield r.db('exp_host').table('publishedPackages').filter({fullName: packageFullName}).orderBy(r.desc('publishedTime')).limit(1);
   if (result.length > 0) {
-
     var article = result[0];
-
     if (!article.unpublished) {
       // TODO: Put metadata in the response headers
 
       // Set headers
       this.set({
-        'Etag': article.hash,
+        'ETag': article.hash,
         'Last-Modified': article.publishedTime,
       });
 
@@ -26,6 +27,5 @@ module.exports = function *(next) {
   }
 
   this.type = 'text/plain';
-  this.throw(404, "Article not found: " + packageFullName);
-
+  this.throw(404, 'Article not found: ' + packageFullName);
 };
