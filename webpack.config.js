@@ -7,14 +7,14 @@ module.exports = [
   {
     name: 'browser',
     entry: [
-      'webpack-dev-server/client?http://localhost:7272',
+      'webpack-dev-server/client?http://192.168.1.206:7272',
       'webpack/hot/only-dev-server',
       './src/web/browser/index.js',
     ],
     output: {
       path: path.join(__dirname, 'build/web/assets'),
       filename: 'bundle.js',
-      publicPath: 'http://localhost:7272/',
+      publicPath: 'http://192.168.1.206:7272/',
     },
     module: {
       loaders: [
@@ -27,10 +27,14 @@ module.exports = [
           loaders: ['react-hot', 'babel?stage=0&optional[]=runtime'],
         },
         {
-          test: /\.css$/,
+          test: /\.less$/,
           include: path.join(__dirname, 'src'),
-          loaders: ['style', 'css'],
+          loaders: ['style', 'css', 'less'],
         },
+        {
+          test: /\.(eot|ttf|woff2?|svg)$/,
+          loader: 'file',
+        }
       ],
     },
     plugins: [
@@ -40,24 +44,6 @@ module.exports = [
           //require('fs').writeFileSync(path.join(__dirname, 'stats.generated.json'), JSON.stringify(stats.toJson()));
         });
       }
-    ]
+    ],
   },
-  // {
-  //   // The configuration for the server-side rendering
-  //   name: 'server-side rendering',
-  //   entry: './server/page.js',
-  //   target: 'node',
-  //   output: {
-  //     path: assetsPath,
-  //     filename: '../../server/page.generated.js',
-  //     publicPath: publicPath,
-  //     libraryTarget: 'commonjs2'
-  //   },
-  //   externals: /^[a-z\-0-9]+$/,
-  //   module: {
-  //     loaders: commonLoaders.concat([
-  //       { test: /\.css$/,  loader: path.join(__dirname, 'server', 'style-collector') + '!css-loader' },
-  //     ])
-  //   }
-  // }
 ];

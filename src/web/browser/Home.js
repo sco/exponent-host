@@ -2,6 +2,7 @@ import { autobind } from '@ide/core-decorators';
 import React from 'react';
 import {
   Button,
+  Jumbotron,
 } from 'react-bootstrap';
 import {
 } from 'react-router-bootstrap';
@@ -9,10 +10,20 @@ import {
 export default class Home extends React.Component {
   render() {
     return (
-      <div>
-        <h1>Exponent</h1>
-        <h2>Exponent is an app for React Native developers.</h2>
-        <img src="http://cdc03.com/ExponentIcon@3x.png" alt="Exponent" />
+      <div className="home">
+        <Jumbotron>
+          <div className="container">
+            <h1>Exponent</h1>
+            <p>
+              Exponent is an app for React Native developers.
+            </p>
+            <img
+              className="headerLogo"
+              src="/images/logo-bare@3x.png"
+              alt="Exponent"
+            />
+          </div>
+        </Jumbotron>
         <p>
           With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or a simulator. Download the app now to get started.
         </p>

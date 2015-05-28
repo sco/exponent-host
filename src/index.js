@@ -6,7 +6,9 @@ import koa from 'koa';
 import body from 'koa-body';
 import gzip from 'koa-gzip';
 import logger from 'koa-logger';
+import rewrite from 'koa-rewrite';
 import router from 'koa-router';
+import serve from 'koa-static';
 
 import api from './api/api';
 import config from './config';
@@ -83,15 +85,14 @@ siteRouter.get('/\\.:shortcode', function*(next) {
   this.type = 'text/html';
   this.body = 'Short URL for code ' + shortcode;
 });
+siteRouter.get('/images/(.*)',
+  rewrite('/images/*', '$1'),
+  serve('src/web/images'),
+);
 siteRouter.get('/(.*)', function*(next) {
   let reactMarkup = yield ServerSideRendering.renderPageAsync(this.url);
   this.body = reactMarkup;
   this.type = 'text/html';
-});
-// generalize these and put them under an assets/ dir for the CDN
-siteRouter.get('/assets/bundle.js', function*(next) {
-  let cssPath = path.join(__dirname, 'web/bundle.js');
-  this.body = yield fs.promise.readFile(cssPath, 'utf8');
 });
 app.use(siteRouter.routes());
 app.use(siteRouter.allowedMethods());

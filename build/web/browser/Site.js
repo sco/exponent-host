@@ -38,7 +38,9 @@ var Site = (function (_React$Component) {
   _createClass(Site, [{
     key: 'render',
     value: function render() {
-      //require('./site.css');
+      if (!process.pid) {
+        require('./site.less');
+      }
       return _react2['default'].createElement(
         'div',
         null,
@@ -48,46 +50,155 @@ var Site = (function (_React$Component) {
               _reactRouter.Link,
               { to: 'home' },
               'Exponent'
-            ) },
+            ), toggleNavKey: '0' },
           _react2['default'].createElement(
-            _reactBootstrap.Nav,
-            null,
+            _reactBootstrap.CollapsibleNav,
+            { eventKey: '0' },
             _react2['default'].createElement(
-              _reactRouterBootstrap.NavItemLink,
-              { to: 'home' },
-              'Home'
+              _reactBootstrap.Nav,
+              { navbar: true },
+              _react2['default'].createElement(
+                _reactRouterBootstrap.NavItemLink,
+                { to: 'home' },
+                'Home'
+              ),
+              _react2['default'].createElement(
+                _reactRouterBootstrap.NavItemLink,
+                { to: 'docs' },
+                'Docs'
+              ),
+              _react2['default'].createElement(
+                _reactRouterBootstrap.NavItemLink,
+                { to: 'community' },
+                'Community'
+              ),
+              _react2['default'].createElement(
+                _reactRouterBootstrap.NavItemLink,
+                { to: 'help' },
+                'Help'
+              )
             ),
             _react2['default'].createElement(
-              _reactRouterBootstrap.NavItemLink,
-              { to: 'docs' },
-              'Docs'
-            ),
-            _react2['default'].createElement(
-              _reactRouterBootstrap.NavItemLink,
-              { to: 'community' },
-              'Community'
-            ),
-            _react2['default'].createElement(
-              _reactRouterBootstrap.NavItemLink,
-              { to: 'help' },
-              'Help'
-            )
-          ),
-          _react2['default'].createElement(
-            _reactBootstrap.Nav,
-            { className: 'nav-right' },
-            _react2['default'].createElement(
-              _reactRouterBootstrap.NavItemLink,
-              { to: 'home' },
-              'Home'
+              _reactBootstrap.Nav,
+              { navbar: true, right: true },
+              _react2['default'].createElement(
+                _reactRouterBootstrap.NavItemLink,
+                { to: 'home' },
+                'Home'
+              )
             )
           )
         ),
         _react2['default'].createElement(_reactRouter.RouteHandler, null),
+        _react2['default'].createElement(Footer, null)
+      );
+    }
+  }]);
+
+  return Site;
+})(_react2['default'].Component);
+
+exports['default'] = Site;
+
+var Footer = (function (_React$Component2) {
+  function Footer() {
+    _classCallCheck(this, Footer);
+
+    if (_React$Component2 != null) {
+      _React$Component2.apply(this, arguments);
+    }
+  }
+
+  _inherits(Footer, _React$Component2);
+
+  _createClass(Footer, [{
+    key: 'render',
+    value: function render() {
+      return _react2['default'].createElement(
+        'footer',
+        { className: 'bs-docs-footer' },
         _react2['default'].createElement(
-          'footer',
-          null,
-          'Slack / Twitter / FB / CLI github / API github',
+          'div',
+          { className: 'container' },
+          _react2['default'].createElement(
+            'div',
+            { className: 'bs-docs-social' },
+            _react2['default'].createElement(
+              'ul',
+              { className: 'bs-docs-social-buttons' },
+              _react2['default'].createElement(
+                'li',
+                null,
+                _react2['default'].createElement('iframe', {
+                  className: 'social-iframe github-btn',
+                  src: 'https://ghbtns.com/github-btn.html?user=exponentjs&type=follow&size=large',
+                  scrolling: 'no',
+                  style: { width: 196, height: 30 }
+                })
+              ),
+              _react2['default'].createElement(
+                'li',
+                null,
+                _react2['default'].createElement('iframe', {
+                  className: 'social-iframe',
+                  src: 'https://platform.twitter.com/widgets/follow_button.html?screen_name=exponentjs&show_count=false&show_screen_name=true&size=l',
+                  scrolling: 'no',
+                  style: { width: 161, height: 28 }
+                })
+              )
+            )
+          ),
+          _react2['default'].createElement(
+            'p',
+            null,
+            'Exponent is more delightful than projects that call themselves delightful and is made with more love than products that say they\'re made with love and is made in California more than your iPhone.'
+          ),
+          _react2['default'].createElement(
+            'ul',
+            { className: 'bs-docs-footer-links muted' },
+            _react2['default'].createElement(
+              'li',
+              null,
+              '·'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              _react2['default'].createElement(
+                'a',
+                { href: 'https://github.com/react-bootstrap/react-bootstrap/' },
+                'GitHub'
+              )
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              '·'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              _react2['default'].createElement(
+                'a',
+                { href: 'https://github.com/react-bootstrap/react-bootstrap/issues?state=open' },
+                'Issues'
+              )
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              '·'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              _react2['default'].createElement(
+                'a',
+                { href: 'https://github.com/react-bootstrap/react-bootstrap/releases' },
+                'Releases'
+              )
+            )
+          ),
           _react2['default'].createElement(
             _reactRouter.Link,
             { to: 'privacy' },
@@ -103,9 +214,8 @@ var Site = (function (_React$Component) {
     }
   }]);
 
-  return Site;
+  return Footer;
 })(_react2['default'].Component);
 
-exports['default'] = Site;
 module.exports = exports['default'];
 //# sourceMappingURL=../../sourcemaps/web/browser/Site.js.map

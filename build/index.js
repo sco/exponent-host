@@ -38,9 +38,17 @@ var _koaLogger = require('koa-logger');
 
 var _koaLogger2 = _interopRequireDefault(_koaLogger);
 
+var _koaRewrite = require('koa-rewrite');
+
+var _koaRewrite2 = _interopRequireDefault(_koaRewrite);
+
 var _koaRouter = require('koa-router');
 
 var _koaRouter2 = _interopRequireDefault(_koaRouter);
+
+var _koaStatic = require('koa-static');
+
+var _koaStatic2 = _interopRequireDefault(_koaStatic);
 
 var _apiApi = require('./api/api');
 
@@ -128,15 +136,11 @@ siteRouter.get('/\\.:shortcode', function* (next) {
   this.type = 'text/html';
   this.body = 'Short URL for code ' + shortcode;
 });
+siteRouter.get('/images/(.*)', (0, _koaRewrite2['default'])('/images/*', '$1'), (0, _koaStatic2['default'])('src/web/images'));
 siteRouter.get('/(.*)', function* (next) {
   var reactMarkup = yield ServerSideRendering.renderPageAsync(this.url);
   this.body = reactMarkup;
   this.type = 'text/html';
-});
-// generalize these and put them under an assets/ dir for the CDN
-siteRouter.get('/assets/bundle.js', function* (next) {
-  var cssPath = _path2['default'].join(__dirname, 'web/bundle.js');
-  this.body = yield _fs2['default'].promise.readFile(cssPath, 'utf8');
 });
 app.use(siteRouter.routes());
 app.use(siteRouter.allowedMethods());

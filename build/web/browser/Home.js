@@ -40,18 +40,30 @@ var Home = (function (_React$Component) {
     value: function render() {
       return _react2['default'].createElement(
         'div',
-        null,
+        { className: 'home' },
         _react2['default'].createElement(
-          'h1',
+          _reactBootstrap.Jumbotron,
           null,
-          'Exponent'
+          _react2['default'].createElement(
+            'div',
+            { className: 'container' },
+            _react2['default'].createElement(
+              'h1',
+              null,
+              'Exponent'
+            ),
+            _react2['default'].createElement(
+              'p',
+              null,
+              'Exponent is an app for React Native developers.'
+            ),
+            _react2['default'].createElement('img', {
+              className: 'headerLogo',
+              src: '/images/logo-bare@3x.png',
+              alt: 'Exponent'
+            })
+          )
         ),
-        _react2['default'].createElement(
-          'h2',
-          null,
-          'Exponent is an app for React Native developers.'
-        ),
-        _react2['default'].createElement('img', { src: 'http://cdc03.com/ExponentIcon@3x.png', alt: 'Exponent' }),
         _react2['default'].createElement(
           'p',
           null,
