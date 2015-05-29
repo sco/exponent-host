@@ -43,7 +43,7 @@ async function sendSlackInstanceInviteAsync(email) {
   return slackApiCallAsync('users.admin.invite', {
     email: email,
     set_active: true,
-    channels: 'C04Q3JTSV,C04QDAQNR,C04UAR1JN,C04Q3JTT3,C04TU9UTW',
+    channels: 'C04Q3JTSV,C04QDAQNR,C04UAR1JN,C04Q3JTT3,C04TU9UTW,C0548CVCR',
   });
 }
 
