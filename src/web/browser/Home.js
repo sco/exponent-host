@@ -3,7 +3,7 @@ import {
   Jumbotron,
 } from 'react-bootstrap';
 
-import InstallationButton from './InstallationButton'
+import InstallationButton from './InstallationButton';
 
 export default class Home extends React.Component {
   render() {
@@ -23,7 +23,7 @@ export default class Home extends React.Component {
             <p className="headerInstructions">
               With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or a simulator. Download the app now to get started.
             </p>
-            <InstallationButton />
+            <InstallationButton className="headerInstallationButton" />
           </div>
         </Jumbotron>
       </div>

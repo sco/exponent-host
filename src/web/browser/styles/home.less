@@ -2,7 +2,7 @@
   .jumbotron {
     margin-top: -@navbar-margin-bottom;
 
-    @media (min-width: 768px) {
+    @media (min-width: @screen-sm-min) {
       .container {
         max-width: 730px;
       }
@@ -26,6 +26,17 @@
       .center-block;
       margin-top: @line-height-computed * 3;
       margin-bottom: @jumbotron-padding;
+
+      font-size: ceil(@jumbotron-font-size * 0.8);
+      @media (min-width: @screen-sm-min) {
+        font-size: @jumbotron-font-size;
+      }
+    }
+
+    .headerInstallationButton {
+      background-color: #fff;
+      color: @gray-darker;
+      font-weight: bold;
     }
   }
 }
