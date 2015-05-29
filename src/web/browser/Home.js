@@ -13,21 +13,19 @@ export default class Home extends React.Component {
           <div className="container">
             <h1>Exponent</h1>
             <p>
-              Exponent is an app for React Native developers.
+              An app for React Native developers
             </p>
             <img
               className="headerLogo"
               src="/images/exponent-bare@3x.png"
               alt="Exponent"
             />
+            <p className="headerInstructions">
+              With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or a simulator. Download the app now to get started.
+            </p>
+            <InstallationButton />
           </div>
         </Jumbotron>
-        <div className="container">
-          <p>
-            With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or a simulator. Download the app now to get started.
-          </p>
-          <InstallationButton />
-        </div>
       </div>
     );
   }

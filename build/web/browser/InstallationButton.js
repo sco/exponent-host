@@ -27,6 +27,8 @@ var _reactBootstrap = require('react-bootstrap');
 const MANIFEST_URL = 'https://www.dropbox.com/s/wjr7trh1zg12s6b/manifest.plist?dl=1';
 const ITUNES_BASE_URL = 'itms-services://?action=download-manifest&url=';
 
+// TODO: Do an OS version check in componentDidMount
+
 var InstallationButton = (function (_React$Component) {
   function InstallationButton() {
     _classCallCheck(this, InstallationButton);

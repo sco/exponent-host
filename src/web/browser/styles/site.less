@@ -1,11 +1,3 @@
-@import '~bootstrap/less/bootstrap';
-
-@import 'variables.less';
-
-@import 'footer.less';
-@import 'home.less';
-@import 'notfound.less';
-
 html,
 body,
 #root {
@@ -22,13 +14,17 @@ body,
   }
 }
 
-.logoType {
-  font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  font-style: normal;
-  font-weight: 100;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
+.homeSite .navbar-default {
+  border-color: transparent;
+
+  .navbar-nav > .active > a {
+    background-color: @navbar-default-bg;
+
+    &:hover {
+      color: @navbar-default-link-hover-color;
+      background-color: @navbar-default-link-hover-bg;
+    }
+  }
 }
 
 .navLogoType {
@@ -43,15 +39,10 @@ body,
   }
 }
 
-.jumbotron h1 {
-  .logoType;
-  margin-top: 0;
+.page-header {
+  margin-top: @line-height-computed;
 }
 
 .installationButton {
   display: block;
-}
-
-.page-header {
-  margin-top: @line-height-computed;
 }

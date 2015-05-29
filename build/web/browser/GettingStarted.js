@@ -62,9 +62,17 @@ var GettingStarted = (function (_React$Component) {
         _react2['default'].createElement(
           'p',
           null,
-          'Install Exponent on your iPhone by tapping this button.',
-          _react2['default'].createElement(_InstallationButton2['default'], null),
-          'Exponent will download to your homescreen. The first time you launch the app, you\'ll see a message asking you to give the app permission to run. This is just because the app is being installed outside of the App Store, but it still can\'t do anything a normal app isn\'t allowed to do in terms of security.'
+          'Install Exponent on your iPhone by tapping this button. Exponent will download to your homescreen.'
+        ),
+        _react2['default'].createElement(
+          'p',
+          null,
+          _react2['default'].createElement(_InstallationButton2['default'], null)
+        ),
+        _react2['default'].createElement(
+          'p',
+          null,
+          'The first time you launch the app, you\'ll see a message asking you to give the app permission to run. This is just because the app is being installed outside of the App Store, but it still can\'t do anything a normal app isn\'t allowed to do in terms of security.'
         ),
         _react2['default'].createElement(
           'h2',

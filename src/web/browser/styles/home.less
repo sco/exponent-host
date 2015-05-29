@@ -1,4 +1,40 @@
-.headerLogo {
-  height: 120px;
-  width: 120px;
+.home {
+  .jumbotron {
+    margin-top: -@navbar-margin-bottom;
+
+    @media (min-width: 768px) {
+      .container {
+        max-width: 730px;
+      }
+    }
+
+    h1 {
+      .logoType;
+      margin-top: 0;
+    }
+
+    p {
+      color: fadeout(@jumbotron-color, 10%);
+    }
+
+    .headerLogo {
+      height: 120px;
+      width: 120px;
+    }
+
+    .headerInstructions {
+      .center-block;
+      margin-top: @line-height-computed * 3;
+      margin-bottom: @jumbotron-padding;
+    }
+  }
+}
+
+.logoType {
+  font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-weight: 100;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
 }

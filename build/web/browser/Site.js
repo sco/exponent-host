@@ -24,96 +24,90 @@ var _reactRouter = require('react-router');
 
 var _reactRouterBootstrap = require('react-router-bootstrap');
 
-var Site = (function (_React$Component) {
-  function Site() {
-    _classCallCheck(this, Site);
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var Site = _react2['default'].createClass({
+  displayName: 'Site',
+
+  mixins: [_reactRouter.State],
+
+  render: function render() {
+    if (!process.pid) {
+      require('./styles/style.less');
+    }
+
+    var rootClassNames = (0, _classnames2['default'])('site', {
+      homeSite: this.isActive('home') });
+    return _react2['default'].createElement(
+      'div',
+      { className: rootClassNames },
+      _react2['default'].createElement(
+        _reactBootstrap.Navbar,
+        { brand: this._renderBrandLink(), toggleNavKey: '0' },
+        _react2['default'].createElement(
+          _reactBootstrap.CollapsibleNav,
+          { eventKey: '0' },
+          _react2['default'].createElement(
+            _reactBootstrap.Nav,
+            { navbar: true },
+            _react2['default'].createElement(
+              _reactRouterBootstrap.NavItemLink,
+              { to: 'home' },
+              'Home'
+            ),
+            _react2['default'].createElement(
+              _reactRouterBootstrap.NavItemLink,
+              { to: 'docs' },
+              'Get Started'
+            ),
+            _react2['default'].createElement(
+              _reactRouterBootstrap.NavItemLink,
+              { to: 'community' },
+              'Community'
+            ),
+            _react2['default'].createElement(
+              _reactRouterBootstrap.NavItemLink,
+              { to: 'help' },
+              'Help'
+            )
+          )
+        )
+      ),
+      _react2['default'].createElement(
+        'div',
+        { className: 'siteContent' },
+        _react2['default'].createElement(_reactRouter.RouteHandler, null)
+      ),
+      _react2['default'].createElement(Footer, null)
+    );
+  },
+
+  _renderBrandLink: function _renderBrandLink() {
+    return _react2['default'].createElement(
+      _reactRouter.Link,
+      { to: 'home', className: 'logoType navLogoType' },
+      _react2['default'].createElement('img', {
+        src: '/images/exponent-nav-bare@3x.png',
+        alt: 'Exponent'
+      }),
+      'Exponent'
+    );
+  } });
+
+exports['default'] = Site;
+
+var Footer = (function (_React$Component) {
+  function Footer() {
+    _classCallCheck(this, Footer);
 
     if (_React$Component != null) {
       _React$Component.apply(this, arguments);
     }
   }
 
-  _inherits(Site, _React$Component);
-
-  _createClass(Site, [{
-    key: 'render',
-    value: function render() {
-      if (!process.pid) {
-        require('./styles/site.less');
-      }
-      return _react2['default'].createElement(
-        'div',
-        { className: 'site' },
-        _react2['default'].createElement(
-          _reactBootstrap.Navbar,
-          { brand: this._renderBrandLink(), toggleNavKey: '0' },
-          _react2['default'].createElement(
-            _reactBootstrap.CollapsibleNav,
-            { eventKey: '0' },
-            _react2['default'].createElement(
-              _reactBootstrap.Nav,
-              { navbar: true },
-              _react2['default'].createElement(
-                _reactRouterBootstrap.NavItemLink,
-                { to: 'home' },
-                'Home'
-              ),
-              _react2['default'].createElement(
-                _reactRouterBootstrap.NavItemLink,
-                { to: 'docs' },
-                'Get Started'
-              ),
-              _react2['default'].createElement(
-                _reactRouterBootstrap.NavItemLink,
-                { to: 'community' },
-                'Community'
-              ),
-              _react2['default'].createElement(
-                _reactRouterBootstrap.NavItemLink,
-                { to: 'help' },
-                'Help'
-              )
-            )
-          )
-        ),
-        _react2['default'].createElement(
-          'div',
-          { className: 'siteContent' },
-          _react2['default'].createElement(_reactRouter.RouteHandler, null)
-        ),
-        _react2['default'].createElement(Footer, null)
-      );
-    }
-  }, {
-    key: '_renderBrandLink',
-    value: function _renderBrandLink() {
-      return _react2['default'].createElement(
-        _reactRouter.Link,
-        { to: 'home', className: 'logoType navLogoType' },
-        _react2['default'].createElement('img', {
-          src: '/images/exponent-nav-bare@3x.png',
-          alt: 'Exponent'
-        }),
-        'Exponent'
-      );
-    }
-  }]);
-
-  return Site;
-})(_react2['default'].Component);
-
-exports['default'] = Site;
-
-var Footer = (function (_React$Component2) {
-  function Footer() {
-    _classCallCheck(this, Footer);
-
-    if (_React$Component2 != null) {
-      _React$Component2.apply(this, arguments);
-    }
-  }
-
-  _inherits(Footer, _React$Component2);
+  _inherits(Footer, _React$Component);
 
   _createClass(Footer, [{
     key: 'render',

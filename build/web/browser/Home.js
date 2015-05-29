@@ -55,24 +55,20 @@ var Home = (function (_React$Component) {
             _react2['default'].createElement(
               'p',
               null,
-              'Exponent is an app for React Native developers.'
+              'An app for React Native developers'
             ),
             _react2['default'].createElement('img', {
               className: 'headerLogo',
               src: '/images/exponent-bare@3x.png',
               alt: 'Exponent'
-            })
+            }),
+            _react2['default'].createElement(
+              'p',
+              { className: 'headerInstructions' },
+              'With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or a simulator. Download the app now to get started.'
+            ),
+            _react2['default'].createElement(_InstallationButton2['default'], null)
           )
-        ),
-        _react2['default'].createElement(
-          'div',
-          { className: 'container' },
-          _react2['default'].createElement(
-            'p',
-            null,
-            'With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or a simulator. Download the app now to get started.'
-          ),
-          _react2['default'].createElement(_InstallationButton2['default'], null)
         )
       );
     }

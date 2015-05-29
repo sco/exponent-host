@@ -7,18 +7,27 @@ import {
 import {
   Link,
   RouteHandler,
+  State,
 } from 'react-router';
 import {
   NavItemLink,
 } from 'react-router-bootstrap';
 
-export default class Site extends React.Component {
+import classNames from 'classnames';
+
+let Site = React.createClass({
+  mixins: [State],
+
   render() {
     if (!process.pid) {
-      require('./styles/site.less');
+      require('./styles/style.less');
     }
+
+    let rootClassNames = classNames('site', {
+      homeSite: this.isActive('home'),
+    });
     return (
-      <div className="site">
+      <div className={rootClassNames}>
         <Navbar brand={this._renderBrandLink()} toggleNavKey="0">
           <CollapsibleNav eventKey="0">
             <Nav navbar>
@@ -40,7 +49,7 @@ export default class Site extends React.Component {
         <Footer />
       </div>
     );
-  }
+  },
 
   _renderBrandLink() {
     return (
@@ -52,8 +61,10 @@ export default class Site extends React.Component {
         Exponent
       </Link>
     );
-  }
-}
+  },
+});
+
+export default Site;
 
 class Footer extends React.Component {
   render() {

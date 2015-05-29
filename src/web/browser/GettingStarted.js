@@ -1,6 +1,6 @@
 import React from 'react';
 
-import InstallationButton from './InstallationButton'
+import InstallationButton from './InstallationButton';
 
 export default class GettingStarted extends React.Component {
   render() {
@@ -13,9 +13,13 @@ export default class GettingStarted extends React.Component {
 
           <h2>Install Exponent</h2>
           <p>
-            Install Exponent on your iPhone by tapping this button.
+            Install Exponent on your iPhone by tapping this button. Exponent will download to your homescreen.
+          </p>
+          <p>
             <InstallationButton />
-            Exponent will download to your homescreen. The first time you launch the app, you'll see a message asking you to give the app permission to run. This is just because the app is being installed outside of the App Store, but it still can't do anything a normal app isn't allowed to do in terms of security.
+          </p>
+          <p>
+            The first time you launch the app, you'll see a message asking you to give the app permission to run. This is just because the app is being installed outside of the App Store, but it still can't do anything a normal app isn't allowed to do in terms of security.
           </p>
 
           <h2>Make a Project</h2>

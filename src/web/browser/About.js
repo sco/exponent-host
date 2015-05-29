@@ -7,5 +7,5 @@ export default class About extends React.Component {
         <h1 className="page-header">About Exponent</h1>
       </div>
     );
-  }s
+  }
 }

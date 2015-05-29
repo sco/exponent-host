@@ -9,14 +9,14 @@ module.exports = [
   {
     name: 'browser',
     entry: [
-      'webpack-dev-server/client?http://192.168.1.206:7272',
+      'webpack-dev-server/client?http://localhost:7272',
       'webpack/hot/only-dev-server',
       './src/web/browser/index.js',
     ],
     output: {
       path: path.join(__dirname, 'build/web/assets'),
       filename: 'bundle.js',
-      publicPath: 'http://192.168.1.206:7272/',
+      publicPath: 'http://localhost:7272/',
     },
     module: {
       loaders: [
