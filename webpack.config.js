@@ -3,6 +3,8 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var LessPluginAutoPrefix = require('less-plugin-autoprefix');
+
 module.exports = [
   {
     name: 'browser',
@@ -45,5 +47,10 @@ module.exports = [
         });
       }
     ],
+    lessLoader: {
+      lessPlugins: [
+        new LessPluginAutoPrefix({ browsers: ['last 2 versions'] }),
+      ],
+    }
   },
 ];

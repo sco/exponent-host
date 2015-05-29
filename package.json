@@ -63,6 +63,7 @@
     "gulp-watch": "^4.2.4",
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
+    "less-plugin-autoprefix": "^1.4.1",
     "pm2": "^0.12.15",
     "react-hot-loader": "^1.2.7",
     "style-loader": "^0.12.3",

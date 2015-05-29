@@ -39,18 +39,14 @@ var Site = (function (_React$Component) {
     key: 'render',
     value: function render() {
       if (!process.pid) {
-        require('./site.less');
+        require('./styles/site.less');
       }
       return _react2['default'].createElement(
         'div',
-        null,
+        { className: 'site' },
         _react2['default'].createElement(
           _reactBootstrap.Navbar,
-          { brand: _react2['default'].createElement(
-              _reactRouter.Link,
-              { to: 'home' },
-              'Exponent'
-            ), toggleNavKey: '0' },
+          { brand: this._renderBrandLink(), toggleNavKey: '0' },
           _react2['default'].createElement(
             _reactBootstrap.CollapsibleNav,
             { eventKey: '0' },
@@ -65,7 +61,7 @@ var Site = (function (_React$Component) {
               _react2['default'].createElement(
                 _reactRouterBootstrap.NavItemLink,
                 { to: 'docs' },
-                'Docs'
+                'Get Started'
               ),
               _react2['default'].createElement(
                 _reactRouterBootstrap.NavItemLink,
@@ -77,20 +73,28 @@ var Site = (function (_React$Component) {
                 { to: 'help' },
                 'Help'
               )
-            ),
-            _react2['default'].createElement(
-              _reactBootstrap.Nav,
-              { navbar: true, right: true },
-              _react2['default'].createElement(
-                _reactRouterBootstrap.NavItemLink,
-                { to: 'home' },
-                'Home'
-              )
             )
           )
         ),
-        _react2['default'].createElement(_reactRouter.RouteHandler, null),
+        _react2['default'].createElement(
+          'div',
+          { className: 'siteContent' },
+          _react2['default'].createElement(_reactRouter.RouteHandler, null)
+        ),
         _react2['default'].createElement(Footer, null)
+      );
+    }
+  }, {
+    key: '_renderBrandLink',
+    value: function _renderBrandLink() {
+      return _react2['default'].createElement(
+        _reactRouter.Link,
+        { to: 'home', className: 'logoType navLogoType' },
+        _react2['default'].createElement('img', {
+          src: '/images/exponent-nav-bare@3x.png',
+          alt: 'Exponent'
+        }),
+        'Exponent'
       );
     }
   }]);
@@ -116,99 +120,110 @@ var Footer = (function (_React$Component2) {
     value: function render() {
       return _react2['default'].createElement(
         'footer',
-        { className: 'bs-docs-footer' },
+        { className: 'siteFooter container' },
+        this._renderSocialButtons(),
         _react2['default'].createElement(
-          'div',
-          { className: 'container' },
+          'ul',
+          { className: 'footerLinks' },
           _react2['default'].createElement(
-            'div',
-            { className: 'bs-docs-social' },
-            _react2['default'].createElement(
-              'ul',
-              { className: 'bs-docs-social-buttons' },
-              _react2['default'].createElement(
-                'li',
-                null,
-                _react2['default'].createElement('iframe', {
-                  className: 'social-iframe github-btn',
-                  src: 'https://ghbtns.com/github-btn.html?user=exponentjs&type=follow&size=large',
-                  scrolling: 'no',
-                  style: { width: 196, height: 30 }
-                })
-              ),
-              _react2['default'].createElement(
-                'li',
-                null,
-                _react2['default'].createElement('iframe', {
-                  className: 'social-iframe',
-                  src: 'https://platform.twitter.com/widgets/follow_button.html?screen_name=exponentjs&show_count=false&show_screen_name=true&size=l',
-                  scrolling: 'no',
-                  style: { width: 161, height: 28 }
-                })
-              )
-            )
-          ),
-          _react2['default'].createElement(
-            'p',
+            'li',
             null,
-            'Exponent is more delightful than projects that call themselves delightful and is made with more love than products that say they\'re made with love and is made in California more than your iPhone.'
-          ),
-          _react2['default'].createElement(
-            'ul',
-            { className: 'bs-docs-footer-links muted' },
             _react2['default'].createElement(
-              'li',
-              null,
-              '·'
-            ),
-            _react2['default'].createElement(
-              'li',
-              null,
-              _react2['default'].createElement(
-                'a',
-                { href: 'https://github.com/react-bootstrap/react-bootstrap/' },
-                'GitHub'
-              )
-            ),
-            _react2['default'].createElement(
-              'li',
-              null,
-              '·'
-            ),
-            _react2['default'].createElement(
-              'li',
-              null,
-              _react2['default'].createElement(
-                'a',
-                { href: 'https://github.com/react-bootstrap/react-bootstrap/issues?state=open' },
-                'Issues'
-              )
-            ),
-            _react2['default'].createElement(
-              'li',
-              null,
-              '·'
-            ),
-            _react2['default'].createElement(
-              'li',
-              null,
-              _react2['default'].createElement(
-                'a',
-                { href: 'https://github.com/react-bootstrap/react-bootstrap/releases' },
-                'Releases'
-              )
+              _reactRouter.Link,
+              { to: 'help' },
+              'Help'
             )
           ),
           _react2['default'].createElement(
-            _reactRouter.Link,
-            { to: 'privacy' },
-            'Privacy Policy'
+            'li',
+            null,
+            '·'
           ),
           _react2['default'].createElement(
-            _reactRouter.Link,
-            { to: 'terms' },
-            'Terms of Service'
+            'li',
+            null,
+            _react2['default'].createElement(
+              _reactRouter.Link,
+              { to: 'privacy' },
+              'Privacy Policy'
+            )
+          ),
+          _react2['default'].createElement(
+            'li',
+            null,
+            '·'
+          ),
+          _react2['default'].createElement(
+            'li',
+            null,
+            _react2['default'].createElement(
+              _reactRouter.Link,
+              { to: 'terms' },
+              'Terms of Service'
+            )
           )
+        ),
+        _react2['default'].createElement(
+          'p',
+          { className: 'footerTechnologies' },
+          'This site was built with ',
+          _react2['default'].createElement(
+            'a',
+            { href: 'https://iojs.org', target: '_blank' },
+            'io.js'
+          ),
+          ', ',
+          _react2['default'].createElement(
+            'a',
+            { href: 'http://koajs.com/', target: '_blank' },
+            'koa'
+          ),
+          ', ',
+          _react2['default'].createElement(
+            'a',
+            { href: 'https://babeljs.io/', target: '_blank' },
+            'Babel'
+          ),
+          ', ',
+          _react2['default'].createElement(
+            'a',
+            { href: 'https://facebook.github.io/react/', target: '_blank' },
+            'React'
+          ),
+          ', and ',
+          _react2['default'].createElement(
+            'a',
+            { href: 'http://getbootstrap.com/', target: '_blank' },
+            'Bootstrap'
+          )
+        )
+      );
+    }
+  }, {
+    key: '_renderSocialButtons',
+    value: function _renderSocialButtons() {
+      return _react2['default'].createElement(
+        'ul',
+        { className: 'socialButtons' },
+        _react2['default'].createElement(
+          'li',
+          null,
+          _react2['default'].createElement('iframe', {
+            className: 'socialButtonFrame',
+            src: 'https://ghbtns.com/github-btn.html?user=exponentjs&type=follow&size=small',
+            scrolling: 'no',
+            style: { width: 134, height: 20 }
+          })
+        ),
+        _react2['default'].createElement(
+          'li',
+          null,
+          _react2['default'].createElement('iframe', {
+            className: 'socialButtonFrame',
+            src: 'https://platform.twitter.com/widgets/follow_button.html?screen_name=exponentjs&show_count=false&show_screen_name=true&size=s',
+            scrolling: 'no',
+            style: { width: 129, height: 20 }
+          })
         )
       );
     }
@@ -218,4 +233,9 @@ var Footer = (function (_React$Component2) {
 })(_react2['default'].Component);
 
 module.exports = exports['default'];
+/*
+<Nav navbar right>
+ <NavItemLink to="home">Home</NavItemLink>
+</Nav>
+*/
 //# sourceMappingURL=../../sourcemaps/web/browser/Site.js.map

@@ -1,0 +1,57 @@
+@import '~bootstrap/less/bootstrap';
+
+@import 'variables.less';
+
+@import 'footer.less';
+@import 'home.less';
+@import 'notfound.less';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.site {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+
+  .siteContent {
+    flex: 1;
+  }
+}
+
+.logoType {
+  font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-weight: 100;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.navLogoType {
+  font-weight: 200;
+
+  img {
+    display: inline-block;
+    height: 13px;
+    margin-right: 12px;
+    vertical-align: baseline;
+    width: 14px;
+  }
+}
+
+.jumbotron h1 {
+  .logoType;
+  margin-top: 0;
+}
+
+.installationButton {
+  display: block;
+}
+
+.page-header {
+  margin-top: @line-height-computed;
+}

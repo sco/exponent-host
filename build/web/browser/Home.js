@@ -2,7 +2,7 @@
 
 var _inherits = require('babel-runtime/helpers/inherits')['default'];
 
-var _createDecoratedClass = require('babel-runtime/helpers/create-decorated-class')['default'];
+var _createClass = require('babel-runtime/helpers/create-class')['default'];
 
 var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
 
@@ -14,15 +14,15 @@ _Object$defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _ideCoreDecorators = require('@ide/core-decorators');
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 var _reactBootstrap = require('react-bootstrap');
 
-require('react-router-bootstrap');
+var _InstallationButton = require('./InstallationButton');
+
+var _InstallationButton2 = _interopRequireDefault(_InstallationButton);
 
 var Home = (function (_React$Component) {
   function Home() {
@@ -35,7 +35,7 @@ var Home = (function (_React$Component) {
 
   _inherits(Home, _React$Component);
 
-  _createDecoratedClass(Home, [{
+  _createClass(Home, [{
     key: 'render',
     value: function render() {
       return _react2['default'].createElement(
@@ -43,7 +43,7 @@ var Home = (function (_React$Component) {
         { className: 'home' },
         _react2['default'].createElement(
           _reactBootstrap.Jumbotron,
-          null,
+          { className: 'text-center' },
           _react2['default'].createElement(
             'div',
             { className: 'container' },
@@ -59,39 +59,23 @@ var Home = (function (_React$Component) {
             ),
             _react2['default'].createElement('img', {
               className: 'headerLogo',
-              src: '/images/logo-bare@3x.png',
+              src: '/images/exponent-bare@3x.png',
               alt: 'Exponent'
             })
           )
         ),
         _react2['default'].createElement(
-          'p',
-          null,
-          'With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or a simulator. Download the app now to get started.'
-        ),
-        this._renderDownloadButton()
+          'div',
+          { className: 'container' },
+          _react2['default'].createElement(
+            'p',
+            null,
+            'With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or a simulator. Download the app now to get started.'
+          ),
+          _react2['default'].createElement(_InstallationButton2['default'], null)
+        )
       );
     }
-  }, {
-    key: '_renderDownloadButton',
-    value: function _renderDownloadButton() {
-      return _react2['default'].createElement(
-        _reactBootstrap.Button,
-        { bsStyle: 'primary', onClick: this._downloadApp },
-        'Download'
-      );
-    }
-  }, {
-    key: '_downloadApp',
-    decorators: [_ideCoreDecorators.autobind],
-    value: function _downloadApp() {
-      var manifestUrl = 'https://www.dropbox.com/s/wjr7trh1zg12s6b/manifest.plist?dl=1';
-      var url = 'itms-services://?action=download-manifest&url=' + encodeURIComponent(manifestUrl);
-      window.location = url;
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {}
   }]);
 
   return Home;
