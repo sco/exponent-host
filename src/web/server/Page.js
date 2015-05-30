@@ -19,7 +19,6 @@ export default class Page extends React.Component {
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>Exponent</title>
-          <script src="/assets/bundle.js" defer />
           {/*
           <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png" />
           <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png" />
@@ -43,8 +42,9 @@ export default class Page extends React.Component {
           <meta name="theme-color" content="#023c69" />
         </head>
         <body>
-          <div id="root" dangerouslySetInnerHTML={this.props.markup} />
+          <div id="root" {/*dangerouslySetInnerHTML={this.props.markup}*/} />
         </body>
+        <script src="/assets/bundle.js" />
       </html>
     );
   }
