@@ -45,7 +45,7 @@ var Page = (function (_React$Component) {
             null,
             'Exponent'
           ),
-          _react2['default'].createElement('script', { src: 'http://localhost:7272/bundle.js', defer: true }),
+          _react2['default'].createElement('script', { src: '/assets/bundle.js', defer: true }),
           _react2['default'].createElement('link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/images/favicons/apple-touch-icon-180x180.png' }),
           _react2['default'].createElement('link', { rel: 'icon', type: 'image/png', href: '/images/favicons/favicon-32x32.png', sizes: '32x32' }),
           _react2['default'].createElement('meta', { name: 'msapplication-TileColor', content: '#023c69' }),

@@ -30,6 +30,14 @@ var _koaBody = require('koa-body');
 
 var _koaBody2 = _interopRequireDefault(_koaBody);
 
+var _koaConditionalGet = require('koa-conditional-get');
+
+var _koaConditionalGet2 = _interopRequireDefault(_koaConditionalGet);
+
+var _koaEtag = require('koa-etag');
+
+var _koaEtag2 = _interopRequireDefault(_koaEtag);
+
 var _koaGzip = require('koa-gzip');
 
 var _koaGzip2 = _interopRequireDefault(_koaGzip);
@@ -117,6 +125,9 @@ app.use(bundleRouter.routes());
 app.use(bundleRouter.allowedMethods());
 
 var siteRouter = (0, _koaRouter2['default'])();
+siteRouter.use((0, _koaConditionalGet2['default'])());
+siteRouter.use((0, _koaEtag2['default'])());
+
 siteRouter.get('/\\.:shortcode', function* (next) {
   var shortUrl = require('./shortUrl');
   var shortcode = this.params.shortcode;
@@ -137,6 +148,7 @@ siteRouter.get('/\\.:shortcode', function* (next) {
   this.body = 'Short URL for code ' + shortcode;
 });
 siteRouter.get('/images/(.*)', (0, _koaRewrite2['default'])('/images/*', '$1'), (0, _koaStatic2['default'])('src/web/images'));
+siteRouter.get('/assets/(.*)', (0, _koaRewrite2['default'])('/assets/*', '$1'), (0, _koaStatic2['default'])('build/web/assets'));
 siteRouter.get('/(.*)', function* (next) {
   var reactMarkup = yield ServerSideRendering.renderPageAsync(this.url);
   this.body = reactMarkup;

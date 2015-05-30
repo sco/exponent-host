@@ -4,6 +4,8 @@ import path from 'path';
 
 import koa from 'koa';
 import body from 'koa-body';
+import conditional from 'koa-conditional-get';
+import etag from 'koa-etag';
 import gzip from 'koa-gzip';
 import logger from 'koa-logger';
 import rewrite from 'koa-rewrite';
@@ -67,6 +69,9 @@ app.use(bundleRouter.routes());
 app.use(bundleRouter.allowedMethods());
 
 let siteRouter = router();
+siteRouter.use(conditional());
+siteRouter.use(etag());
+
 siteRouter.get('/\\.:shortcode', function*(next) {
   let shortUrl = require('./shortUrl');
   let { shortcode } = this.params;
@@ -88,6 +93,10 @@ siteRouter.get('/\\.:shortcode', function*(next) {
 siteRouter.get('/images/(.*)',
   rewrite('/images/*', '$1'),
   serve('src/web/images'),
+);
+siteRouter.get('/assets/(.*)',
+  rewrite('/assets/*', '$1'),
+  serve('build/web/assets'),
 );
 siteRouter.get('/(.*)', function*(next) {
   let reactMarkup = yield ServerSideRendering.renderPageAsync(this.url);

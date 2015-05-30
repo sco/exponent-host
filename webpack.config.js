@@ -9,14 +9,15 @@ module.exports = [
   {
     name: 'browser',
     entry: [
-      'webpack-dev-server/client?http://localhost:7272',
-      'webpack/hot/only-dev-server',
+      // 'webpack-dev-server/client?http://localhost:7272',
+      // 'webpack/hot/only-dev-server',
       './src/web/browser/index.js',
     ],
     output: {
       path: path.join(__dirname, 'build/web/assets'),
       filename: 'bundle.js',
-      publicPath: 'http://localhost:7272/',
+      //publicPath: 'http://localhost:7272/',
+      publicPath: '/assets/',
     },
     module: {
       loaders: [
@@ -41,6 +42,17 @@ module.exports = [
     },
     plugins: [
       new webpack.NoErrorsPlugin(),
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"',
+        },
+      }),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          dead_code: true,
+          screw_ie8: true,
+        },
+      }),
       function(compiler) {
         this.plugin('done', function(stats) {
           //require('fs').writeFileSync(path.join(__dirname, 'stats.generated.json'), JSON.stringify(stats.toJson()));
