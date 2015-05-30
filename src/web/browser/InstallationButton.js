@@ -1,4 +1,4 @@
-import { autobind } from '@ide/core-decorators';
+import { autobind } from 'core-decorators';
 import React from 'react';
 import {
   Button,

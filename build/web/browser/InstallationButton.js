@@ -16,7 +16,7 @@ _Object$defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _ideCoreDecorators = require('@ide/core-decorators');
+var _coreDecorators = require('core-decorators');
 
 var _react = require('react');
 
@@ -51,7 +51,7 @@ var InstallationButton = (function (_React$Component) {
     }
   }, {
     key: '_downloadApp',
-    decorators: [_ideCoreDecorators.autobind],
+    decorators: [_coreDecorators.autobind],
     value: function _downloadApp() {
       var url = ITUNES_BASE_URL + encodeURIComponent(MANIFEST_URL);
       window.location = url;
