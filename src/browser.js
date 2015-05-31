@@ -36,7 +36,6 @@ async function loadBundleAsync(version, reactNativeCommit) {
   }
 
   if (process.env.NODE_ENV === 'production') {
-    console.log(version);
     if (!BROWSER_BUNDLE_FILES[version]) {
       let numericVersion = /(\d+):/.exec(version)[1];
       let bundleFile = path.join(__dirname, '..', BROWSER_BUNDLE_FILES[numericVersion]);

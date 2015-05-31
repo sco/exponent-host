@@ -115,7 +115,13 @@ bundleRouter.get('/@:username/:package?', _servePackage2['default']);
 bundleRouter.get('/app/exponent', require('./browser').serveBrowserBundleAsync);
 bundleRouter.get('/exponent', function* (next) {
   require('instapromise');
-  var source = yield _fs2['default'].promise.readFile(_path2['default'].join(__dirname, '../home.bundle.js'), 'utf8');
+  var sourcePath = undefined;
+  if (this.query.version === '2015-05-25') {
+    sourcePath = '../home-2015-05-25.bundle.js';
+  } else {
+    sourcePath = '../home.bundle.js';
+  }
+  var source = yield _fs2['default'].promise.readFile(_path2['default'].join(__dirname, sourcePath), 'utf8');
   this.type = 'application/javascript';
   this.body = source;
 });
