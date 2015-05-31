@@ -11,6 +11,8 @@ const BROWSER_BUNDLE_URLS = {
 };
 
 const BROWSER_BUNDLE_FILES = {
+  '1:': 'exponent-2015-05-25.bundle.js',
+  '1:e8791bd94f1f2052572e755b8d7b29f29a6d99f3': 'exponent.bundle.js',
   1: 'exponent.bundle.js',
 };
 
@@ -19,16 +21,28 @@ var bundleDownloadLocks = {};
 
 export function* serveBrowserBundleAsync() {
   let version = this.query.version || '1';
-  this.body = yield loadBundleAsync(version);
+  let reactNativeCommit = this.query.reactNativeGitHash;
+  this.body = yield loadBundleAsync(version, reactNativeCommit);
   this.type = 'application/javascript';
 }
 
-async function loadBundleAsync(version) {
+async function loadBundleAsync(version, reactNativeCommit) {
+  if (process.env.NODE_ENV === 'production') {
+    version += ':' + (reactNativeCommit || '');
+  }
+
   if (bundleCache[version]) {
     return bundleCache[version];
   }
 
   if (process.env.NODE_ENV === 'production') {
+    console.log(version);
+    if (!BROWSER_BUNDLE_FILES[version]) {
+      let numericVersion = /(\d+):/.exec(version)[1];
+      let bundleFile = path.join(__dirname, '..', BROWSER_BUNDLE_FILES[numericVersion]);
+      return fs.promise.readFile(bundleFile, 'utf8');
+    }
+
     let bundleFile = path.join(__dirname, '..', BROWSER_BUNDLE_FILES[version]);
     let bundle = await fs.promise.readFile(bundleFile, 'utf8');
     bundleCache[version] = bundle;

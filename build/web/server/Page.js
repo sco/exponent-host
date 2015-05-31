@@ -90,5 +90,5 @@ module.exports = exports['default'];
    <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16" />
    <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192" />
    <link rel="manifest" href="/images/favicons/manifest.json" />
-   */
+   */ /*dangerouslySetInnerHTML={this.props.markup}*/
 //# sourceMappingURL=../../sourcemaps/web/server/Page.js.map

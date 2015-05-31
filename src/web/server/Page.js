@@ -42,7 +42,7 @@ export default class Page extends React.Component {
           <meta name="theme-color" content="#023c69" />
         </head>
         <body>
-          <div id="root" {/*dangerouslySetInnerHTML={this.props.markup}*/} />
+          <div id="root" />{/*dangerouslySetInnerHTML={this.props.markup}*/}
         </body>
         <script src="/assets/bundle.js" />
       </html>
