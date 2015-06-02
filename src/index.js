@@ -57,6 +57,7 @@ app.use(endpointRouter.allowedMethods());
 let bundleRouter = router();
 bundleRouter.get('/@:username/:package?', servePackage);
 bundleRouter.get('/app/exponent', require('./browser').serveBrowserBundleAsync);
+bundleRouter.get('/--/browser.bundle', require('./browser').serveBrowserBundleFromDatabaseAsync);
 bundleRouter.get('/exponent', function*(next) {
   require('instapromise');
   let sourcePath;

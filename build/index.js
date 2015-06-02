@@ -113,6 +113,7 @@ app.use(endpointRouter.allowedMethods());
 var bundleRouter = (0, _koaRouter2['default'])();
 bundleRouter.get('/@:username/:package?', _servePackage2['default']);
 bundleRouter.get('/app/exponent', require('./browser').serveBrowserBundleAsync);
+bundleRouter.get('/--/browser.bundle', require('./browser').serveBrowserBundleFromDatabaseAsync);
 bundleRouter.get('/exponent', function* (next) {
   require('instapromise');
   var sourcePath = undefined;

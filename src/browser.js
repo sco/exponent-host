@@ -6,6 +6,8 @@ const request = require('request');
 
 const AwaitLock = require('await-lock');
 
+const r = require('./database/r');
+
 const BROWSER_BUNDLE_URLS = {
   1: 'http://localhost:8081/exponent.includeRequire.runModule.bundle?dev=false&minify=true',
 };
@@ -25,6 +27,52 @@ export function* serveBrowserBundleAsync() {
   this.body = yield loadBundleAsync(version, reactNativeCommit);
   this.type = 'application/javascript';
 }
+
+export async function fetchBrowserBundleAsync(opts) {
+  opts = opts || {};
+  let f = {};
+  for (let key of [
+    'exponentVersion',
+    'exponentGitHash',
+    'reactNativeVersion',
+    'reactNativeGitHash',
+    'dev',
+    'minify',
+    'key',
+  ]) {
+    if (opts.hasOwnProperty(key)) {
+      f[key] = opts[key];
+    }
+  }
+  let result = await r
+    .db('exp_host')
+    .table('browserBundles')
+    .filter(f, {default: true})
+    .orderBy(
+      r.desc('minify'),
+      r.asc('dev'),
+      r.desc('reactNativeVersion'),
+      r.desc('exponentVersion'),
+      r.desc('uploadTime')
+    )
+    .limit(1)
+    ;
+
+  return result[0] || null;
+
+}
+
+export function* serveBrowserBundleFromDatabaseAsync() {
+  let bundle = yield fetchBrowserBundleAsync(this.query);
+  if (bundle) {
+    this.body = bundle.bundle;
+    this.type = 'application/javascript';
+  } else {
+    this.type = 'text/plain';
+    this.throw(404, "No bundle matching your query's description is available");
+  }
+}
+
 
 async function loadBundleAsync(version, reactNativeCommit) {
   if (process.env.NODE_ENV === 'production') {
