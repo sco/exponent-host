@@ -16,7 +16,7 @@ import api from './api/api';
 import config from './config';
 import servePackage from './servePackage';
 
-import * as ServerSideRendering from './web/server/ServerSideRendering';
+import ServerSideRenderer from './web/server/ServerSideRenderer';
 
 let app = koa();
 app.name = 'exp-host';
@@ -107,7 +107,9 @@ siteRouter.get('/assets/(.*)',
   serve('build/web/assets'),
 );
 siteRouter.get('/(.*)', function*(next) {
-  let reactMarkup = yield ServerSideRendering.renderPageAsync(this.url);
+  let staticResources = require('./web/server/stats.json');
+  let renderer = new ServerSideRenderer(staticResources);
+  let reactMarkup = yield renderer.renderPageAsync(this.url);
   this.body = reactMarkup;
   this.type = 'text/html';
 });

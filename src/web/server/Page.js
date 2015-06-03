@@ -3,6 +3,9 @@ import {
   PropTypes,
 } from 'react';
 
+import flatten from 'lodash-node/modern/array/flatten';
+import path from 'path';
+
 export default class Page extends React.Component {
   static doctype = '<!DOCTYPE html>';
 
@@ -40,12 +43,45 @@ export default class Page extends React.Component {
           <meta name="msapplication-TileColor" content="#023c69" />
           <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png" />
           <meta name="theme-color" content="#023c69" />
+          {this._renderStyleSheetLinks()}
+          {this._renderJavaScriptElements()}
         </head>
         <body>
-          <div id="root" />{/*dangerouslySetInnerHTML={this.props.markup}*/}
+          <div id="root" dangerouslySetInnerHTML={this.props.markup} />
         </body>
-        <script src="/assets/bundle.js" />
       </html>
     );
+  }
+
+  _renderStyleSheetLinks() {
+    let filenames = flatten([
+      this._getChunkAssetFilenames('commons', 'css'),
+      this._getChunkAssetFilenames('main', 'css'),
+    ]);
+    return filenames.map(filename => {
+      let uri = this.props.staticResources.publicPath + filename;
+      return <link key={filename} rel="stylesheet" href={uri} />;
+    });
+  }
+
+  _renderJavaScriptElements() {
+    let filenames = flatten([
+      this._getChunkAssetFilenames('commons', 'js'),
+      this._getChunkAssetFilenames('main', 'js'),
+    ]);
+    return filenames.map(filename => {
+      let uri = this.props.staticResources.publicPath + filename;
+      return <script key={filename} src={uri} defer />;
+    });
+  }
+
+  _getChunkAssetFilenames(chunkName, assetType) {
+    let assets = this.props.staticResources.assetsByChunkName[chunkName];
+    if (!Array.isArray(assets)) {
+      assets = [assets];
+    }
+    return assets.filter(filename => {
+      return path.extname(filename) === '.' + assetType;
+    });
   }
 }

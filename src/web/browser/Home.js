@@ -3,6 +3,8 @@ import {
   Jumbotron,
 } from 'react-bootstrap';
 
+import './Home.less';
+
 import InstallationButton from './InstallationButton';
 
 export default class Home extends React.Component {

@@ -15,14 +15,12 @@ import {
 
 import classNames from 'classnames';
 
+import './Site.less';
+
 let Site = React.createClass({
   mixins: [State],
 
   render() {
-    if (!process.pid) {
-      require('./styles/style.less');
-    }
-
     let rootClassNames = classNames('site', {
       homeSite: this.isActive('home'),
     });
@@ -55,7 +53,7 @@ let Site = React.createClass({
     return (
       <Link to="home" className="logoType navLogoType">
         <img
-          src="/images/exponent-nav-bare@3x.png"
+          src={require('../images/exponent-nav-bare@3x.png')}
           alt="Exponent"
         />
         Exponent
@@ -65,6 +63,8 @@ let Site = React.createClass({
 });
 
 export default Site;
+
+import './Footer.less';
 
 class Footer extends React.Component {
   render() {

@@ -4,24 +4,20 @@ var path = require('path');
 var webpack = require('webpack');
 
 var LessPluginAutoPrefix = require('less-plugin-autoprefix');
-var StatsPlugin = require('stats-webpack-plugin');
 
 module.exports = [
   {
-    devtool: 'eval',
-    name: 'browser (development)',
+    name: 'browser',
     entry: [
-      'webpack-dev-server/client?http://localhost:7272',
-      'webpack/hot/only-dev-server',
+      // 'webpack-dev-server/client?http://localhost:7272',
+      // 'webpack/hot/only-dev-server',
       './src/web/browser/index.js',
     ],
     output: {
       path: path.join(__dirname, 'build/web/assets'),
       filename: 'bundle.js',
-      chunkFilename: '[chunkhash].js',
-      publicPath: 'http://localhost:7272/',
-      sourceMapFilename: 'debug/[file].map',
-      pathinfo: true,
+      //publicPath: 'http://localhost:7272/',
+      publicPath: '/assets/',
     },
     module: {
       loaders: [
@@ -36,27 +32,29 @@ module.exports = [
           loaders: ['style', 'css', 'less'],
         },
         {
-          test: /\.(eot|ttf|woff2?|svg|png)$/,
+          test: /\.(eot|ttf|woff2?|svg)$/,
           loader: 'file',
         }
       ],
     },
     plugins: [
-      // new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: '"development"',
+          NODE_ENV: '"production"',
         },
       }),
-      new StatsPlugin(path.join(__dirname, 'build/web/server/stats.json'), {
-        assets: true,
-        chunkModules: false,
-        modules: true,
-        source: false,
-        chunkOrigins: false,
-        exclude: [/node_modules\/react\//],
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          dead_code: true,
+          screw_ie8: true,
+        },
       }),
+      function(compiler) {
+        this.plugin('done', function(stats) {
+          //require('fs').writeFileSync(path.join(__dirname, 'stats.generated.json'), JSON.stringify(stats.toJson()));
+        });
+      }
     ],
     lessLoader: {
       lessPlugins: [

@@ -28,18 +28,19 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+require('./Site.less');
+
+require('./Footer.less');
+
 var Site = _react2['default'].createClass({
   displayName: 'Site',
 
   mixins: [_reactRouter.State],
 
   render: function render() {
-    if (!process.pid) {
-      require('./styles/style.less');
-    }
-
     var rootClassNames = (0, _classnames2['default'])('site', {
-      homeSite: this.isActive('home') });
+      homeSite: this.isActive('home')
+    });
     return _react2['default'].createElement(
       'div',
       { className: rootClassNames },
@@ -89,12 +90,13 @@ var Site = _react2['default'].createClass({
       _reactRouter.Link,
       { to: 'home', className: 'logoType navLogoType' },
       _react2['default'].createElement('img', {
-        src: '/images/exponent-nav-bare@3x.png',
+        src: require('../images/exponent-nav-bare@3x.png'),
         alt: 'Exponent'
       }),
       'Exponent'
     );
-  } });
+  }
+});
 
 exports['default'] = Site;
 

@@ -16,7 +16,6 @@ var _routes = require('./routes');
 
 var _routes2 = _interopRequireDefault(_routes);
 
-// need to configure koa if we want to use real URL paths w/ history API
 _reactRouter2['default'].run(_routes2['default'], _reactRouter2['default'].HistoryLocation, function (Root) {
   _react2['default'].render(_react2['default'].createElement(Root, null), document.getElementById('root'));
 });

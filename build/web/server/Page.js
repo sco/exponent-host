@@ -18,6 +18,14 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _lodashNodeModernArrayFlatten = require('lodash-node/modern/array/flatten');
+
+var _lodashNodeModernArrayFlatten2 = _interopRequireDefault(_lodashNodeModernArrayFlatten);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
 var Page = (function (_React$Component) {
   function Page() {
     _classCallCheck(this, Page);
@@ -49,15 +57,49 @@ var Page = (function (_React$Component) {
           _react2['default'].createElement('link', { rel: 'icon', type: 'image/png', href: '/images/favicons/favicon-32x32.png', sizes: '32x32' }),
           _react2['default'].createElement('meta', { name: 'msapplication-TileColor', content: '#023c69' }),
           _react2['default'].createElement('meta', { name: 'msapplication-TileImage', content: '/images/favicons/mstile-144x144.png' }),
-          _react2['default'].createElement('meta', { name: 'theme-color', content: '#023c69' })
+          _react2['default'].createElement('meta', { name: 'theme-color', content: '#023c69' }),
+          this._renderStyleSheetLinks(),
+          this._renderJavaScriptElements()
         ),
         _react2['default'].createElement(
           'body',
           null,
-          _react2['default'].createElement('div', { id: 'root' })
-        ),
-        _react2['default'].createElement('script', { src: '/assets/bundle.js' })
+          _react2['default'].createElement('div', { id: 'root', dangerouslySetInnerHTML: this.props.markup })
+        )
       );
+    }
+  }, {
+    key: '_renderStyleSheetLinks',
+    value: function _renderStyleSheetLinks() {
+      var _this = this;
+
+      var filenames = (0, _lodashNodeModernArrayFlatten2['default'])([this._getChunkAssetFilenames('commons', 'css'), this._getChunkAssetFilenames('main', 'css')]);
+      return filenames.map(function (filename) {
+        var uri = _this.props.staticResources.publicPath + filename;
+        return _react2['default'].createElement('link', { key: filename, rel: 'stylesheet', href: uri });
+      });
+    }
+  }, {
+    key: '_renderJavaScriptElements',
+    value: function _renderJavaScriptElements() {
+      var _this2 = this;
+
+      var filenames = (0, _lodashNodeModernArrayFlatten2['default'])([this._getChunkAssetFilenames('commons', 'js'), this._getChunkAssetFilenames('main', 'js')]);
+      return filenames.map(function (filename) {
+        var uri = _this2.props.staticResources.publicPath + filename;
+        return _react2['default'].createElement('script', { key: filename, src: uri, defer: true });
+      });
+    }
+  }, {
+    key: '_getChunkAssetFilenames',
+    value: function _getChunkAssetFilenames(chunkName, assetType) {
+      var assets = this.props.staticResources.assetsByChunkName[chunkName];
+      if (!Array.isArray(assets)) {
+        assets = [assets];
+      }
+      return assets.filter(function (filename) {
+        return _path2['default'].extname(filename) === '.' + assetType;
+      });
     }
   }], [{
     key: 'doctype',
@@ -67,7 +109,9 @@ var Page = (function (_React$Component) {
     key: 'propTypes',
     value: {
       markup: _react.PropTypes.shape({
-        __html: _react.PropTypes.string.isRequired }).isRequired },
+        __html: _react.PropTypes.string.isRequired
+      }).isRequired
+    },
     enumerable: true
   }]);
 
@@ -90,5 +134,5 @@ module.exports = exports['default'];
    <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16" />
    <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192" />
    <link rel="manifest" href="/images/favicons/manifest.json" />
-   */ /*dangerouslySetInnerHTML={this.props.markup}*/
+   */
 //# sourceMappingURL=../../sourcemaps/web/server/Page.js.map
