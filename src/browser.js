@@ -41,7 +41,14 @@ export async function fetchBrowserBundleAsync(opts) {
     'key',
   ]) {
     if (opts.hasOwnProperty(key)) {
-      f[key] = opts[key];
+      var val = opts[key];
+      if (val === 'true') {
+        val = true;
+      }
+      if (val === 'false') {
+        val = false;
+      }
+      f[key] = val;
     }
   }
   let result = await r

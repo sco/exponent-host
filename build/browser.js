@@ -15,7 +15,14 @@ var fetchBrowserBundleAsync = _asyncToGenerator(function* (opts) {
   var f = {};
   for (var key of ['exponentVersion', 'exponentGitHash', 'reactNativeVersion', 'reactNativeGitHash', 'dev', 'minify', 'key']) {
     if (opts.hasOwnProperty(key)) {
-      f[key] = opts[key];
+      var val = opts[key];
+      if (val === 'true') {
+        val = true;
+      }
+      if (val === 'false') {
+        val = false;
+      }
+      f[key] = val;
     }
   }
   var result = yield r.db('exp_host').table('browserBundles').filter(f, { 'default': true }).orderBy(r.desc('minify'), r.asc('dev'), r.desc('reactNativeVersion'), r.desc('exponentVersion'), r.desc('uploadTime')).limit(1);
