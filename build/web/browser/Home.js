@@ -65,7 +65,7 @@ var Home = (function (_React$Component) {
             _react2['default'].createElement(
               'p',
               { className: 'headerInstructions' },
-              'With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or a simulator. Download the app now to get started.'
+              'With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or even a simulator. Download the app now to get started.'
             ),
             _react2['default'].createElement(_InstallationButton2['default'], { className: 'headerInstallationButton' })
           )

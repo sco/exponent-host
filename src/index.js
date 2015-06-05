@@ -48,6 +48,7 @@ endpointRouter.get('/to-exp/:url', function*(next) {
   // TODO: Since Safari will pop up an alert asking the user to confirm the redirect,
   // we may want to show some web content that hints at what will happen (or maybe not?)
 });
+endpointRouter.get('/dropbox-webhook', require('./dropbox').webhook);
 
 app.use(endpointRouter.routes());
 app.use(endpointRouter.allowedMethods());
