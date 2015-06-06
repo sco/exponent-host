@@ -13,6 +13,11 @@ export default class ServerSideRenderer {
   }
 
   async renderPageAsync(url) {
+    // Define __webpack_public_path__ which is used by the JS modules that
+    // substitute in for asset files like images
+    let { publicPath } = require('./stats.json');
+    global.__webpack_public_path__ = publicPath;
+
     let bodyMarkup = await this.renderBodyAsync(url);
     let markup = React.renderToStaticMarkup(
       <Page
@@ -21,9 +26,9 @@ export default class ServerSideRenderer {
       />
     );
     return Page.doctype + markup;
-}
+  }
 
-renderBodyAsync(url) {
+  renderBodyAsync(url) {
     return new Promise((resolve, reject) => {
       Router.run(routes, url, Root => {
         // TODO: Perform data fetching here and pass it in as props of the root

@@ -5,7 +5,7 @@
   "private": "true",
   "main": "build/index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 7272 --hot --progress --colors",
+    "start": "webpack-dev-server --port 7272 --content-base http://localhost:3000/ --hot --progress --colors",
     "build": "webpack --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -72,7 +72,7 @@
     "null-loader": "^0.1.1",
     "pm2": "^0.12.15",
     "react-hot-loader": "^1.2.7",
-    "stats-webpack-plugin": "^0.1.0",
+    "stats-webpack-plugin": "ide/stats-webpack-plugin#mkdirp",
     "style-loader": "^0.12.3",
     "webpack": "^1.9.10",
     "webpack-dev-server": "^1.9.0"

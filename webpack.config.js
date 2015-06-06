@@ -53,6 +53,7 @@ module.exports = [
         assets: true,
         chunkModules: false,
         modules: true,
+        reasons: false,
         source: false,
         chunkOrigins: false,
         exclude: [/node_modules\/react\//],

@@ -79,7 +79,7 @@ class Footer extends React.Component {
           <li><Link to="terms">Terms of Service</Link></li>
         </ul>
         <p className="footerTechnologies">
-          This site was built with <a href="https://iojs.org" target="_blank">io.js</a>, <a href="http://koajs.com/" target="_blank">koa</a>, <a href="https://babeljs.io/" target="_blank">Babel</a>, <a href="https://facebook.github.io/react/" target="_blank">React</a>, and <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>
+          This site was built with <a href="https://iojs.org" target="_blank">io.js</a>, <a href="http://koajs.com/" target="_blank">koa</a>, <a href="https://webpack.github.io/" target="_blank">webpack</a>, <a href="https://babeljs.io/" target="_blank">Babel</a>, <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>, and <a href="https://facebook.github.io/react/" target="_blank">React</a>
         </p>
       </footer>
     );

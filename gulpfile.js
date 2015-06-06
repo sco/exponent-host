@@ -16,7 +16,7 @@ var request = require('request');
 
 babel.task(gulp, {
   paths: {
-    src: ['src/**/*.js', '!src/web/**/*.js'],
+    src: ['src/**/*.js'],
   },
   babel: {
     stage: 0,

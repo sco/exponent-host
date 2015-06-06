@@ -4,9 +4,11 @@ var path = require('path');
 var process = require('process');
 var webpack = require('webpack');
 
-var AutoPrefixLessPlugin = require('less-plugin-autoprefix');
+var AssetModulePlugin = require('asset-module-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var StatsPlugin = require('stats-webpack-plugin');
+
+var LessPluginAutoPrefix = require('less-plugin-autoprefix');
 
 module.exports = [
   {
@@ -22,6 +24,7 @@ module.exports = [
       publicPath: '/assets/',
       sourceMapFilename: 'debug/[file].map',
       pathinfo: process.env.NODE_ENV === 'production',
+      hashFunction: 'sha512',
     },
     module: {
       loaders: [
@@ -36,9 +39,13 @@ module.exports = [
           loader: ExtractTextPlugin.extract('style', 'css!less'),
         },
         {
-          test: /\.(eot|ttf|woff2?|svg|png)$/,
-          loader: 'file',
-        }
+          test: /\.(eot|ttf|woff2?)$/,
+          loader: 'file?name=[sha512:hash:base62:20].[ext]',
+        },
+        {
+          test: /\.(jpe?g|png|gif|svg)$/,
+          loader: 'file?name=[sha512:hash:base62:20].[ext]',
+        },
       ],
     },
     plugins: [
@@ -48,9 +55,10 @@ module.exports = [
         },
       }),
       new webpack.PrefetchPlugin('react'),
-      new ExtractTextPlugin('[name].css'),
+      new ExtractTextPlugin('[sha512:contenthash:base62:20].css'),
       new webpack.optimize.DedupePlugin(),
-      new webpack.optimize.CommonsChunkPlugin('commons', '[chunkhash].js'),
+      new webpack.optimize.OccurrenceOrderPlugin(),
+      new webpack.optimize.CommonsChunkPlugin('commons', '[chunkhash:20].js'),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           dead_code: true,
@@ -58,10 +66,17 @@ module.exports = [
           warnings: false,
         },
       }),
+      new AssetModulePlugin({
+        sourceBase: path.join(__dirname, 'src'),
+        destinationBase: path.join(__dirname, 'build'),
+        test: /\.(css|less|jpe?g|png|gif|svg)$/,
+        exclude: /node_modules/,
+      }),
       new StatsPlugin(path.join(__dirname, 'build/web/server/stats.json'), {
         assets: true,
-        chunkModules: false,
+        chunkModules: true,
         modules: true,
+        reasons: false,
         source: false,
         chunkOrigins: false,
         exclude: [/node_modules\/react\//],
@@ -69,56 +84,7 @@ module.exports = [
     ],
     lessLoader: {
       lessPlugins: [
-        new AutoPrefixLessPlugin({ browsers: ['last 2 versions'] }),
-      ],
-    }
-  },
-  {
-    name: 'server-side rendering (production)',
-    target: 'node',
-    entry: [
-      './src/web/server/ServerSideRenderer.js',
-    ],
-    output: {
-      path: path.join(__dirname, 'build/web/server'),
-      filename: 'ServerSideRenderer.js',
-      publicPath: '/assets/',
-      sourceMapFilename: 'debug/[file].map',
-      libraryTarget: 'commonjs2',
-      pathinfo: true,
-    },
-    module: {
-      loaders: [
-        {
-          test: /\.js$/,
-          include: path.join(__dirname, 'src'),
-          loader: 'babel?stage=0&optional[]=runtime',
-        },
-        {
-          test: /\.less$/,
-          include: path.join(__dirname, 'src'),
-          loader: 'null',
-        },
-        {
-          test: /\.(eot|ttf|woff2?|svg|png)$/,
-          loader: 'null',
-        }
-      ],
-    },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: '"productionx"',
-        },
-      }),
-      new webpack.PrefetchPlugin('react'),
-      new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 1
-      }),
-    ],
-    lessLoader: {
-      lessPlugins: [
-        new AutoPrefixLessPlugin({ browsers: ['last 2 versions'] }),
+        new LessPluginAutoPrefix({ browsers: ['last 2 versions'] }),
       ],
     }
   },
