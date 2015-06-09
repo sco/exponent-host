@@ -164,7 +164,7 @@ gulp.task('clean', function(callback) {
 });
 
 gulp.task('deploy', function () {
-  return pm2.promise.deploy('ecosystem.js', {
-    rawArgs:['deploy', 'ecosystem.js', 'production']
+  return pm2.promise.deploy('ecosystem.json', {
+    rawArgs:['deploy', 'ecosystem.json', 'production']
   });
 });

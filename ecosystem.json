@@ -35,7 +35,7 @@
         'npm install',
         'npm install git+ssh@github.com:exponentjs/exponent-secret.git',
         'gulp build',
-        'pm2 startOrRestart ecosystem.js --env production',
+        'pm2 startOrRestart ecosystem.json --env production',
       ].join(' && '),
     },
   },
