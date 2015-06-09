@@ -25,6 +25,7 @@
     "cheerio": "^0.19.0",
     "classnames": "^2.1.2",
     "core-decorators": "^0.1.0",
+    "dropbox": "^0.10.3",
     "ent": "^2.2.0",
     "instapromise": "^1.0.0",
     "koa": "^0.21.0",
