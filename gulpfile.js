@@ -1,32 +1,36 @@
+'use strict';
+
 require('instapromise');
 
-var gulp = require('gulp');
-var babel = require('@exponent/gulp-babel');
-var changed = require('gulp-changed');
-var plumber = require('gulp-plumber');
-var sourcemaps = require('gulp-sourcemaps');
-var gutil = require('gulp-util');
-var watch = require('gulp-watch');
+let gulp = require('gulp');
+let babel = require('gulp-babel');
+let changed = require('gulp-changed');
+let plumber = require('gulp-plumber');
+let sourcemaps = require('gulp-sourcemaps');
+let gutil = require('gulp-util');
+let watch = require('gulp-watch');
 
-var crayon = require('@ccheever/crayon');
-var fs = require('fs');
-var path = require('path');
-var pm2 = require('pm2');
-var request = require('request');
+let WebpackDevServer = require('webpack-dev-server');
 
-babel.task(gulp, {
-  paths: {
-    src: ['src/**/*.js'],
+let crayon = require('@ccheever/crayon');
+let fs = require('fs');
+let path = require('path');
+let pm2 = require('pm2');
+let request = require('request');
+let rimraf = require('rimraf');
+let webpack = require('webpack');
+
+const paths = {
+  source: {
+    js: 'src/**/*.js',
   },
-  babel: {
-    stage: 0,
-  },
-});
+  build: 'build',
+};
 
-var snapshotBundleAsync = function (bundleUrl, bundleFile) {
+let snapshotBundleAsync = function (bundleUrl, bundleFile) {
   gutil.log("Fetching bundle from", bundleUrl, "...");
   return request.promise.get(bundleUrl).then(function (response) {
-    var js = response.body;
+    let js = response.body;
     return fs.promise.writeFile(bundleFile, js, 'utf8').then(function () {
       gutil.log("Created bundle at", bundleFile);
     });
@@ -36,8 +40,8 @@ var snapshotBundleAsync = function (bundleUrl, bundleFile) {
 };
 
 gulp.task('snapshot-browser', function (cb) {
-  var bundleUrl = 'http://localhost:8081/exponent.includeRequire.runModule.bundle?dev=false&minify=true';
-  var bundleFile = path.join(__dirname, 'exponent.bundle.js');
+  let bundleUrl = 'http://localhost:8081/exponent.includeRequire.runModule.bundle?dev=false&minify=true';
+  let bundleFile = path.join(__dirname, 'exponent.bundle.js');
   snapshotBundleAsync(bundleUrl, bundleFile).then(cb);
 });
 
@@ -49,9 +53,34 @@ gulp.task('snapshot-home', function (cb) {
 
 gulp.task('snapshot', ['snapshot-browser', 'snapshot-home']);
 
-gulp.task('deploy', function () {
-  return pm2.promise.deploy('ecosystem.json5', {rawArgs:['deploy', 'ecosystem5.json', 'production']});
+gulp.task('babel', function() {
+  return gulp.src(paths.source.js)
+    .pipe(babel())
+    .pipe(gulp.dest(paths.build));
 });
 
-gulp.task('default', ['babel-watch']);
-gulp.task('build', ['babel']);
+gulp.task('babel:watch', function() {
+  gulp.watch(paths.source.js, ['babel']);
+});
+
+gulp.task('webpack', function() {
+  // runs webpack build
+});
+
+gulp.task('webpack:dev', function() {
+
+});
+
+gulp.task('build', ['babel', 'webpack']);
+
+gulp.task('build:watch', ['babel:watch', 'webpack:watch']);
+
+gulp.task('clean', function(callback) {
+  rimraf(paths.build, callback);
+});
+
+gulp.task('deploy', function () {
+  return pm2.promise.deploy('ecosystem.json5', {
+    rawArgs:['deploy', 'ecosystem5.json', 'production']
+  });
+});

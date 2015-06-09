@@ -100,7 +100,7 @@ siteRouter.get('/\\.:shortcode', function*(next) {
 });
 siteRouter.get('/images/(.*)',
   rewrite('/images/*', '$1'),
-  serve('src/web/images'),
+  serve('src/web/browser/images'),
 );
 siteRouter.get('/assets/(.*)',
   rewrite('/assets/*', '$1'),

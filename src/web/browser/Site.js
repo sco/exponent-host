@@ -53,10 +53,10 @@ let Site = React.createClass({
     return (
       <Link to="home" className="logoType navLogoType">
         <img
-          src={require('../images/exponent-nav-bare@3x.png')}
+          src={require('./images/exponent-nav-bare@3x.png')}
           alt="Exponent"
         />
-        Exponent
+      Exponent
       </Link>
     );
   },

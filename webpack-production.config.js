@@ -74,8 +74,8 @@ module.exports = [
       }),
       new StatsPlugin(path.join(__dirname, 'build/web/server/stats.json'), {
         assets: true,
-        chunkModules: true,
-        modules: true,
+        chunkModules: false,
+        modules: false,
         reasons: false,
         source: false,
         chunkOrigins: false,

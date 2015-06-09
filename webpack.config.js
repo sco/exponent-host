@@ -1,14 +1,15 @@
 'use strict';
 
+var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
 
+var AssetModulePlugin = require('asset-module-webpack-plugin');
 var LessPluginAutoPrefix = require('less-plugin-autoprefix');
 var StatsPlugin = require('stats-webpack-plugin');
 
 module.exports = [
   {
-    devtool: 'eval',
     name: 'browser (development)',
     entry: [
       'webpack-dev-server/client?http://localhost:7272',
@@ -22,13 +23,14 @@ module.exports = [
       publicPath: 'http://localhost:7272/',
       sourceMapFilename: 'debug/[file].map',
       pathinfo: true,
+      hashFunction: 'sha512',
     },
     module: {
       loaders: [
         {
           test: /\.js$/,
           include: path.join(__dirname, 'src'),
-          loaders: ['react-hot', 'babel?stage=0&optional[]=runtime'],
+          loaders: ['react-hot', 'babel'],
         },
         {
           test: /\.less$/,
@@ -36,9 +38,13 @@ module.exports = [
           loaders: ['style', 'css', 'less'],
         },
         {
-          test: /\.(eot|ttf|woff2?|svg|png)$/,
-          loader: 'file',
-        }
+          test: /\.(eot|ttf|woff2?)$/,
+          loader: 'file?name=[sha512:hash:base62:20].[ext]',
+        },
+        {
+          test: /\.(jpe?g|png|gif|svg)$/,
+          loader: 'file?name=[sha512:hash:base62:20].[ext]',
+        },
       ],
     },
     plugins: [
@@ -49,10 +55,18 @@ module.exports = [
           NODE_ENV: '"development"',
         },
       }),
+      new webpack.PrefetchPlugin('react'),
+      new AssetModulePlugin({
+        sourceBase: path.join(__dirname, 'src'),
+        destinationBase: path.join(__dirname, 'build'),
+        test: /\.(css|less|jpe?g|png|gif|svg)$/,
+        exclude: /node_modules/,
+        fileSystems: [AssetModulePlugin.DefaultFileSystem, fs],
+      }),
       new StatsPlugin(path.join(__dirname, 'build/web/server/stats.json'), {
         assets: true,
         chunkModules: false,
-        modules: true,
+        modules: false,
         reasons: false,
         source: false,
         chunkOrigins: false,

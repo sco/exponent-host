@@ -13,7 +13,7 @@ export default class NotFound extends React.Component {
         <p className="text-center">
           <img
             className="notFoundPicture center-block img-rounded"
-            src="/images/polar-bear-hug@3x.jpg"
+            src={require('./images/polar-bear-hug@3x.jpg')}
             style={{height: 225, width: 300}}
           />
           <span className="text-muted">It'll be okay</span>
