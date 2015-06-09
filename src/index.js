@@ -102,8 +102,8 @@ siteRouter.get('/images/(.*)',
   rewrite('/images/*', '$1'),
   serve('src/web/browser/images'),
 );
-siteRouter.get('/assets/v\d+/(.*)',
-  rewrite('/assets/*', '$1'),
+siteRouter.get('/assets/v(\\d+)/(.*)',
+  rewrite('/assets/v\\d+/*', '$1'),
   serve('build/web/assets'),
 );
 siteRouter.get('/(.*)', function*(next) {
