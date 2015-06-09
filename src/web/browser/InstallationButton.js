@@ -1,3 +1,4 @@
+import { autobind } from 'core-decorators';
 import React from 'react';
 import {
   Button,
@@ -8,11 +9,6 @@ const ITUNES_BASE_URL = 'itms-services://?action=download-manifest&url=';
 
 // TODO: Do an OS version check in componentDidMount
 export default class InstallationButton extends React.Component {
-  constructor() {
-    super();
-    this._downloadApp = this._downloadApp.bind(this);
-  }
-
   render() {
     return (
       <Button {...this.props} bsStyle="primary" onClick={this._downloadApp}>
@@ -21,6 +17,7 @@ export default class InstallationButton extends React.Component {
     );
   }
 
+  @autobind
   _downloadApp() {
     let url = ITUNES_BASE_URL + encodeURIComponent(MANIFEST_URL);
     window.location = url;

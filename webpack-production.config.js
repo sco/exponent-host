@@ -22,7 +22,7 @@ module.exports = [
       path: path.join(__dirname, 'build/web/assets'),
       filename: '[chunkhash].js',
       chunkFilename: '[chunkhash].js',
-      publicPath: '/assets/',
+      publicPath: 'http://static.exp.host/v0/',
       sourceMapFilename: 'debug/[file].map',
       pathinfo: process.env.NODE_ENV === 'production',
       hashFunction: 'sha512',
@@ -89,4 +89,4 @@ module.exports = [
       ],
     }
   },
-][0];
+];
