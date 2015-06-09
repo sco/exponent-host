@@ -6,7 +6,6 @@
   "main": "build/index.js",
   "scripts": {
     "start": "webpack-dev-server --port 7272 --hot --progress --colors",
-    "build": "webpack --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -19,8 +18,8 @@
     "@ccheever/crayon": "^5.0.0",
     "@exponent/md5hex": "^1.0.0",
     "await-lock": "^1.1.1",
-    "babel": "^5.5.5",
-    "babel-runtime": "^5.5.5",
+    "babel": "^5.5.6",
+    "babel-runtime": "^5.5.6",
     "bases": "^0.2.1",
     "cheerio": "^0.19.0",
     "classnames": "^2.1.2",
@@ -52,9 +51,11 @@
     "url": "^0.10.3"
   },
   "devDependencies": {
+    "babel-core": "^5.5.6",
     "babel-eslint": "^3.1.14",
     "babel-loader": "^5.1.4",
     "bootstrap": "^3.3.4",
+    "co": "^4.5.4",
     "css-loader": "^0.14.4",
     "eslint": "^0.22.1",
     "eslint-plugin-react": "^2.5.0",
@@ -70,13 +71,13 @@
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
     "less-plugin-autoprefix": "^1.4.2",
-    "null-loader": "^0.1.1",
+    "node-libs-browser": "^0.5.2",
     "pm2": "^0.12.16",
     "react-hot-loader": "^1.2.7",
     "rimraf": "^2.4.0",
     "stats-webpack-plugin": "^0.1.2",
     "style-loader": "^0.12.3",
-    "webpack": "^1.9.10",
+    "webpack": "webpack/webpack#webpack-2",
     "webpack-dev-server": "^1.9.0"
   }
 }

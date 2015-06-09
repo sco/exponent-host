@@ -12,6 +12,7 @@ var LessPluginAutoPrefix = require('less-plugin-autoprefix');
 
 module.exports = [
   {
+    progress: true,
     name: 'client-side rendering (production)',
     target: 'web',
     entry: {
@@ -88,4 +89,4 @@ module.exports = [
       ],
     }
   },
-];
+][0];
