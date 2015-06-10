@@ -18,7 +18,7 @@ module.exports = [
     ],
     output: {
       path: path.join(__dirname, 'build/web/assets'),
-      filename: 'bundle.js',
+      filename: '[chunkhash].js',
       chunkFilename: '[chunkhash].js',
       publicPath: 'http://localhost:7272/',
       sourceMapFilename: 'debug/[file].map',
@@ -30,7 +30,7 @@ module.exports = [
         {
           test: /\.js$/,
           include: path.join(__dirname, 'src'),
-          loaders: ['react-hot', 'babel'],
+          loaders: ['react-hot', 'babel?stage=0&optional[]=runtime'],
         },
         {
           test: /\.less$/,

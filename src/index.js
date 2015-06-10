@@ -108,7 +108,7 @@ siteRouter.get('/assets/v(\\d+)/(.*)',
 );
 siteRouter.get('/(.*)', function*(next) {
   let staticResources = require('./web/server/stats.json');
-  let renderer = new ServerSideRenderer(staticResources);
+  let renderer = new ServerSideRenderer(this, staticResources);
   let reactMarkup = yield renderer.renderPageAsync(this.url);
   this.body = reactMarkup;
   this.type = 'text/html';
