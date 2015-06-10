@@ -5,6 +5,7 @@ require('instapromise');
 let gulp = require('gulp');
 let babel = require('gulp-babel');
 let changed = require('gulp-changed');
+let plumber = require('gulp-plumber');
 let gutil = require('gulp-util');
 
 let WebpackDevServer = require('webpack-dev-server');
@@ -53,6 +54,7 @@ gulp.task('snapshot', ['snapshot-browser', 'snapshot-home']);
 
 gulp.task('babel', function() {
   return gulp.src(paths.source.js)
+    .pipe(plumber())
     .pipe(changed(paths.build))
     .pipe(babel({
       stage: 1,
@@ -157,7 +159,9 @@ gulp.task('webpack:dev', function() {
 
 gulp.task('build', ['babel', 'webpack']);
 
-gulp.task('build:watch', ['babel:watch', 'webpack:watch']);
+gulp.task('build:watch', ['babel', 'babel:watch', 'webpack:watch']);
+
+gulp.task('build:dev', ['babel', 'babel:watch', 'webpack:dev']);
 
 gulp.task('clean', function(callback) {
   rimraf(paths.build, callback);
