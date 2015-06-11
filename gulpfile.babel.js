@@ -1,23 +1,23 @@
 'use strict';
 
-require('instapromise');
+import 'instapromise';
 
-let gulp = require('gulp');
-let babel = require('gulp-babel');
-let changed = require('gulp-changed');
-let plumber = require('gulp-plumber');
-let gutil = require('gulp-util');
+import gulp from 'gulp';
+import babel from 'gulp-babel';
+import changed from 'gulp-changed';
+import plumber from 'gulp-plumber';
+import gutil from 'gulp-util';
 
-let WebpackDevServer = require('webpack-dev-server');
+import WebpackDevServer from 'webpack-dev-server';
 
-let co = require('co');
-let crayon = require('@ccheever/crayon');
-let fs = require('fs');
-let path = require('path');
-let pm2 = require('pm2');
-let request = require('request');
-let rimraf = require('rimraf');
-let webpack = require('webpack');
+import co from 'co';
+import crayon from '@ccheever/crayon';
+import fs from 'fs';
+import path from 'path';
+import pm2 from 'pm2';
+import request from 'request';
+import rimraf from 'rimraf';
+import webpack from 'webpack';
 
 const paths = {
   source: {
