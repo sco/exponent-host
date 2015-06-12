@@ -172,3 +172,5 @@ gulp.task('deploy', function () {
     rawArgs:['deploy', 'ecosystem.json', 'production']
   });
 });
+
+gulp.task('default', ['build:watch']);
