@@ -1,5 +1,9 @@
 var _ = require('lodash-node');
 var dropbox = require('dropbox');
+var events = require('events');
+var {
+  EventEmitter,
+} = events;
 var instapromise = require('instapromise');
 var path = require('path');
 var secret = require('@exponent/secret');
@@ -23,6 +27,94 @@ function dropboxClient(opts) {
   return new dropbox.Client(o);
 
 }
+
+async function traverseAsync(dropboxPath, emitter, opts) {
+  // Events:
+  // file
+  // directory
+  // done
+  opts = opts || {};
+  if (!emitter) {
+    emitter = new EventEmitter();
+    emitter.on('file', (n, m) => {
+      console.log('file:', n);
+    });
+  }
+
+  opts.client = opts.client || dropboxClient({token: secret.dropbox._ccheeverTestAccessToken});
+
+  var awaitables = [];
+
+  var metadata = await opts.client.promise.metadata(dropboxPath);
+  if (metadata.isFile) {
+    emitter.emit('file', dropboxPath, metadata);
+  }
+  if (metadata.isFolder) {
+    emitter.emit('folder', dropboxPath, metadata);
+    var entries = await opts.client.promise.readdir(dropboxPath);
+    for (var e of entries) {
+      awaitables.push(traverseAsync(path.join(dropboxPath, e), emitter, opts));
+    }
+  }
+
+  await Promise.all(awaitables);
+  emitter.emit('done', dropboxPath);
+
+  return true;
+
+}
+
+async function syncFolderAsync(dropboxFolderPath, destPath, opts) {
+
+  opts = opts || {};
+  var dc = opts.dc || dropboxClient({token: secret.dropbox._ccheeverTestAccessToken});
+
+  var entries = await dc.promise.readdir(dropboxFolderPath);
+
+  for (var e of entries) {
+    var p = path.join(dropboxFolderPath, e);
+    var m = await dc.promise.metadata(p);
+    if (m.isFolder) {
+      await syncFolderAsync(p, path.join(destPath, e), opts);
+    }
+    if (m.isFile) {
+      console.log(e);
+    }
+  }
+  return;
+
+/*
+  var filePaths = [];
+  var awaitables = [];
+  var metadataAwaitables = [];
+  for (var e of entries) {
+    ((e) => {
+      metadataAwaitables.push(dc.promise.metadata(path.join(dropboxFolderPath, e)).then((metadata) => {
+        console.log("e=",e);
+        if (metadata.isFolder) {
+          awaitables.push(syncFolderAsync(path.join(dropboxFolderPath, e), path.join(destPath, e), opts));
+        } else if (metadata.isFile) {
+          filePaths.push(metadata);
+        } else {
+          console.warn("Not sure what to with this", metadata);
+        }
+      }));
+    })(e);
+  }
+
+  console.log("awaiting metadataAwaitables... for", dropboxFolderPath);
+  await metadataAwaitables;
+  console.log("awaiting awaitables... for", dropboxFolderPath);
+  await awaitables;
+
+  for (var fp of filePaths) {
+    console.log(fp);
+  }
+  */
+
+}
+
+
 
 async function initProjectAsync(dc, projectName, opts) {
   opts = opts || {};
@@ -76,9 +168,12 @@ var simpleDriver = {
 };
 
 function testClient() {
+  /*
   var client = dropboxClient();
   client.authDriver(simpleDriver);
   return client;
+  */
+  return dropboxClient({token: secret.dropbox._ccheeverTestAccessToken});
 }
 
 
@@ -86,6 +181,8 @@ function testClient() {
 module.exports = {
   dropboxClient,
   initProjectAsync,
+  syncFolderAsync,
   testClient,
+  traverseAsync,
   webhook,
 };
