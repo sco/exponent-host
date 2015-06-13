@@ -1,11 +1,13 @@
 var _ = require('lodash-node');
-var dropboxSync = require('dropbox-sync');
+var dropboxSync = require('@exponent/dropbox-sync');
+var jsonFile = require('@exponent/json-file');
 var path = require('path');
+var promisePrint = require('promise-print');
 var secret = require('@exponent/secret');
 
 var r = require('../database/r');
 
-var MIRRORS_ROOT = '/tmp/dropbox-mirrors/';
+var MIRRORS_ROOT = '/var/cloud-packager/dropbox-mirrors/';
 
 async function setAccessTokenForUsernameAsync(username, dropboxAccessToken) {
   return await r.db('exp_host').table('dropboxSyncs').insert({
@@ -22,12 +24,22 @@ async function syncerForUsernameAsync(username, opts) {
   var accessToken = metadata.dropboxAccessToken;
   var mirrorsRoot = opts.mirrorsRoot || MIRRORS_ROOT;
   var client = dropboxClient(accessToken);
+  
+  var destRoot = path.join(mirrorsRoot, username);
+  var dotFileJson = jsonFile(path.join(destRoot, '___exponentCloudPackager___.json'), {cantReadFileDefault: {}});
   if (opts.cursor !== null) {
-    opts.cursor = metadata.cursor;
+    opts.cursor = opts.cursor || await dotFileJson.getAsync('cursor', null);
   }
+
+  if (!opts.quiet) {
+    console.log("Starting sync for", username, "with cursor", opts.cursor);
+  }
+
   var syncer = dropboxSync(client, path.join(mirrorsRoot, username), opts);
 
   syncer.addListener('syncedToCursor', (cursor) => {
+    promisePrint(dotFileJson.mergeAsync({cursor}), {prefix: "Updated dotFile with new cursor " + cursor, alwaysPrintResult: true});
+      
     r.db('exp_host').table('dropboxSyncs').update({
       username,
       cursor,
@@ -37,6 +49,12 @@ async function syncerForUsernameAsync(username, opts) {
   });
 
   syncer.addListener('stopped', () => {
+
+    // Commenting this out for now because I'm scared of the merges
+    // messing with each other and we don't actually need this data
+    // and we can't trust it (since the process might just get killed)
+    //promisePrint(dotFileJson.mergeAsync({state: 'stopped'}));
+
     r.db('exp_host').table('dropboxSyncs').update({
       username,
       state: 'stopped',
@@ -44,6 +62,11 @@ async function syncerForUsernameAsync(username, opts) {
   });
 
   syncer.addListener('updatedAsOf', (t) => {
+
+    // Commenting this out for now because I'm scared of the merges
+    // messing with each other and we don't actually need this data
+    //promisePrint(dotFileJson.mergeAsync({updatedAsOf: t}), {prefix: "Updated dotFile with new updatedAsOf " + t});
+
     r.db('exp_host').table('dropboxSyncs').update({
       username,
       updatedAsOf: r.now(), // Should we use `t` or `r.now()` here? Arguments on both sides...

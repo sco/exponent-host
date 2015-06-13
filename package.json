@@ -16,6 +16,8 @@
   "homepage": "http://exp.host",
   "dependencies": {
     "@ccheever/crayon": "^5.0.0",
+    "@exponent/dropbox-sync": "^2.0.0",
+    "@exponent/json-file": "^2.7.0",
     "@exponent/md5hex": "^1.0.0",
     "await-lock": "^1.1.1",
     "babel-runtime": "^5.5.6",
@@ -37,6 +39,7 @@
     "koa-static": "^1.4.9",
     "lodash-node": "^3.9.3",
     "path": "^0.11.14",
+    "promise-print": "^2.3.0",
     "querystring": "^0.2.0",
     "react": "^0.13.3",
     "react-bootstrap": "^0.23.2",
