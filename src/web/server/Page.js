@@ -55,7 +55,7 @@ export default class Page extends React.Component {
 
   _renderStyleSheetLinks() {
     let filenames = flatten([
-      this._getChunkAssetFilenames('commons', 'css'),
+      this._getChunkAssetFilenames('vendor', 'css'),
       this._getChunkAssetFilenames('main', 'css'),
     ]);
     return filenames.map(filename => {
@@ -66,7 +66,7 @@ export default class Page extends React.Component {
 
   _renderJavaScriptElements() {
     let filenames = flatten([
-      this._getChunkAssetFilenames('commons', 'js'),
+      this._getChunkAssetFilenames('vendor', 'js'),
       this._getChunkAssetFilenames('main', 'js'),
     ]);
     return filenames.map(filename => {

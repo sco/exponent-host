@@ -10,6 +10,8 @@ var StatsPlugin = require('stats-webpack-plugin');
 
 var LessPluginAutoPrefix = require('less-plugin-autoprefix');
 
+const CDN_URL = 'http://static.exp.host/v0/';
+
 module.exports = [
   {
     progress: true,
@@ -17,12 +19,13 @@ module.exports = [
     target: 'web',
     entry: {
       main: './src/web/browser/index.js',
+      vendor: ['react', 'react-router', 'react-bootstrap'],
     },
     output: {
       path: path.join(__dirname, 'build/web/assets'),
       filename: '[chunkhash].js',
       chunkFilename: '[chunkhash].js',
-      publicPath: 'http://static.exp.host/v0/',
+      publicPath: CDN_URL,
       sourceMapFilename: 'debug/[file].map',
       pathinfo: process.env.NODE_ENV === 'production',
       hashFunction: 'sha512',
@@ -59,7 +62,11 @@ module.exports = [
       new ExtractTextPlugin('[sha512:contenthash:base62:20].css'),
       new webpack.optimize.DedupePlugin(),
       new webpack.optimize.OccurrenceOrderPlugin(),
-      new webpack.optimize.CommonsChunkPlugin('commons', '[chunkhash:20].js'),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        filename: '[chunkhash:20].js',
+        minChunks: Infinity,
+      }),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           dead_code: true,
