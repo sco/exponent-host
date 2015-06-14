@@ -3,6 +3,8 @@ import {
   PropTypes,
 } from 'react';
 
+import GoogleAnalyticsScript from './GoogleAnalyticsScript';
+
 import flatten from 'lodash-node/modern/array/flatten';
 import path from 'path';
 
@@ -45,6 +47,7 @@ export default class Page extends React.Component {
           <meta name="theme-color" content="#023c69" />
           {this._renderStyleSheetLinks()}
           {this._renderJavaScriptElements()}
+          <GoogleAnalyticsScript propertyId="UA-53647600-5" />
         </head>
         <body>
           <div id="root" dangerouslySetInnerHTML={this.props.markup} />
