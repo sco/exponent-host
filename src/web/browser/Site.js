@@ -33,6 +33,7 @@ let Site = React.createClass({
               <NavItemLink to="docs">Get Started</NavItemLink>
               <NavItemLink to="community">Community</NavItemLink>
               <NavItemLink to="help">Help</NavItemLink>
+              {/* <NavItemLink to="login">Login/Signup</NavItemLink> */}
             </Nav>
             {/*
             <Nav navbar right>

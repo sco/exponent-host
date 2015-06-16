@@ -11,6 +11,7 @@ import Documentation from './Documentation';
 import GettingStarted from './GettingStarted';
 import Help from './Help';
 import Home from './Home';
+import LoginSignup from './LoginSignup';
 import NotFound from './NotFound';
 import PrivacyPolicy from './PrivacyPolicy';
 import Site from './Site';
@@ -27,6 +28,7 @@ export default (
     <Route name="help" handler={Help} />
     <Route name="privacy" handler={PrivacyPolicy} />
     <Route name="terms" handler={TermsOfService} />
+    <Route name="login" handler={LoginSignup} />
     <NotFoundRoute handler={NotFound} />
   </Route>
 );

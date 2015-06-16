@@ -17,6 +17,7 @@ import path from 'path';
 import pm2 from 'pm2';
 import request from 'request';
 import rimraf from 'rimraf';
+import spawnAsync from '@exponent/spawn-async';
 import webpack from 'webpack';
 
 const paths = {
@@ -121,6 +122,49 @@ gulp.task('webpack', co.wrap(function*() {
   }
 }));
 
+gulp.task('koa', ['build:dev'], function (callback) {
+  return spawnAsync('node', ['./build'], {stdio: 'inherit', cwd: __dirname}).then((result) => {
+    return callback(null, result);
+  }, (err) => {
+    return callback(err);
+  });
+});
+
+var _serverTask;
+gulp.task('koa:start-or-restart', function (callback) {
+  if (_serverTask) {
+    var child = _serverTask.child;
+    if (!child) {
+      gutil.log(crayon.red("No child process"));
+    } else {
+      if (child.killed) {
+        // already killed
+      } else {
+        var killed = _serverTask.child.kill();
+        if (killed) {
+          gutil.log("Killed server process");
+        }
+      }
+      if (!child.killed && !killed) {
+        gutil.log(crayon.red("Couldn't kill server child process!"));
+        if (callback) {
+          callback(new Error("Couldn't kill server child process!"));
+        }
+        return -1;
+      }
+    }
+  }
+  // TODO: Instead of doing an inherit here, it would be more accurate
+  // to stream it and not call the callback until we get the 'Listening...' message to stdout
+  // but we won't worry about that for now
+  _serverTask = spawnAsync('node', ['./build'], {stdio: 'inherit', cwd: __dirname});
+  callback(null, _serverTask);
+});
+
+gulp.task('koa:watch', ['koa:start-or-restart'], function () {
+  gulp.watch(paths.build + '/**/*', ['koa:start-or-restart']);
+});
+
 gulp.task('webpack:watch', function() {
   let config = require('./webpack-production.config.js');
   let compiler = webpack(config);
@@ -174,3 +218,5 @@ gulp.task('deploy', function () {
 });
 
 gulp.task('default', ['build:watch']);
+
+gulp.task('dev', ['build:dev', 'koa:watch']);
