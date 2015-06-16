@@ -3,19 +3,25 @@ import {
   Link,
 } from 'react-router';
 
-export default class LoginSignup extends React.Component {
+import apiClient from '../../api/client';
+
+export default class ConnectToDropboxButton extends React.Component {
   render() {
     return (
-      <div>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js"></script>
-        <p>
-          Tired of giving up at all.
-        </p>
-      </div>
+      <a href="#" onClick={this._onClick}>
+        <span style={{
+            backgroundColor: '#cccccc',
+            fontWeight: 'bold',
+        }}>Connect to Dropbox</span>
+      </a>
     );
   }
 
-  componentDidMount() {
-    console.log("Tired of giving up so easy");
+  _onClick() {
+    apiClient.callMethodAsync('__reverse__', ["Hello", "World"]).then((response) => {
+      alert(response);
+    }, (err) => {
+      alert('Error! ' + err);
+    });
   }
 }

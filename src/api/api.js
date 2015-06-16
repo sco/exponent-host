@@ -10,6 +10,12 @@ var Api = {
   publish: require('./publish'),
   whoami: require('./whoami'),
   shortenUrl: require('./shortenUrl'),
+  __reverse__: {
+    doc: "Reverses the first argument; for testing the API",
+    methodAsync: async function (env, args) {
+      return args.map((s) => { return s.split("").reverse().join(""); }).reverse();
+    },
+  },
 };
 
 var callMethod = function*(next) {
