@@ -10,6 +10,7 @@ import gzip from 'koa-gzip';
 import logger from 'koa-logger';
 import rewrite from 'koa-rewrite';
 import router from 'koa-router';
+import secret from '@exponent/secret';
 import serve from 'koa-static';
 
 import api from './api/api';
@@ -79,6 +80,42 @@ app.use(bundleRouter.allowedMethods());
 let siteRouter = router();
 siteRouter.use(conditional());
 siteRouter.use(etag());
+
+siteRouter.get('/-dropbox-auth', function*(next) {
+  this.body = `
+<html>
+<head>
+<script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js"></script>
+<script>
+var dbClient = new Dropbox.Client({ key: ` + JSON.stringify(secret.dropbox.appKey) + ` });
+dbClient.authenticate(function(error, client) {
+  if (error) {
+    // Replace with a call to your own error-handling code.
+    //
+    // Don't forget to return from the callback, so you don't execute the code
+    // that assumes everything went well.
+    alert('show error: ' + error);
+    return;
+    //return showError(error);
+  }
+
+  // Replace with a call to your own application code.
+  //
+  // The user authorized your app, and everything went well.
+  // client is a Dropbox.Client instance that you can use to make API calls.
+  alert('Do somethin cool!');
+  //doSomethingCool(client);
+});
+
+</script>
+</head>
+<body>
+Boys Ryan Adams
+</body>
+</html>
+  `;
+
+});
 
 siteRouter.get('/\\.:shortcode', function*(next) {
   let shortUrl = require('./shortUrl');

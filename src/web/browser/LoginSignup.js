@@ -1,7 +1,9 @@
+import dropbox from 'dropbox';
 import React from 'react';
 import {
   Link,
 } from 'react-router';
+import secret from '@exponent/secret';
 
 import apiClient from '../../api/client';
 
@@ -17,7 +19,22 @@ export default class ConnectToDropboxButton extends React.Component {
     );
   }
 
+  componentDidMount() {
+  }
+
   _onClick() {
+    // TODO: I hope this doesn't dump our whole secret file onto the website
+    var dbClient = new dropbox.Client({ key: secret.dropbox.appKey });
+    dbClient.promise.authenticate().then((client) => {
+      alert("Got an authenticated client");
+    }, (err) => {
+      alert("Error: " + err);
+    });
+  }
+
+}
+
+/*
     apiClient.callMethodAsync('__reverse__', ["Hello", "World"]).then((response) => {
       alert(response);
     }, (err) => {
@@ -25,3 +42,4 @@ export default class ConnectToDropboxButton extends React.Component {
     });
   }
 }
+*/
