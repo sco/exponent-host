@@ -1,5 +1,3 @@
-import 'whatwg-fetch';
-
 async function getBaseUrlAsync() {
   return '/--/api';
 }
@@ -22,6 +20,7 @@ async function callMethodAsync(methodName, args) {
     url += '?username=' + encodeURIComponent(username) + '&hashedPassword=' + encodeURIComponent(hashedPassword);
   }
 
+  require('whatwg-fetch');
   var response = await fetch(url);
   var json = await response.json();
   if (json.err) {
@@ -32,6 +31,5 @@ async function callMethodAsync(methodName, args) {
 }
 
 module.exports = {
-  fetch,
   callMethodAsync,
 };

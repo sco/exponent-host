@@ -191,14 +191,14 @@ gulp.task('webpack:watch', function() {
   });
 });
 
-gulp.task('webpack:dev', function() {
+gulp.task('webpack:dev', function(callback) {
   let config = require('./webpack-development.config.js');
   let compiler = webpack(config);
   let server = new WebpackDevServer(compiler, {
     colors: true,
     hot: true,
   });
-  server.listen(7272, 'localhost', function() {});
+  server.listen(7272, 'localhost', callback);
 });
 
 gulp.task('build', ['babel', 'webpack']);
