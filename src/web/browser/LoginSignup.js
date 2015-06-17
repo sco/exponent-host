@@ -1,9 +1,10 @@
-import dropbox from 'dropbox';
+import dropbox from '@exponent/dropbox';
 import React from 'react';
 import {
   Link,
 } from 'react-router';
 import secret from '@exponent/secret';
+import thenify from '../../thenify';
 
 import apiClient from '../../api/client';
 
@@ -25,10 +26,12 @@ export default class ConnectToDropboxButton extends React.Component {
   _onClick() {
     // TODO: I hope this doesn't dump our whole secret file onto the website
     var dbClient = new dropbox.Client({ key: secret.dropbox.appKey });
-    dbClient.promise.authenticate().then((client) => {
-      alert("Got an authenticated client");
-    }, (err) => {
-      alert("Error: " + err);
+    dbClient.authenticate((err, client) => {
+      if (err) {
+        alert("Error: " + err);
+      } else {
+        alert("Got an authenticated client");
+      }
     });
   }
 
