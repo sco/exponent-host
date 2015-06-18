@@ -1,4 +1,5 @@
 import dropbox from '@exponent/dropbox';
+import 'instapromise';
 import React from 'react';
 import {
   Link,
@@ -25,17 +26,18 @@ export default class ConnectToDropboxButton extends React.Component {
   _onClick(e) {
 
     // TODO: I hope this doesn't dump our whole secret file onto the website
-    var dbClient = new dropbox.Client({ key: appKey });
-    dbClient.authenticate((err, client) => {
-      if (err) {
-        alert("Error: " + err);
-      } else {
-        alert("Got an authenticated client");
-      }
+    var client = new dropbox.Client({ key: appKey });
+
+    client.promise.authenticate().then((client) => {
+      return client.promise.getAccountInfo().then((accountInfo) => {
+        console.log("AccountInfo=", accountInfo);
+      });
+    }, (err) => {
+      alert("Error: " + err);
     });
 
     e.preventDefault();
-    
+
   }
 
 }

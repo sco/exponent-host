@@ -8,10 +8,13 @@ import conditional from 'koa-conditional-get';
 import etag from 'koa-etag';
 import gzip from 'koa-gzip';
 import logger from 'koa-logger';
+import passport from 'koa-passport';
 import rewrite from 'koa-rewrite';
 import router from 'koa-router';
+import session from 'koa-session';
 import secret from '@exponent/secret';
 import serve from 'koa-static';
+import timeconstants from 'timeconstants';
 
 import api from './api/api';
 import config from './config';
@@ -24,6 +27,10 @@ app.name = 'exp-host';
 app.proxy = true;
 app.experimental = true;
 
+app.keys = ['starlettjohansson']; // TODO: Does this need to be secret?
+app.use(session(app, {maxAge: timeconstants.yearApprox * 1000}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(logger());
 app.use(gzip());
 
