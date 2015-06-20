@@ -14,7 +14,12 @@ import router from 'koa-router';
 import session from 'koa-session';
 import secret from '@exponent/secret';
 import serve from 'koa-static';
+import { createRedux } from 'redux';
+import { Provider } from 'redux/react';
+  import * as stores from './stores';
 import timeconstants from 'timeconstants';
+
+const redux = createRedux(stores);
 
 import api from './api/api';
 import config from './config';

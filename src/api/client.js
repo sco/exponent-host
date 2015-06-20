@@ -30,6 +30,12 @@ async function callMethodAsync(methodName, args) {
 
 }
 
+try {
+  window.apiAsync = callMethodAsync;
+} catch (e) {
+  // Not a browser
+}
+
 module.exports = {
   callMethodAsync,
 };
