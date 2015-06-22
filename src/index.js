@@ -119,7 +119,14 @@ siteRouter.get('/(.*)', function*(next) {
   let staticResources = require('./web/server/stats.json');
   let renderer = new ServerSideRenderer(this, staticResources);
   let reactMarkup = yield renderer.renderPageAsync(this.url);
-  this.body = reactMarkup;
+  var script = `
+  <script>
+  window.EXP = ${ JSON.stringify({
+    browserId: this.browserId,
+    sessionId: this.sessionId,
+  })};
+  </script>`;
+  this.body = script + reactMarkup;
   this.type = 'text/html';
 });
 app.use(siteRouter.routes());
