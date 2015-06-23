@@ -33,7 +33,7 @@ var callMethod = function*(next) {
     }
 
     if (argsOk) {
-      this.session.id = this.session.id || Math.random();
+      //this.session.id = this.session.id || Math.random();
       //console.log("keys=", Object.keys(this));
       //console.log("session=", this.session);
       //console.log("passport=", this.passport);
@@ -44,7 +44,7 @@ var callMethod = function*(next) {
         methodName: this.params.method,
         ip: this.request.ip,
         _request: this.request,
-        _session: this.session,
+        // _session: this.session,
         // TODO: Add in other environment stuff here
       };
       try {
