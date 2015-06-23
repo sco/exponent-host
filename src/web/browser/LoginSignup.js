@@ -9,7 +9,7 @@ import {connect} from 'redux/react';
 import apiClient from '../../api/client';
 import { appKey } from '../../dropbox';
 
-@connect((data) => {racers: data.MarioKartRacers})
+//@connect((data) => {racers: data.MarioKartRacers})
 export default class ConnectToDropboxButton extends React.Component {
   render() {
     return (

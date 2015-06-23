@@ -9,7 +9,7 @@ import GoogleAnalyticsScript from './GoogleAnalyticsScript';
 import flatten from 'lodash-node/modern/array/flatten';
 import path from 'path';
 
-@connect((data) => ({racers: data.MarioKartRacers}))
+//@connect((data) => ({racers: data.MarioKartRacers}))
 export default class Page extends React.Component {
 
   static propTypes = {

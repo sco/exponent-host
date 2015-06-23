@@ -19,6 +19,7 @@ import TermsOfService from './TermsOfService';
 
 export default (
   <Route path="/" handler={Site}>
+    <Route name="login" handler={LoginSignup} />
     <Route name="home" path="/" handler={Home} />
     <Route name="about" handler={About} />
     <Route name="community" handler={Community} />
@@ -28,7 +29,6 @@ export default (
     <Route name="help" handler={Help} />
     <Route name="privacy" handler={PrivacyPolicy} />
     <Route name="terms" handler={TermsOfService} />
-    <Route name="login" handler={LoginSignup} />
     <NotFoundRoute handler={NotFound} />
   </Route>
 );

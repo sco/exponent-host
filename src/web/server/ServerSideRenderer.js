@@ -26,11 +26,13 @@ export default class ServerSideRenderer {
         }
       },
     };
+    /*
     this.redux = Flux.createRedux(stores);
 
     this.redux.dispatch({type: 'add', racer: 'Waluigi'});
     this.redux.dispatch({type: 'add', racer: 'Peach'});
     this.redux.dispatch({type: 'add', racer: 'Toad'});
+    */
 
   }
 
@@ -48,6 +50,11 @@ export default class ServerSideRenderer {
     }
 
     let markup = React.renderToStaticMarkup(
+      <Page
+        staticResources={this.staticResources}
+        markup={{ __html: bodyMarkup }}
+      />
+      /*
       <Provider redux={this.redux}>
         {() =>
           <Page
@@ -56,6 +63,7 @@ export default class ServerSideRenderer {
           />
         }
       </Provider>
+      */
     );
 
     return '<!DOCTYPE html>' + markup;

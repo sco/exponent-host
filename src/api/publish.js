@@ -49,17 +49,21 @@ module.exports = {
 
     // Don't `await` this since we don't want it to block responding from the API
     var appetizeUrl = 'http://exp.host/--/appetize?url=' + encodeURIComponent(expUrl);
+
+    // A URL that mobile Safari can open that will redirect you to the app
+    var redirectUrl = 'http://exp.host/--/to-exp/' + encodeURIComponent(expUrl);
+
     slack.sendSlackWebhookMessageAsync({
       icon_emoji: ':fire:',
       username: 'exp.host',
       channel: '#offthepress',
-      text: "@" + username + " just published the package " + packageFullName + "@" + packageVersion + "\n" + expUrl + "\n" + appetizeUrl,
+      text: "@" + username + " just published the package " + packageFullName + "@" + packageVersion + "\n" + expUrl + "\n" + appetizeUrl + "\n" + redirectUrl,
     }).then(() => {
-      console
+      // Sent Slack message about new pages
     }, (err) => {
       console.error("Failed to send Slack message about new package");
     });
 
-    return {err: null, packageFullName, hash, expUrl};
+    return {err: null, packageFullName, hash, expUrl, appetizeUrl, redirectUrl};
   },
 };
