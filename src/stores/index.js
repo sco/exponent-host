@@ -1,6 +1,4 @@
-// ... too, use constants
-var INCREMENT_COUNTER = 1;
-var DECREMENT_COUNTER = 2;
+var _ = require('lodash-node');
 
 // what's important is that Store is a pure function,
 // and you can write it anyhow you like.
@@ -9,17 +7,11 @@ var DECREMENT_COUNTER = 2;
 // and the state shape is up to you: you can use primitives,
 // objects, arrays, or even ImmutableJS objects.
 
-export default function counter(state = 0, action) {
-  // this function returns the new state when an action comes
+export default function store(data={}, action) {
   switch (action.type) {
-  case INCREMENT_COUNTER:
-    return state + 1;
-  case DECREMENT_COUNTER:
-    return state - 1;
-  default:
-    return state;
+    case 'update':
+      return _.assign(_.clone(data), action.update);
+    default:
+      return data;
   }
-
-  // BUT THAT'S A SWITCH STATEMENT!
-  // Right. If you hate 'em, see the FAQ below.
 }

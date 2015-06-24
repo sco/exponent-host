@@ -9,22 +9,22 @@ import etag from 'koa-etag';
 import gzip from 'koa-gzip';
 import identify from 'koa-identify';
 import logger from 'koa-logger';
+import promiseProps from 'promise-props';
 import rewrite from 'koa-rewrite';
 import router from 'koa-router';
 import secret from '@exponent/secret';
 import serve from 'koa-static';
 import { createRedux } from 'redux';
 import { Provider } from 'redux/react';
-import * as stores from './stores';
 import timeconstants from 'timeconstants';
 
-const redux = createRedux(stores);
 
 import api from './api/api';
 import config from './config';
+import r from './database/r';
 import servePackage from './servePackage';
-
 import ServerSideRenderer from './web/server/ServerSideRenderer';
+import * as stores from './stores';
 
 let app = koa();
 app.name = 'exp-host';
@@ -115,19 +115,84 @@ siteRouter.get('/assets/v(\\d+)/(.*)',
   rewrite('/assets/v\\d+/*', '$1'),
   serve('build/web/assets'),
 );
+
+function scriptTagWithData(name, data) {
+  return `
+    <script>
+    dataAvailable(${ JSON.stringify(name) }, ${ JSON.stringify(data) });
+    </script>
+  `;
+}
+
 siteRouter.get('/(.*)', function*(next) {
   let staticResources = require('./web/server/stats.json');
   let renderer = new ServerSideRenderer(this, staticResources);
   let reactMarkup = yield renderer.renderPageAsync(this.url);
+  let redux = createRedux(stores);
+
   var script = `
   <script>
-  window.EXP = ${ JSON.stringify({
+  window.EXP = {};
+  function dataAvailable(name, data) {
+    window.EXP[name] = data;
+    //console.log("New data!", name, data);
+  }
+  </script>
+  `;
+  var Readable = require('stream').Readable;
+
+  var rs = [];
+
+  this.type = 'text/html';
+
+  rs.push(script);
+  var identity = {
     browserId: this.browserId,
     sessionId: this.sessionId,
-  })};
-  </script>`;
-  this.body = script + reactMarkup;
-  this.type = 'text/html';
+  };
+  // rs.push(scriptTagWithData('identity', identity));
+  redux.dispatch({type: 'update', update: {identity}});
+
+  //this.redux.dispatch({type: 'add', racer: 'Waluigi'});
+  var awaitableProps = {};
+
+  if (this.sessionId) {
+    var sessionData$ = r.db('exp_host').table('sessionAndBrowserData').get(this.sessionId);
+    awaitableProps.sessionData = sessionData$.then((sessionData) => {
+      redux.dispatch({type: 'udpate', update: {sessionData}});
+      // rs.push(scriptTagWithData('sessionData', sessionData));
+      return sessionData;
+    });
+  }
+  if (this.browserId) {
+    var browserData$ = r.db('exp_host').table('sessionAndBrowserData').get(this.browserId);
+    awaitableProps.browserData = browserData$.then((browserData) => {
+      redux.dispatch({type: 'update', update: {browserData}});
+      // rs.push(scriptTagWithData('browserData', browserData));
+      return browserData;
+    });
+  }
+
+  if (this.sessionId && this.browserId) {
+    var userData$ = r.db('exp_host').table('loginSessions').filter((s) => {
+      return r.or(
+        s('sessionKey').eq(this.sessionId),
+        s('sessionKey').eq(this.browserId)
+      )
+    });
+    awaitableProps.userData = userData$.then((userData) => {
+      redux.dispatch({type: 'update', update: {userData}});
+      // rs.push(scriptTagWithData('userData', userData));
+      return userData;
+    });
+  }
+
+  yield promiseProps(awaitableProps);
+
+  rs.push(reactMarkup);
+  rs.push(scriptTagWithData('reduxState', redux.getState()));
+
+  this.body = rs.join('');
 });
 app.use(siteRouter.routes());
 app.use(siteRouter.allowedMethods());

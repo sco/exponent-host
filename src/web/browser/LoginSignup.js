@@ -15,7 +15,6 @@ export default class ConnectToDropboxButton extends React.Component {
     return (
       <a href="#" onClick={this._onClick}>
         <span style={{
-            backgroundColor: '#cccccc',
             fontWeight: 'bold',
         }}>Connect to Dropbox</span>
       </a>
