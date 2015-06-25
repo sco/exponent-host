@@ -24,6 +24,7 @@ import config from './config';
 import r from './database/r';
 import servePackage from './servePackage';
 import ServerSideRenderer from './web/server/ServerSideRenderer';
+import session from './session';
 import * as stores from './stores';
 
 let app = koa();
@@ -34,6 +35,7 @@ app.experimental = true;
 app.use(logger());
 app.use(gzip());
 app.use(identify());
+app.use(session.middleware());
 
 let endpointRouter = router({ prefix: '/--' });
 endpointRouter.use(body());

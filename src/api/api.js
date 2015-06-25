@@ -18,6 +18,9 @@ var Api = {
   },
 };
 
+_.assign(Api, require('./dropbox'));
+_.assign(Api, require('./session'));
+
 var callMethod = function*(next) {
   var method = Api[this.params.method];
   var jsonArgs = this.params.jsonArgs;
@@ -37,13 +40,15 @@ var callMethod = function*(next) {
       //console.log("keys=", Object.keys(this));
       //console.log("session=", this.session);
       //console.log("passport=", this.passport);
-      console.log("cookies=", this.cookies.keys);
+      // console.log("cookies=", this.cookies.keys);
+      var username = yield this.username$;
       var env = {
         args,
         method,
         methodName: this.params.method,
         ip: this.request.ip,
         _request: this.request,
+        username,
         // _session: this.session,
         // TODO: Add in other environment stuff here
       };
