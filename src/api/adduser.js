@@ -1,9 +1,11 @@
 var _ = require('lodash-node');
+var promiseProps = require('promise-props');
 
 var ApiError = require('./ApiError');
 var log = require('../log');
 var password = require('../password');
 var r = require('../database/r');
+var session = require('../session');
 var username_ = require('../username');
 
 function sanitizeUserObjectForClient(user) {
@@ -32,12 +34,26 @@ module.exports = {
       hashedPassword,
       email,
       phoneNumber,
+      type,
     } = args;
 
     // Validate username
     var valid = username_.validateUsername(username);
     if (valid !== true) {
       throw ApiError('INVALID_USERNAME', env, valid);
+    }
+
+    var association;
+    switch (args.type) {
+      case 'client':
+        association = {clientId: env.clientId};
+        break;
+      case 'session':
+        association = {sessionId: env.sessionId};
+        break;
+      case 'browser':
+        association = {browserId: env.browserId};
+        break;
     }
 
     var doubleHashedPassword = password.doubleHashHashedPassword(hashedPassword);
@@ -75,11 +91,16 @@ module.exports = {
 
         // Read the user from the database just to make sure we are getting it straight from the source
         // TODO: We can eliminate this database read for efficiency if we want to
-        var user = await getSanitizedUserforUsernameAsync(username);
+
+        // console.log("Going to login. username=", username, "association=", association);
+        var {user} = await promiseProps({
+          user: getSanitizedUserforUsernameAsync(username),
+          __: session.createLoginAsync(username, association),
+        });
 
         return {
           err: null,
-          user: user,
+          user,
         };
 
       } else {
@@ -95,7 +116,11 @@ module.exports = {
       delete props.hashedPassword;
 
       var result = await r.db('exp_host').table('users').insert(props);
-      var user = await getSanitizedUserforUsernameAsync(username);
+      var {user} = await promiseProps({
+        user: getSanitizedUserforUsernameAsync(username),
+        __: session.createLoginAsync(username, association),
+      });
+
       return {
         err: null,
         user: user,

@@ -10,6 +10,7 @@ var Api = {
   publish: require('./publish'),
   whoami: require('./whoami'),
   shortenUrl: require('./shortenUrl'),
+  logout: require('./logout'),
   __reverse__: {
     doc: "Reverses the first argument; for testing the API",
     methodAsync: async function (env, args) {
@@ -41,14 +42,36 @@ var callMethod = function*(next) {
       //console.log("session=", this.session);
       //console.log("passport=", this.passport);
       // console.log("cookies=", this.cookies.keys);
-      var username = yield this.username$;
+      var methodName = this.params.method;
+      var username;
+      try {
+        username = yield this.username$;
+      } catch (e) {
+        if (e.code === 'USER_NOT_LOGGED_IN') {
+          if (_.contains([
+            'login',
+            'logout',
+            'adduser',
+          ], methodName)) {
+            username = null;
+          } else {
+            this.body = {err: '' + e.message + '.', _isApiError: true, code: e.code,};
+            return;
+          }
+        } else {
+          throw e;
+        }
+      }
       var env = {
         args,
         method,
-        methodName: this.params.method,
+        methodName,
         ip: this.request.ip,
         _request: this.request,
         username,
+        sessionId: this.sessionId,
+        browserId: this.browserId,
+        clientId: this.clientId,
         // _session: this.session,
         // TODO: Add in other environment stuff here
       };

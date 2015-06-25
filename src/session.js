@@ -1,4 +1,5 @@
 var _ = require('lodash-node');
+var assert = require('assert');
 
 var r = require('./database/r');
 
@@ -89,6 +90,7 @@ function middleware(opts) {
   // opts = opts || {};
   return function* (next) {
     this.username$ = userForRequestAsync(this); // .then((u) => { console.log("userForRequestAsync=", u); return u });
+    this.clientId = this.header['exp-clientid']
     yield *next;
   };
 }
