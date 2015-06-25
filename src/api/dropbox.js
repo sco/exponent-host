@@ -1,4 +1,4 @@
-var dropbox = require('dropbox');
+var dropbox = require('@exponent/dropbox');
 
 module.exports = {
 
