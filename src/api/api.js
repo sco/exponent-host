@@ -20,7 +20,6 @@ var Api = {
 };
 
 _.assign(Api, require('./dropbox'));
-_.assign(Api, require('./session'));
 
 var callMethod = function*(next) {
   var method = Api[this.params.method];
@@ -37,11 +36,6 @@ var callMethod = function*(next) {
     }
 
     if (argsOk) {
-      //this.session.id = this.session.id || Math.random();
-      //console.log("keys=", Object.keys(this));
-      //console.log("session=", this.session);
-      //console.log("passport=", this.passport);
-      // console.log("cookies=", this.cookies.keys);
       var methodName = this.params.method;
       var username;
       try {
@@ -72,7 +66,6 @@ var callMethod = function*(next) {
         sessionId: this.sessionId,
         browserId: this.browserId,
         clientId: this.clientId,
-        // _session: this.session,
         // TODO: Add in other environment stuff here
       };
       try {
