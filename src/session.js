@@ -12,6 +12,9 @@ function SessionError(code, message, etc) {
 }
 
 function typeForAssociation(association) {
+  if (!association) {
+    throw SessionError('ASSOCIATION_NOT_PROVIDED', "Assocation not provided; can't login without it");
+  }
   assert(Object.keys(association).length === 1);
   var type;
   if (association.sessionId) {
@@ -59,7 +62,7 @@ async function userForRequestAsync(req) {
 
   // First check the headers
   var username = req.header['exp-username'] || req.cookies.get('exp:username') || null;
-  var clientId = req.header['exp-clientid'];
+  var clientId = req.header['exp-clientid'] || null;
 
   if (username) {
 
@@ -67,9 +70,9 @@ async function userForRequestAsync(req) {
       return r.and(
         row('username').eq(username),
         r.or(
-          row('sessionId').default(null).eq(req.sessionId),
-          row('browserId').default(null).eq(req.browserId),
-          row('clientId').default(null).eq(clientId)
+          r.and(row('sessionId').default(null).eq(req.sessionId), r.ne(null, req.sessionId)),
+          r.and(row('browserId').default(null).eq(req.browserId), r.ne(null, req.browserId)),
+          r.and(row('clientId').default(null).eq(clientId), r.ne(null, clientId))
         )
       );
     });

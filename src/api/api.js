@@ -61,7 +61,7 @@ var callMethod = function*(next) {
         method,
         methodName,
         ip: this.request.ip,
-        _request: this.request,
+        request: this.request,
         username,
         sessionId: this.sessionId,
         browserId: this.browserId,
@@ -73,14 +73,23 @@ var callMethod = function*(next) {
         if (!_.isObject(result)) {
           result = {result: result};
         }
-        result.err = null;
+        result.err = result.err || null;
+        if (env.__setLogin__) {
+          var cookieOpts = {
+            httpOnly: false,
+          };
+          if (env.__setLogin__.type == 'browser') {
+            cookieOpts.expires = new Date(33000000000000);
+          }
+          this.cookies.set('exp:username', env.__setLogin__.username, cookieOpts);
+        }
         this.body = result;
       } catch (e) {
         if (ApiError.isApiError(e)) {
           log.error("API Error:", e);
           this.body = {err: '' + e.message + '.', _isApiError: true, code: e.code,};
         } else {
-          log.error("Server Error:", e);
+          log.error("Server Error:", e, e.stack);
           this.body = {err: '' + e.message + '.', apiError: false, code: 'SERVER_ERROR',};
         }
       }

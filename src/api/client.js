@@ -2,7 +2,7 @@ async function getBaseUrlAsync() {
   return '/--/api';
 }
 
-function ApiError(message) {
+function ApiError(code, message) {
   var err = new Error(message);
   err._isApiError = true;
   err.code = code;
@@ -15,25 +15,38 @@ async function callMethodAsync(methodName, args) {
   var username = null;
   var hashedPassword = null;
 
+  // To avoid parse errors when you `stringify` then `parse` `undefined`.
+  args = args || null;
+
   var url = baseUrl + '/' + encodeURIComponent(methodName) + '/' + encodeURIComponent(JSON.stringify(args));
   if (username && hashedPassword) {
     url += '?username=' + encodeURIComponent(username) + '&hashedPassword=' + encodeURIComponent(hashedPassword);
   }
 
   require('whatwg-fetch');
-  var response = await fetch(url);
+  var response = await fetch(url, {
+  credentials: 'same-origin'
+  });
   var json = await response.json();
   if (json.err) {
-    throw ApiError(json.err);
+    throw ApiError(json.err.code || 'UNKNOWN_API_ERROR', json.err);
   }
   return json;
 
 }
 
-try {
+if (typeof(window) === 'object') {
   window.apiAsync = callMethodAsync;
-} catch (e) {
-  // Not a browser
+  window.loginAsync = function (username, password, type) {
+    return window.apiAsync('adduser', {
+      username,
+      password,
+      type,
+    }).then((result) => {
+
+    });
+
+  };
 }
 
 module.exports = {

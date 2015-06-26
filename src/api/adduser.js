@@ -2,27 +2,12 @@ var _ = require('lodash-node');
 var promiseProps = require('promise-props');
 
 var ApiError = require('./ApiError');
+var apiUser = require('./apiUser');
 var log = require('../log');
 var password = require('../password');
 var r = require('../database/r');
 var session = require('../session');
 var username_ = require('../username');
-
-function sanitizeUserObjectForClient(user) {
-  var sanitizedUser = _.clone(user);
-  delete sanitizedUser.doubleHashedPassword;
-  delete sanitizedUser.hashedPassword;
-  return sanitizedUser;
-}
-
-var getSanitizedUserforUsernameAsync = async function (username) {
-  var users = await r.db('exp_host').table('users').filter({username: username,});
-  if (users.length > 0) {
-    return sanitizeUserObjectForClient(users[0]);
-  } else {
-    return null;
-  }
-};
 
 
 module.exports = {
@@ -36,6 +21,14 @@ module.exports = {
       phoneNumber,
       type,
     } = args;
+
+    if (!hashedPassword && args.password) {
+      hashedPassword = password.hashCleartextPassword(args.password);
+    }
+
+    if (!hashedPassword) {
+      throw ApiError('EMPTY_PASSWORD', env);
+    }
 
     // Validate username
     var valid = username_.validateUsername(username);
@@ -94,10 +87,14 @@ module.exports = {
 
         // console.log("Going to login. username=", username, "association=", association);
         var {user} = await promiseProps({
-          user: getSanitizedUserforUsernameAsync(username),
+          user: apiUser.getSanitizedUserforUsernameAsync(username),
           __: session.createLoginAsync(username, association),
         });
 
+        env.__setLogin__ = {
+          username,
+          type,
+        };
         return {
           err: null,
           user,
@@ -117,10 +114,14 @@ module.exports = {
 
       var result = await r.db('exp_host').table('users').insert(props);
       var {user} = await promiseProps({
-        user: getSanitizedUserforUsernameAsync(username),
+        user: apiUser.getSanitizedUserforUsernameAsync(username),
         __: session.createLoginAsync(username, association),
       });
 
+      env.__setLogin__ = {
+        username,
+        type,
+      };
       return {
         err: null,
         user: user,
@@ -139,5 +140,4 @@ module.exports = {
     return true;
 
   },
-  getSanitizedUserforUsernameAsync,
 };
