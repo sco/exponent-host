@@ -11,6 +11,7 @@ import Documentation from './Documentation';
 import GettingStarted from './GettingStarted';
 import Help from './Help';
 import Home from './Home';
+import Login from './Login';
 import LoginSignup from './LoginSignup';
 import NotFound from './NotFound';
 import PrivacyPolicy from './PrivacyPolicy';
@@ -19,7 +20,7 @@ import TermsOfService from './TermsOfService';
 
 export default (
   <Route path="/" handler={Site}>
-    <Route name="login" handler={LoginSignup} />
+    <Route name="login" handler={Login} />
     <Route name="home" path="/" handler={Home} />
     <Route name="about" handler={About} />
     <Route name="community" handler={Community} />

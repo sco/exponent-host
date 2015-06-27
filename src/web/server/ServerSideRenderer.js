@@ -7,6 +7,7 @@ import { Provider } from 'redux/react';
 import Flux from '../../flux/Flux';
 import Page from './Page';
 import routes from '../browser/routes';
+import stores from '../../stores';
 
 
 export default class ServerSideRenderer {
@@ -14,21 +15,9 @@ export default class ServerSideRenderer {
     this.koaContext = koaContext;
     this.staticResources = staticResources;
 
-    let stores = {
-      MarioKartRacers: (data=[], action) => {
-        // console.log("action=", action);
-        if (action.type === 'add') {
-          // console.log("Adding the racer", action.racer, "to the store");
-          return data.concat(action.racer);
-        } else {
-          // console.log("Didn't know how to handle that action =P");
-          return data;
-        }
-      },
-    };
-    /*
     this.redux = Flux.createRedux(stores);
 
+    /*
     this.redux.dispatch({type: 'add', racer: 'Waluigi'});
     this.redux.dispatch({type: 'add', racer: 'Peach'});
     this.redux.dispatch({type: 'add', racer: 'Toad'});
@@ -49,12 +38,14 @@ export default class ServerSideRenderer {
       }
     }
 
+    console.log("redux=", this.redux, "state=", this.redux.getState());
     let markup = React.renderToStaticMarkup(
+      /*
       <Page
         staticResources={this.staticResources}
         markup={{ __html: bodyMarkup }}
       />
-      /*
+      */
       <Provider redux={this.redux}>
         {() =>
           <Page
@@ -63,7 +54,6 @@ export default class ServerSideRenderer {
           />
         }
       </Provider>
-      */
     );
 
     return '<!DOCTYPE html>' + markup;

@@ -7,7 +7,7 @@ var _ = require('lodash-node');
 // and the state shape is up to you: you can use primitives,
 // objects, arrays, or even ImmutableJS objects.
 
-export default function store(data={}, action) {
+function accountStore(data={}, action) {
   switch (action.type) {
     case 'update':
       return _.assign(_.clone(data), action.update);
@@ -15,3 +15,7 @@ export default function store(data={}, action) {
       return data;
   }
 }
+
+module.exports = {
+  account: accountStore,
+};

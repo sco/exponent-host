@@ -6,7 +6,7 @@ import { createRedux } from 'redux';
 import { Provider } from 'redux/react';
 
 import routes from './routes';
-import * as stores from '../../stores';
+import stores from '../../stores';
 
 Router.run(routes, Router.HistoryLocation, Root => {
   // This is running on the client

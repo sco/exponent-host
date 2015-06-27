@@ -25,7 +25,7 @@ import r from './database/r';
 import servePackage from './servePackage';
 import ServerSideRenderer from './web/server/ServerSideRenderer';
 import session from './session';
-import * as stores from './stores';
+import stores from './stores';
 
 let app = koa();
 app.name = 'exp-host';

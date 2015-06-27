@@ -11,7 +11,7 @@ import apiClient from '../../api/client';
 import { appKey } from '../../dropbox';
 import * as stores from '../../stores/';
 
-var LoginBox = /*connect(stores)*/(React.createClass({
+var LoginBox = React.createClass({
   getInitialState() {
     return {
       username: null,
@@ -28,9 +28,7 @@ var LoginBox = /*connect(stores)*/(React.createClass({
     return (
       <form onSubmit={this._onSubmit}>
         <div>
-          <div>
-            You are currently logged in as:
-          </div>
+          <CurrentLoginInfo />
           <table>
             <tr>
               <td>
@@ -78,7 +76,27 @@ var LoginBox = /*connect(stores)*/(React.createClass({
     });
   }
 
-}));
+});
+
+@connect(data => CurrentLoginInfo.DecoratedComponent.getDataProps(data))
+class CurrentLoginInfo extends React.Component {
+
+  static getDataProps(data) {
+    return {
+      // TODO: Get some data that is less pointless
+      browserId: data.account.identity.browserId,
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        Another day older
+      </div>
+    );
+  }
+
+}
 
 if (typeof(window) === 'object') {
   window.l = function (result) { console.log(result); return result; };
@@ -91,56 +109,6 @@ if (typeof(window) === 'object') {
 
 export default LoginBox;
 
-/*
-export default class LoginBox extends React.Component {
-
-  constructor() {
-    super();
-    this.state = {username: '', password: ''};
-  }
-
-  render() {
-    return (
-      <form onSubmit={this._onSubmit}>
-        <div>
-          <div>
-            Username: <input type="text" name="username" onChange={(e) => {
-              this.setState({username: e.target.value});
-            }} />
-          </div>
-          <div>
-            Password: <input type="password" name="password" onChange={(e) => {
-              this.setState({password: e.target.value});
-            }} />
-          </div>
-          <div>
-            <input type="submit" value="Login" />
-          </div>
-        </div>
-      </form>
-    );
-  }
-
-  @autobind
-  _onSubmit(e) {
-    e.preventDefault();
-    window.THIS_ = this;
-    console.log("The ginger hair");
-    apiClient.callMethodAsync('login', {
-      username: this.state.username,
-      password: this.state.password,
-    }).then((result) => {
-      console.log(result);
-    }, (err) => {
-      console.error(err);
-    });
-    e.preventDefault();
-    return false;
-  }
-}
-*/
-
-//@connect((data) => {racers: data.MarioKartRacers})
 class ConnectToDropboxButton extends React.Component {
   render() {
     return (
