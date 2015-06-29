@@ -112,12 +112,14 @@ siteRouter.get('/\\.:shortcode', function*(next) {
 siteRouter.get('/images/(.*)',
   rewrite('/images/*', '$1'),
   serve('src/web/browser/images', {
-    maxage: timeconstants.yearApprox,
+    maxage: 5 * timeconstants.minute,
   }),
 );
 siteRouter.get('/assets/v(\\d+)/(.*)',
   rewrite('/assets/v\\d+/*', '$1'),
-  serve('build/web/assets'),
+  serve('build/web/assets', {
+    maxage: timeconstants.yearApprox,
+  }),
 );
 
 function scriptTagWithData(name, data) {
