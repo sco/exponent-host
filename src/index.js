@@ -111,7 +111,9 @@ siteRouter.get('/\\.:shortcode', function*(next) {
 });
 siteRouter.get('/images/(.*)',
   rewrite('/images/*', '$1'),
-  serve('src/web/browser/images'),
+  serve('src/web/browser/images', {
+    maxage: timeconstants.yearApprox,
+  }),
 );
 siteRouter.get('/assets/v(\\d+)/(.*)',
   rewrite('/assets/v\\d+/*', '$1'),
@@ -161,7 +163,7 @@ siteRouter.get('/(.*)', function*(next) {
   if (this.sessionId) {
     var sessionData$ = r.db('exp_host').table('sessionAndBrowserData').get(this.sessionId);
     awaitableProps.sessionData = sessionData$.then((sessionData) => {
-      redux.dispatch({type: 'udpate', update: {sessionData}});
+      redux.dispatch({type: 'update', update: {sessionData}});
       // rs.push(scriptTagWithData('sessionData', sessionData));
       return sessionData;
     });
