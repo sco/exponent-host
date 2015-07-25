@@ -13,6 +13,7 @@ export default class Home extends React.Component {
       <div className="home">
         <Jumbotron className="text-center">
           <div className="container">
+            <h2 style="color: white; background: red;">We are updating Exponent to the latest version; downloading the app does not currently work</h2>
             <h1>Exponent</h1>
             <p>
               An app for React Native developers
