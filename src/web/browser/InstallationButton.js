@@ -4,7 +4,8 @@ import {
   Button,
 } from 'react-bootstrap';
 
-const MANIFEST_URL = 'https://www.dropbox.com/s/wjr7trh1zg12s6b/manifest.plist?dl=1';
+//const MANIFEST_URL = 'https://www.dropbox.com/s/wjr7trh1zg12s6b/manifest.plist?dl=1';
+const MANIFEST_URL = 'https://www.dropbox.com/s/07vdfvl4jn0ezjf/manifest-2015-07-25.plist?dl=1';
 const ITUNES_BASE_URL = 'itms-services://?action=download-manifest&url=';
 
 // TODO: Do an OS version check in componentDidMount
