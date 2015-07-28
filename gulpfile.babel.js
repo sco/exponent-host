@@ -46,7 +46,7 @@ gulp.task('snapshot-browser', function (cb) {
 });
 
 gulp.task('snapshot-home', function (cb) {
-  var bundleUrl = 'http://localhost:8081/Home/index.includeRequire.runModule.bundle?dev=false&minify=true';
+  var bundleUrl = 'http://localhost:8081/home.includeRequire.runModule.bundle?dev=false&minify=true';
   var bundleFile = path.join(__dirname, 'home.bundle.js');
   snapshotBundleAsync(bundleUrl, bundleFile).then(cb);
 });
