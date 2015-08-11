@@ -33,7 +33,6 @@ export async function fetchBrowserBundleAsync(opts) {
   let f = {};
   for (let key of [
     'exponentVersion',
-    'exponentGitHash',
     'reactNativeVersion',
     'reactNativeGitHash',
     'dev',
