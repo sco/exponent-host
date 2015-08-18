@@ -13,8 +13,12 @@ module.exports = {
     // TODO: Validate args
 
     var opts = args[0];
+    let publishOpts = args[1] || {};
+    let {
+      stealth,
+    } = publishOpts;
 
-    var {
+    let {
       username,
       hashedPassword,
       localPackageName,
@@ -23,7 +27,6 @@ module.exports = {
       remotePackageName,
       remoteFullPackageName,
       ngrokUrl,
-      stealth,
     } = opts;
 
     var packageFullName = '@' + remoteUsername + '/' + remotePackageName;
