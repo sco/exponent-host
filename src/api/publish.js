@@ -23,6 +23,7 @@ module.exports = {
       remotePackageName,
       remoteFullPackageName,
       ngrokUrl,
+      stealth,
     } = opts;
 
     var packageFullName = '@' + remoteUsername + '/' + remotePackageName;
@@ -53,16 +54,18 @@ module.exports = {
     // A URL that mobile Safari can open that will redirect you to the app
     var redirectUrl = 'http://exp.host/--/to-exp/' + encodeURIComponent(expUrl);
 
-    slack.sendSlackWebhookMessageAsync({
-      icon_emoji: ':fire:',
-      username: 'exp.host',
-      channel: '#offthepress',
-      text: "@" + username + " just published the package " + packageFullName + "@" + packageVersion + "\n" + expUrl + "\n" + appetizeUrl + "\n" + redirectUrl,
-    }).then(() => {
-      // Sent Slack message about new pages
-    }, (err) => {
-      console.error("Failed to send Slack message about new package");
-    });
+    if (!stealth) {
+      slack.sendSlackWebhookMessageAsync({
+        icon_emoji: ':fire:',
+        username: 'exp.host',
+        channel: '#offthepress',
+        text: "@" + username + " just published the package " + packageFullName + "@" + packageVersion + "\n" + expUrl + "\n" + appetizeUrl + "\n" + redirectUrl,
+      }).then(() => {
+        // Sent Slack message about new pages
+      }, (err) => {
+        console.error("Failed to send Slack message about new package");
+      });
+    }
 
     return {err: null, packageFullName, hash, expUrl, appetizeUrl, redirectUrl};
   },
