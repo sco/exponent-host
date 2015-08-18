@@ -29,6 +29,8 @@ module.exports = {
     var packageFullName = '@' + remoteUsername + '/' + remotePackageName;
 
     console.log("Saving", packageFullName, "from", ngrokUrl, ".");
+    console.log("Opts=", opts);
+    console.log("Stealth=", stealth);
     var response = await request.promise.get(ngrokUrl);
 
     var body = response.body;
