@@ -27,25 +27,25 @@ const paths = {
   build: 'build',
 };
 
-let snapshotBundleAsync = function (bundleUrl, bundleFile) {
+let snapshotBundleAsync = function(bundleUrl, bundleFile) {
   gutil.log('Fetching bundle from', bundleUrl, '...');
-  return request.promise.get(bundleUrl).then(function (response) {
+  return request.promise.get(bundleUrl).then(function(response) {
     let js = response.body;
-    return fs.promise.writeFile(bundleFile, js, 'utf8').then(function () {
+    return fs.promise.writeFile(bundleFile, js, 'utf8').then(function() {
       gutil.log('Created bundle at', bundleFile);
     });
-  }).catch(function (err) {
+  }).catch(function(err) {
     gutil.log(crayon.red('Snapshot Failed:', err));
   });
 };
 
-gulp.task('snapshot-browser', function (cb) {
+gulp.task('snapshot-browser', function(cb) {
   let bundleUrl = 'http://localhost:8081/exponent.includeRequire.runModule.bundle?dev=false&minify=true';
   let bundleFile = path.join(__dirname, 'exponent.bundle.js');
   snapshotBundleAsync(bundleUrl, bundleFile).then(cb);
 });
 
-gulp.task('snapshot-home', function (cb) {
+gulp.task('snapshot-home', function(cb) {
   var bundleUrl = 'http://localhost:8081/home.includeRequire.runModule.bundle?dev=false&minify=true';
   var bundleFile = path.join(__dirname, 'home.bundle.js');
   snapshotBundleAsync(bundleUrl, bundleFile).then(cb);
@@ -109,7 +109,7 @@ gulp.task('webpack', co.wrap(function*() {
   }
 
   let jsonStats = stats.toJson();
-  if (stats.hasErrors()){
+  if (stats.hasErrors()) {
     for (let errorMessage of jsonStats.errors) {
       gutil.log(crayon.red(errorMessage));
     }
@@ -121,7 +121,7 @@ gulp.task('webpack', co.wrap(function*() {
   }
 }));
 
-gulp.task('koa', ['build:dev'], function (callback) {
+gulp.task('koa', ['build:dev'], function(callback) {
   return spawnAsync('node', ['./build'], {stdio: 'inherit', cwd: __dirname}).then((result) => {
     return callback(null, result);
   }, (err) => {
@@ -130,7 +130,7 @@ gulp.task('koa', ['build:dev'], function (callback) {
 });
 
 var _serverTask;
-gulp.task('koa:start-or-restart', function (callback) {
+gulp.task('koa:start-or-restart', function(callback) {
   if (_serverTask) {
     var child = _serverTask.child;
     if (!child) {
@@ -160,7 +160,7 @@ gulp.task('koa:start-or-restart', function (callback) {
   callback(null, _serverTask);
 });
 
-gulp.task('koa:watch', ['koa:start-or-restart'], function () {
+gulp.task('koa:watch', ['koa:start-or-restart'], function() {
   gulp.watch(paths.build + '/**/*', ['koa:start-or-restart']);
 });
 
@@ -210,9 +210,9 @@ gulp.task('clean', function(callback) {
   rimraf(paths.build, callback);
 });
 
-gulp.task('deploy', function () {
+gulp.task('deploy', function() {
   return pm2.promise.deploy('ecosystem.json', {
-    rawArgs:['deploy', 'ecosystem.json', 'production']
+    rawArgs: ['deploy', 'ecosystem.json', 'production'],
   });
 });
 

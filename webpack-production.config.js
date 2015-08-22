@@ -64,7 +64,7 @@ module.exports = [
       new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        filename: '[chunkhash:20].js',
+        filename: '[hash:20].js',
         minChunks: Infinity,
       }),
       new webpack.optimize.UglifyJsPlugin({

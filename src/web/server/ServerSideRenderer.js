@@ -38,7 +38,7 @@ export default class ServerSideRenderer {
       }
     }
 
-    console.log("redux=", this.redux, "state=", this.redux.getState());
+    // console.log("redux=", this.redux, "state=", this.redux.getState());
     let markup = React.renderToStaticMarkup(
       /*
       <Page

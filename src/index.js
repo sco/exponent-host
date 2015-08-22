@@ -1,3 +1,5 @@
+'use strict';
+
 import child_process from 'child_process';
 import fs from 'fs';
 import path from 'path';
@@ -16,17 +18,18 @@ import serve from 'koa-static';
 import { createRedux } from 'redux';
 import timeconstants from 'timeconstants';
 
-
-import api from './api/api';
-import config from './config';
-import r from './database/r';
-import servePackage from './servePackage';
 import ServerSideRenderer from './web/server/ServerSideRenderer';
+
+import config from './config';
+import servePackage from './servePackage';
 import session from './session';
 import stores from './stores';
+import api from './api/api';
+import r from './database/r';
+import domainRedirect from './middleware/domainRedirect';
 
 let app = koa();
-app.name = 'exp-host';
+app.name = 'exponentjs.com';
 app.proxy = true;
 app.experimental = true;
 
@@ -86,6 +89,10 @@ app.use(bundleRouter.routes());
 app.use(bundleRouter.allowedMethods());
 
 let siteRouter = router();
+siteRouter.use(domainRedirect(
+  ['exp.host', 'exponentjs.net', 'exponentjs.org'],
+  'exponentjs.com',
+));
 siteRouter.use(conditional());
 siteRouter.use(etag());
 
@@ -210,7 +217,7 @@ if (require.main === module) {
   });
 }
 
-export { app };
+export default app;
 
 /*
 build and serve static assets. want to support both development and production mode.
