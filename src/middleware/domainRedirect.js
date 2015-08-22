@@ -1,5 +1,3 @@
-'use strict';
-
 import url from 'url';
 
 export default function domainRedirect(sourceDomains, destDomain, code = 301) {
