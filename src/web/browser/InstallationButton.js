@@ -12,7 +12,7 @@ export default class InstallationButton extends React.Component {
   render() {
     return (
       <Button {...this.props} bsStyle="primary" onClick={this._downloadApp}>
-        Install Now
+        Install the Beta
       </Button>
     );
   }

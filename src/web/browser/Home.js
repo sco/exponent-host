@@ -25,7 +25,22 @@ export default class Home extends React.Component {
             <p className="headerInstructions">
               With Exponent, you can write React Native experiences with any computer and a text editor and a phone. No need for Xcode or even a simulator. Download the app now to get started.
             </p>
-            <InstallationButton className="headerInstallationButton" />
+            <div>
+              <a href="https://itunes.com/apps/exponent" target="_blank">
+                <img
+                  className="appStoreBadge"
+                  src={require('./images/app-store-badge@3x.png')}
+                  alt="Download on the App Store"
+                />
+              </a>
+              <div className="headerBetaSection">
+                <InstallationButton className="headerInstallationButton" />
+                <br />
+                <span>
+                  Test the next version with Exponent Beta
+                </span>
+              </div>
+            </div>
           </div>
         </Jumbotron>
       </div>

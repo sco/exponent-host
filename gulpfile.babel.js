@@ -134,14 +134,14 @@ gulp.task('koa:start-or-restart', function (callback) {
   if (_serverTask) {
     var child = _serverTask.child;
     if (!child) {
-      gutil.log(crayon.red("No child process"));
+      gutil.log(crayon.red('No child process'));
     } else {
       if (child.killed) {
         // already killed
       } else {
         var killed = _serverTask.child.kill();
         if (killed) {
-          gutil.log("Killed server process");
+          gutil.log('Killed server process');
         }
       }
       if (!child.killed && !killed) {

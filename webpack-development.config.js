@@ -18,7 +18,7 @@ module.exports = [
     ],
     output: {
       path: path.join(__dirname, 'build/web/assets'),
-      filename: '[chunkhash].js',
+      filename: '[hash].js',
       chunkFilename: '[chunkhash].js',
       publicPath: 'http://localhost:7272/',
       sourceMapFilename: 'debug/[file].map',

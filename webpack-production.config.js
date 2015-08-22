@@ -23,7 +23,7 @@ module.exports = [
     },
     output: {
       path: path.join(__dirname, 'build/web/assets'),
-      filename: '[chunkhash].js',
+      filename: '[hash].js',
       chunkFilename: '[chunkhash].js',
       publicPath: CDN_URL,
       sourceMapFilename: 'debug/[file].map',
