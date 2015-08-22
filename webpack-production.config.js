@@ -1,5 +1,3 @@
-'use strict';
-
 var path = require('path');
 var process = require('process');
 var webpack = require('webpack');
@@ -10,7 +8,9 @@ var StatsPlugin = require('stats-webpack-plugin');
 
 var LessPluginAutoPrefix = require('less-plugin-autoprefix');
 
-const CDN_URL = 'http://static.exp.host/v0/';
+const CDN_URL = 'http://static.exponentjs.com/v0/';
+
+var outputPath = path.join(__dirname, 'build/web/assets');
 
 module.exports = [
   {
@@ -19,11 +19,11 @@ module.exports = [
     target: 'web',
     entry: {
       main: './src/web/browser/index.js',
-      vendor: ['react', 'react-router', 'react-bootstrap'],
+      vendor: ['react', 'react-bootstrap', 'react-router', 'redux'],
     },
     output: {
-      path: path.join(__dirname, 'build/web/assets'),
-      filename: '[hash].js',
+      path: outputPath,
+      filename: '[chunkhash].js',
       chunkFilename: '[chunkhash].js',
       publicPath: CDN_URL,
       sourceMapFilename: 'debug/[file].map',
@@ -59,6 +59,7 @@ module.exports = [
         },
       }),
       new webpack.PrefetchPlugin('react'),
+      new webpack.PrefetchPlugin('react-router'),
       new ExtractTextPlugin('[sha512:contenthash:base62:20].css'),
       new webpack.optimize.DedupePlugin(),
       new webpack.optimize.OccurrenceOrderPlugin(),
@@ -80,7 +81,10 @@ module.exports = [
         test: /\.(css|less|jpe?g|png|gif|svg)$/,
         exclude: /node_modules/,
       }),
-      new StatsPlugin(path.join(__dirname, 'build/web/server/stats.json'), {
+      new StatsPlugin(path.relative(
+        outputPath,
+        path.join(__dirname, 'build/web/server/stats.json')
+      ), {
         assets: true,
         chunkModules: false,
         modules: false,
@@ -94,6 +98,6 @@ module.exports = [
       lessPlugins: [
         new LessPluginAutoPrefix({ browsers: ['last 2 versions'] }),
       ],
-    }
+    },
   },
 ];

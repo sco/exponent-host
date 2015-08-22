@@ -1,5 +1,3 @@
-'use strict';
-
 var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
@@ -7,6 +5,8 @@ var webpack = require('webpack');
 var AssetModulePlugin = require('asset-module-webpack-plugin');
 var LessPluginAutoPrefix = require('less-plugin-autoprefix');
 var StatsPlugin = require('stats-webpack-plugin');
+
+var outputPath = path.join(__dirname, 'build/web/assets');
 
 module.exports = [
   {
@@ -17,7 +17,7 @@ module.exports = [
       './src/web/browser/index.js',
     ],
     output: {
-      path: path.join(__dirname, 'build/web/assets'),
+      path: outputPath,
       filename: '[hash].js',
       chunkFilename: '[chunkhash].js',
       publicPath: 'http://localhost:7272/',
@@ -63,7 +63,10 @@ module.exports = [
         exclude: /node_modules/,
         fileSystems: [AssetModulePlugin.DefaultFileSystem, fs],
       }),
-      new StatsPlugin(path.join(__dirname, 'build/web/server/stats.json'), {
+      new StatsPlugin(path.relative(
+        outputPath,
+        path.join(__dirname, 'build/web/server/stats.json')
+      ), {
         assets: true,
         chunkModules: false,
         modules: false,
@@ -77,6 +80,6 @@ module.exports = [
       lessPlugins: [
         new LessPluginAutoPrefix({ browsers: ['last 2 versions'] }),
       ],
-    }
+    },
   },
 ];

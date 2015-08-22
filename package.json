@@ -26,7 +26,7 @@
     "bases": "^0.2.1",
     "cheerio": "^0.19.0",
     "classnames": "^2.1.3",
-    "core-decorators": "^0.1.0",
+    "core-decorators": "^0.2.0",
     "ent": "^2.2.0",
     "freeport-async": "^1.1.0",
     "immutable": "^3.7.4",
@@ -62,15 +62,14 @@
     "whatwg-fetch": "^0.9.0"
   },
   "devDependencies": {
-    "@exponent/spawn-async": "^1.1.0",
-    "asset-module-webpack-plugin": "0.0.1",
+    "asset-module-webpack-plugin": "0.0.2",
     "babel": "^5.6.14",
     "babel-core": "^5.6.15",
     "babel-eslint": "^4.0.10",
     "babel-loader": "^5.3.0",
     "bootstrap": "^3.3.5",
     "co": "^4.5.4",
-    "css-loader": "^0.15.1",
+    "css-loader": "0.14.5",
     "eslint": "^1.2.1",
     "eslint-plugin-react": "^3.2.3",
     "extract-text-webpack-plugin": "^0.8.2",
@@ -89,9 +88,9 @@
     "pm2": "^0.14.3",
     "react-hot-loader": "^1.2.7",
     "rimraf": "^2.4.1",
-    "stats-webpack-plugin": "^0.1.2",
+    "stats-webpack-plugin": "^0.2.1",
     "style-loader": "^0.12.3",
-    "webpack": "^1.10.1",
+    "webpack": "^1.11.0",
     "webpack-dev-server": "^1.10.1"
   }
 }
