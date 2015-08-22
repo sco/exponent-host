@@ -12,10 +12,8 @@ import logger from 'koa-logger';
 import promiseProps from 'promise-props';
 import rewrite from 'koa-rewrite';
 import router from 'koa-router';
-import secret from '@exponent/secret';
 import serve from 'koa-static';
 import { createRedux } from 'redux';
-import { Provider } from 'redux/react';
 import timeconstants from 'timeconstants';
 
 
@@ -145,7 +143,6 @@ siteRouter.get('/(.*)', function*(next) {
   }
   </script>
   `;
-  var Readable = require('stream').Readable;
 
   var rs = [];
 
@@ -184,7 +181,7 @@ siteRouter.get('/(.*)', function*(next) {
       return r.or(
         s('sessionKey').eq(this.sessionId),
         s('sessionKey').eq(this.browserId)
-      )
+      );
     });
     awaitableProps.userData = userData$.then((userData) => {
       redux.dispatch({type: 'update', update: {userData}});
