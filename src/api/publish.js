@@ -43,7 +43,7 @@ module.exports = {
       publishedTime: r.now(),
       version: packageVersion,
       contents: body,
-      hash: hash,
+      hash,
     });
 
     var expUrl = 'exp://exp.host/' + packageFullName;
@@ -59,11 +59,25 @@ module.exports = {
         icon_emoji: ':fire:',
         username: 'exp.host',
         channel: '#offthepress',
-        text: "@" + username + " just published the package " + packageFullName + "@" + packageVersion + "\n" + expUrl + "\n" + appetizeUrl + "\n" + redirectUrl,
+        attachments: [{
+          fallback: `@${username} just published the package ${packageFullName}@${packageVersion}\n${expUrl}`,
+          color: 'good',
+          pretext: `@${username} just published a new Exponent experience`,
+          text: `${expUrl}\n${redirectUrl}`,
+          fields: [{
+            title: 'Name',
+            value: remotePackageName,
+            short: true,
+          }, {
+            title: 'Version',
+            value: packageVersion,
+            short: true,
+          }],
+        }],
       }).then(() => {
         // Sent Slack message about new pages
       }, (err) => {
-        console.error("Failed to send Slack message about new package");
+        console.error('Failed to send Slack message about new package', err.stack);
       });
     }
 
