@@ -11,9 +11,13 @@ function sanitizeUserObjectForClient(user) {
 }
 
 async function getSanitizedUserforUsernameAsync(username) {
-  var users = await r.db('exp_host').table('users').filter({username: username,});
-  if (users.length > 0) {
-    return sanitizeUserObjectForClient(users[0]);
+  if (username) {
+    var users = await r.db('exp_host').table('users').filter({username: username,});
+    if (users.length > 0) {
+      return sanitizeUserObjectForClient(users[0]);
+    } else {
+      return null;
+    }
   } else {
     return null;
   }

@@ -219,3 +219,5 @@ gulp.task('deploy', function() {
 gulp.task('default', ['build:watch']);
 
 gulp.task('dev', ['build:dev', 'koa:watch']);
+
+gulp.task('api', ['koa:watch', 'babel:watch']);
