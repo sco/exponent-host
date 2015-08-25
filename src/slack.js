@@ -53,7 +53,6 @@ async function sendSlackWebhookMessageAsync(opts) {
   var defaults = {
     channel: '#random',
     username: 'exp.host',
-    text: 'Test ' + Date.now(),
     icon_emoji: ':robot:',
   };
   opts = _.assign(defaults, opts);
@@ -66,5 +65,3 @@ module.exports = {
   slackApiCallAsync,
   sendSlackWebhookMessageAsync,
 };
-
-

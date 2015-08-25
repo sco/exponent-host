@@ -62,7 +62,7 @@ module.exports = {
         attachments: [{
           fallback: `@${username} just published the package ${packageFullName}@${packageVersion}\n${expUrl}`,
           color: 'good',
-          pretext: `@${username} just published a new Exponent experience`,
+          pretext: `@${username} just published a new Exponent experience:`,
           text: `${expUrl}\n${redirectUrl}`,
           fields: [{
             title: 'Name',
