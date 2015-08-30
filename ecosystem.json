@@ -38,6 +38,9 @@
         'gulp build',
         'pm2 startOrRestart ecosystem.json --env production',
       ].join(' && '),
+      'env': {
+        'NODE_ENV': 'production',
+      },
     },
   },
 }
