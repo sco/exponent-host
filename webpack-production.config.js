@@ -21,7 +21,12 @@ module.exports = [
     target: 'web',
     entry: {
       main: './src/web/browser/index.js',
-      vendor: ['react', 'react-bootstrap', 'react-router', 'redux'],
+      vendor: [
+        'react',
+        'react-bootstrap',
+        'react-router',
+        'react-router-bootstrap',
+      ],
     },
     output: {
       path: outputPath,
@@ -61,7 +66,9 @@ module.exports = [
         },
       }),
       new webpack.PrefetchPlugin('react'),
+      new webpack.PrefetchPlugin('react-bootstrap'),
       new webpack.PrefetchPlugin('react-router'),
+      new webpack.PrefetchPlugin('react-router-bootstrap'),
       new ExtractTextPlugin('[sha512:contenthash:base62:20].css'),
       new webpack.optimize.DedupePlugin(),
       new webpack.optimize.OccurrenceOrderPlugin(),
