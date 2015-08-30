@@ -30,14 +30,11 @@
       repo: 'https://github.com/exponentjs/exponent-host.git',
       path: '/home/exponent/production',
       'post-deploy': [
-        'NODE_ENV=production',
-        [
-          'npm install',
-          'gulp clean',
-          'gulp build',
-          'pm2 startOrRestart ecosystem.json --env production',
-        ].join(' && '),
-      ].join(' '),
+        'npm install',
+        'gulp clean',
+        'NODE_ENV=production gulp build',
+        'pm2 startOrRestart ecosystem.json --env production',
+      ].join(' && '),
     },
   },
 /*eslint no-unused-expressions:0 semi:0 */
