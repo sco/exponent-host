@@ -33,7 +33,6 @@
         'NODE_ENV=production',
         [
           'npm install',
-          'npm install git+ssh@github.com:exponentjs/exponent-secret.git',
           'gulp clean',
           'gulp build',
           'pm2 startOrRestart ecosystem.json --env production',
