@@ -1,5 +1,3 @@
-'use strict';
-
 import 'instapromise';
 
 import gulp from 'gulp';

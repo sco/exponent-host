@@ -8,7 +8,9 @@ var StatsPlugin = require('stats-webpack-plugin');
 
 var LessPluginAutoPrefix = require('less-plugin-autoprefix');
 
-const CDN_URL = 'http://static.exponentjs.com/v0/';
+const CDN_URL = (process.env.NODE_ENV === 'production') ?
+  'http://static.exponentjs.com/v0/' :
+  '/assets/v0/';
 
 var outputPath = path.join(__dirname, 'build/web/assets');
 
