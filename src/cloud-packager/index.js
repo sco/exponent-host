@@ -1,4 +1,4 @@
-var _ = require('lodash-node');
+var _ = require('lodash');
 var dropboxSync = require('@exponent/dropbox-sync');
 var freeportAsync = require('freeport-async');
 var jsonFile = require('@exponent/json-file');

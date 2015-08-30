@@ -1,7 +1,7 @@
 import React from 'react';
-import {connect} from 'redux/react';
+// import {connect} from 'redux/react';
 
-@connect(data => CurrentLoginInfo.DecoratedComponent.getDataProps(data))
+// @connect(data => CurrentLoginInfo.DecoratedComponent.getDataProps(data))
 export default class CurrentLoginInfo extends React.Component {
 
   static getDataProps(data) {

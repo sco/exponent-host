@@ -1,4 +1,4 @@
-var _ = require('lodash-node');
+var _ = require('lodash');
 var bases = require('bases');
 
 var ApiError = require('./ApiError');

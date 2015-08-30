@@ -1,16 +1,14 @@
-import React from 'react';
-import {
+import React, {
   PropTypes,
 } from 'react';
-import {connect} from 'redux/react';
 
 import GoogleAnalyticsScript from './GoogleAnalyticsScript';
 
-import flatten from 'lodash-node/modern/array/flatten';
+import flatten from 'lodash/array/flatten';
 import path from 'path';
 
-//@connect((data) => ({racers: data.MarioKartRacers}))
 export default class Page extends React.Component {
+  static DOCTYPE = '<!DOCTYPE html>';
 
   static propTypes = {
     markup: PropTypes.shape({
@@ -19,7 +17,6 @@ export default class Page extends React.Component {
   };
 
   render() {
-    // console.log("Page racers=", this.props.racers);
     return (
       <html>
         <head>

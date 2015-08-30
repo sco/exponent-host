@@ -1,4 +1,4 @@
-var _ = require('lodash-node');
+var _ = require('lodash');
 
 function log() {
   //var prefix = crayon.gray("[") + crayon.gray('app') + crayon.gray("]");

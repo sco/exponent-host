@@ -13,7 +13,6 @@ import promiseProps from 'promise-props';
 import rewrite from 'koa-rewrite';
 import router from 'koa-router';
 import serve from 'koa-static';
-import { createRedux } from 'redux';
 import timeconstants from 'timeconstants';
 
 import ServerSideRenderer from './web/server/ServerSideRenderer';
@@ -21,7 +20,6 @@ import ServerSideRenderer from './web/server/ServerSideRenderer';
 import config from './config';
 import servePackage from './servePackage';
 import session from './session';
-import stores from './stores';
 import api from './api/api';
 import r from './database/r';
 import domainRedirect from './middleware/domainRedirect';
@@ -125,49 +123,17 @@ siteRouter.get('/assets/v(\\d+)/(.*)',
   }),
 );
 
-function scriptTagWithData(name, data) {
-  return `
-    <script>
-    dataAvailable(${ JSON.stringify(name) }, ${ JSON.stringify(data) });
-    </script>
-  `;
-}
-
 siteRouter.get('/(.*)', function*(next) {
   let staticResources = require('./web/server/stats.json');
   let renderer = new ServerSideRenderer(this, staticResources);
   let reactMarkup = yield renderer.renderPageAsync(this.url);
-  let redux = createRedux(stores);
 
-  var script = `
-  <script>
-  window.EXP = {};
-  function dataAvailable(name, data) {
-    window.EXP[name] = data;
-    //console.log("New data!", name, data);
-  }
-  </script>
-  `;
-
-  var rs = [];
-
-  this.type = 'text/html';
-
-  rs.push(script);
-  var identity = {
-    browserId: this.browserId,
-    sessionId: this.sessionId,
-  };
-  // rs.push(scriptTagWithData('identity', identity));
-  redux.dispatch({type: 'update', update: {identity}});
-
-  //this.redux.dispatch({type: 'add', racer: 'Waluigi'});
   var awaitableProps = {};
 
   if (this.sessionId) {
     var sessionData$ = r.db('exp_host').table('sessionAndBrowserData').get(this.sessionId);
     awaitableProps.sessionData = sessionData$.then((sessionData) => {
-      redux.dispatch({type: 'update', update: {sessionData}});
+      // redux.dispatch({type: 'update', update: {sessionData}});
       // rs.push(scriptTagWithData('sessionData', sessionData));
       return sessionData;
     });
@@ -175,7 +141,7 @@ siteRouter.get('/(.*)', function*(next) {
   if (this.browserId) {
     var browserData$ = r.db('exp_host').table('sessionAndBrowserData').get(this.browserId);
     awaitableProps.browserData = browserData$.then((browserData) => {
-      redux.dispatch({type: 'update', update: {browserData}});
+      // redux.dispatch({type: 'update', update: {browserData}});
       // rs.push(scriptTagWithData('browserData', browserData));
       return browserData;
     });
@@ -189,7 +155,7 @@ siteRouter.get('/(.*)', function*(next) {
       );
     });
     awaitableProps.userData = userData$.then((userData) => {
-      redux.dispatch({type: 'update', update: {userData}});
+      // redux.dispatch({type: 'update', update: {userData}});
       // rs.push(scriptTagWithData('userData', userData));
       return userData;
     });
@@ -197,10 +163,8 @@ siteRouter.get('/(.*)', function*(next) {
 
   yield promiseProps(awaitableProps);
 
-  rs.push(reactMarkup);
-  rs.push(scriptTagWithData('reduxState', redux.getState()));
-
-  this.body = rs.join('');
+  this.type = 'text/html';
+  this.body = reactMarkup;
 });
 app.use(siteRouter.routes());
 app.use(siteRouter.allowedMethods());

@@ -1,15 +1,11 @@
-import { autobind } from 'core-decorators';
 import dropbox from '@exponent/dropbox';
 import 'instapromise';
 import React from 'react';
-import {
-  Link,
-} from 'react-router';
-import { connect } from 'redux/react';
+// import { connect } from 'redux/react';
 
 import apiClient from '../../api/client';
 import { appKey } from '../../dropbox';
-import * as stores from '../../stores/';
+// import * as stores from '../../stores/';
 
 var LoginBox = React.createClass({
   getInitialState() {
@@ -78,7 +74,7 @@ var LoginBox = React.createClass({
 
 });
 
-@connect(data => CurrentLoginInfo.DecoratedComponent.getDataProps(data))
+// @connect(data => CurrentLoginInfo.DecoratedComponent.getDataProps(data))
 class CurrentLoginInfo extends React.Component {
 
   static getDataProps(data) {

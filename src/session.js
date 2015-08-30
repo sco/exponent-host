@@ -1,4 +1,4 @@
-var _ = require('lodash-node');
+var _ = require('lodash');
 var assert = require('assert');
 
 var r = require('./database/r');

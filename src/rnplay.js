@@ -1,4 +1,4 @@
-var _ = require('lodash-node');
+var _ = require('lodash');
 var cheerio = require('cheerio');
 var instapromise = require('instapromise');
 var request = require('request');
