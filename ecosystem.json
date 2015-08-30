@@ -1,22 +1,20 @@
-{
+({
   /**
    * Here we declare the apps that must be managed by PM2
    * All options are listed here:
    * https://github.com/Unitech/PM2/blob/master/ADVANCED_README.md#json-app-declaration
    *
    */
-  apps: [
-    {
-      name: 'exp.host',
-      script: 'build/index.js',
-      watch: false,
-      env: {
-      },
-      env_production: {
-        NODE_ENV: 'production'
-      }
+  apps: [{
+    name: 'exponentjs.com',
+    script: 'build/index.js',
+    watch: false,
+    env: {
     },
-  ],
+    env_production: {
+      NODE_ENV: 'production',
+    },
+  }],
 
   /**
    * PM2 help you to deploy apps over your servers
@@ -26,21 +24,22 @@
   deploy: {
     production: {
       user: 'exponent',
-      host: 'exp.host',
+      host: 'exponentjs.com',
       key: 'node_modules/@exponent/secret/exp-host.pem',
       ref: 'origin/master',
       repo: 'https://github.com/exponentjs/exponent-host.git',
       path: '/home/exponent/production',
       'post-deploy': [
-        'npm install',
-        'npm install git+ssh@github.com:exponentjs/exponent-secret.git',
-        'gulp clean',
-        'gulp build',
-        'pm2 startOrRestart ecosystem.json --env production',
-      ].join(' && '),
-      'env': {
-        'NODE_ENV': 'production',
-      },
+        'NODE_ENV=production',
+        [
+          'npm install',
+          'npm install git+ssh@github.com:exponentjs/exponent-secret.git',
+          'gulp clean',
+          'gulp build',
+          'pm2 startOrRestart ecosystem.json --env production',
+        ].join(' && '),
+      ].join(' '),
     },
   },
-}
+/*eslint no-unused-expressions:0 semi:0 */
+})
