@@ -17,6 +17,8 @@ import classNames from 'classnames';
 
 import './Site.less';
 
+import SlackButton from './SlackButton';
+
 let Site = React.createClass({
   mixins: [State],
 
@@ -89,8 +91,8 @@ class Footer extends React.Component {
   _renderSocialButtons() {
     return (
       <ul className="socialButtons">
-        <li style={{width: 126, height: 20}}>
-          <script async defer src="http://slack.exponentjs.com/slackin.js" />
+        <li>
+          <SlackButton />
         </li>
         <li>
           <iframe

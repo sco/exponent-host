@@ -1,5 +1,7 @@
 import React from 'react';
 
+import SlackButton from './SlackButton';
+
 export default class Community extends React.Component {
   render() {
     return (
@@ -10,8 +12,8 @@ export default class Community extends React.Component {
         </p>
 
         <h2>Slack <small>Chat with fellow developers</small></h2>
-        <p style={{height: 30}}>
-          <script async defer src="http://slack.exponentjs.com/slackin.js?large" />
+        <p>
+          <SlackButton size="large" />
         </p>
         <p>
           Come join our Slack chat! Request an invite with the button above or enter your email in the Exponent app and we'll send you an invite.
