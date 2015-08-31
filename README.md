@@ -1,4 +1,4 @@
-# exponentjs.com <img src="http://slack.exponentjs.com/badge.svg">
+# exponentjs.com [![Slack](http://slack.exponentjs.com/badge.svg)](http://slack.exponentjs.com)
 
 This is the Exponent hosting service, which includes the React Native packager cluster and the http://exp.host website.
 
