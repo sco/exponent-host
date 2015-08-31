@@ -13,13 +13,16 @@ export default class GettingStarted extends React.Component {
 
           <h2>Install Exponent</h2>
           <p>
-            Install Exponent on your iPhone by tapping this button. Exponent will download to your homescreen.
+            Install Exponent on your iPhone.
           </p>
           <p>
-            <InstallationButton />
-          </p>
-          <p>
-            The first time you launch the app, you'll see a message asking you to give the app permission to run. This is just because the app is being installed outside of the App Store, but it still can't do anything a normal app isn't allowed to do in terms of security.
+            <a href="https://itunes.com/apps/exponent" target="_blank">
+              <img
+                className="appStoreBadge"
+                src={require('./images/app-store-badge@3x.png')}
+                alt="Download on the App Store"
+              />
+            </a>
           </p>
 
           <h2>Make a Project</h2>
@@ -52,6 +55,17 @@ export default class GettingStarted extends React.Component {
           </h2>
           <p>
             When you're happy with something you've made, you can upload it to be shared with others even when your computer is offline using <code>exp publish</code>. Just run <code>exp adduser</code> to create an exp.host account, and then <code>exp publish</code> to publish your article, and we'll give you the URL it's been published to that you can share with anyone. (You can share your development URLs too but they won't be as fast and won't work if your computer is offline.)
+          </p>
+
+          <h2>Keeping Up-to-date</h2>
+          <p>
+            Exponent is regularly updated to bring you the latest React Native features and enhancements. Sometimes React Native's APIs change, so we provide developers with a preview of the next version of Exponent to test your code. Install Exponent Beta on your iPhone by tapping this button. Exponent will download to your homescreen.
+          </p>
+          <p>
+            <InstallationButton />
+          </p>
+          <p>
+            The first time you launch the app, you'll see a message asking you to give the app permission to run. This is just because the app is being installed outside of the App Store, but it still can't do anything a normal app isn't allowed to do in terms of security.
           </p>
       </div>
     );
