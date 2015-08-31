@@ -89,6 +89,9 @@ class Footer extends React.Component {
   _renderSocialButtons() {
     return (
       <ul className="socialButtons">
+        <li style={{width: 126, height: 20}}>
+          <script async defer src="http://slack.exponentjs.com/slackin.js" />
+        </li>
         <li>
           <iframe
             className="socialButtonFrame"
