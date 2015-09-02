@@ -37,7 +37,7 @@ export default class Home extends React.Component {
                 <InstallationButton className="headerInstallationButton" />
                 <br />
                 <span>
-                  Test the next version with Exponent Beta
+                  Test the next version with Exponent Beta (React Native 0.11-rc)
                 </span>
               </div>
             </div>
