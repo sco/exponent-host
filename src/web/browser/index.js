@@ -5,7 +5,13 @@ import Router from 'react-router';
 
 import routes from './routes';
 
-Router.run(routes, Router.HistoryLocation, Root => {
+let isInitialRender = true;
+
+Router.run(routes, Router.HistoryLocation, (Root, state) => {
   React.render(<Root />, document.getElementById('root'));
-  global.ga('send', 'pageview');
+  if (isInitialRender) {
+    isInitialRender = false;
+  } else {
+    global.ga('send', 'pageview', state.path);
+  }
 });
