@@ -58,7 +58,7 @@ export default class PrivacyPolicy extends React.Component {
           Exponent adheres to the US-EU and US-Swiss Safe Harbor Privacy Principles of Notice, Choice, Onward Transfer, Security, Data Integrity, Access and Enforcement, and is registered with the U.S. Department of Commerce's Safe Harbor Program <a href="http://www.export.gov/safeharbor/" target="_blank">http://www.export.gov/safeharbor/</a>.
         </p>
         <p>
-          For European Union and Swiss residents, any questions or concerns regarding the use or disclosure of your information should be directed to Exponent by sending an email to support@exp.host. We will investigate and attempt to resolve complaints and disputes regarding use and disclosure of your information in accordance with this Privacy Policy. For complaints that cannot be resolved, and consistent with the Safe Harbor Enforcement Principle, we have committed to cooperate with data protection authorities located within Switzerland or the European Union (or their authorized representatives).
+          For European Union and Swiss residents, any questions or concerns regarding the use or disclosure of your information should be directed to Exponent by sending an email to support@exponentjs.com. We will investigate and attempt to resolve complaints and disputes regarding use and disclosure of your information in accordance with this Privacy Policy. For complaints that cannot be resolved, and consistent with the Safe Harbor Enforcement Principle, we have committed to cooperate with data protection authorities located within Switzerland or the European Union (or their authorized representatives).
         </p>
         */}
 
@@ -69,7 +69,7 @@ export default class PrivacyPolicy extends React.Component {
 
         <h2>Questions</h2>
         <p>
-          Any questions about this Privacy Policy should be addressed to support@exp.host.
+          Any questions about this Privacy Policy should be addressed to support@exponentjs.com.
         </p>
       </div>
     );

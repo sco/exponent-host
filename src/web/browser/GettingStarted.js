@@ -54,7 +54,7 @@ export default class GettingStarted extends React.Component {
             Publishing
           </h2>
           <p>
-            When you're happy with something you've made, you can upload it to be shared with others even when your computer is offline using <code>exp publish</code>. Just run <code>exp adduser</code> to create an exp.host account, and then <code>exp publish</code> to publish your article, and we'll give you the URL it's been published to that you can share with anyone. (You can share your development URLs too but they won't be as fast and won't work if your computer is offline.)
+            When you're happy with something you've made, you can upload it to be shared with others even when your computer is offline using <code>exp publish</code>. Just run <code>exp adduser</code> to create an Exponent account, and then <code>exp publish</code> to publish your article, and we'll give you the URL it's been published to that you can share with anyone. (You can share your development URLs too but they won't be as fast and won't work if your computer is offline.)
           </p>
 
           <h2>Keeping Up-to-date</h2>
