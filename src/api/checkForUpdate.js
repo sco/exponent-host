@@ -13,7 +13,7 @@ module.exports = {
       return {
         currentVersion: '0.2.0',
         updateAvailable: false,
-        updateUrl: 'http://exponentjs.com/download',
+        updateUrl: 'http://exponentjs.com/docs',
       };
     } else {
       throw ApiError('UNKNOWN_PRODUCT', env, "Don't know about product " + product);

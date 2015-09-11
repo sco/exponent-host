@@ -138,6 +138,7 @@ siteRouter.get('/(.*)', function*(next) {
       return sessionData;
     });
   }
+  
   if (this.browserId) {
     var browserData$ = r.db('exp_host').table('sessionAndBrowserData').get(this.browserId);
     awaitableProps.browserData = browserData$.then((browserData) => {
