@@ -11,6 +11,7 @@ var Api = {
   whoami: require('./whoami'),
   shortenUrl: require('./shortenUrl'),
   logout: require('./logout'),
+  checkForUpdate: require('./checkForUpdate'),
   __reverse__: {
     doc: "Reverses the first argument; for testing the API",
     methodAsync: async function (env, args) {
