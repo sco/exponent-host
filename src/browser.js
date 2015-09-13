@@ -13,9 +13,6 @@ const BROWSER_BUNDLE_URLS = {
 };
 
 const BROWSER_BUNDLE_FILES = {
-  '1:': 'exponent-2015-05-25.bundle.js',
-  '1:e8791bd94f1f2052572e755b8d7b29f29a6d99f3': 'exponent.bundle.js',
-  1: 'exponent.bundle.js',
 };
 
 var bundleCache = {};
